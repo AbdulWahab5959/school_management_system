@@ -174,7 +174,7 @@ body {
   padding-left: 2px;
 }
 
-.login-form input {
+.login-form input, select {
   display: block;
   width: 100%;
   height: 35px;
@@ -185,7 +185,7 @@ body {
 }
 
 .login-form input:focus {
-  border-color: #ff574e;
+  border-color: #0b5069;
 }
 
 .login-form button,
