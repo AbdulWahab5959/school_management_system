@@ -18,7 +18,7 @@ if(isset($_POST['submit']))
 			if($handle->rowCount() > 0)
 			{
 				$getRow = $handle->fetch(PDO::FETCH_ASSOC);
-				if(password_verify($password ,$getRow['password']))
+				if(password_verify($password, $getRow['password']))
 				{
 					unset($getRow['password']);
 					$_SESSION['user_id']=($getRow['user_id']);
@@ -31,12 +31,12 @@ if(isset($_POST['submit']))
 				}
 				else
 				{
-					$errors[] = "Wrong Email or Password";
+					$errors[] = "Wrong  Password";
 				}
 			}
 			else
 			{
-				$errors[] = "Wrong Email or Password";
+				$errors[] = "Wrong Email";
 			}
 			
 		}
