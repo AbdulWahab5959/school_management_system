@@ -523,7 +523,7 @@
           </div>
 
           <div class="page-header">
-            <h3 class="fw-bold mb-3">Teacher Tables </h3>
+            <h3 class="fw-bold mb-3">Class Tables </h3>
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -537,10 +537,10 @@
                       class="display table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th>User_ID</th>
+                          <th>Class_ID</th>
                           <th>Name</th>
-                          <th>Email</th>
-                          <th style="width: 10%">Action</th>
+                          <th>Section</th>
+                          <th style="width: 15%">Action</th>
                         </tr>
                       </thead>
                       <tbody>
