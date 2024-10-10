@@ -1,3 +1,7 @@
+<?php
+
+require_once('../includes/db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -439,91 +443,16 @@
                 <a href="#" class="btn btn-primary btn-round">Add Customer</a>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-6 col-md-3">
-              <div class="card card-stats card-round">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div
-                        class="icon-big text-center icon-primary bubble-shadow-small">
-                        <i class="fas fa-users"></i>
-                      </div>
-                    </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Visitors</p>
-                        <h4 class="card-title">1,294</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-              <div class="card card-stats card-round">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div
-                        class="icon-big text-center icon-info bubble-shadow-small">
-                        <i class="fas fa-user-check"></i>
-                      </div>
-                    </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Subscribers</p>
-                        <h4 class="card-title">1303</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-              <div class="card card-stats card-round">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div
-                        class="icon-big text-center icon-success bubble-shadow-small">
-                        <i class="fas fa-luggage-cart"></i>
-                      </div>
-                    </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Sales</p>
-                        <h4 class="card-title">$ 1,345</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-              <div class="card card-stats card-round">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div
-                        class="icon-big text-center icon-secondary bubble-shadow-small">
-                        <i class="far fa-check-circle"></i>
-                      </div>
-                    </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Order</p>
-                        <h4 class="card-title">576</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+         
+          <?php
+                  $s = "SELECT * FROM staff WHERE user_type = 'student'";
+                  $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                  $sth->execute();
+          ?>
 
+                
           <div class="page-header">
-            <h3 class="fw-bold mb-3">Class Tables </h3>
+            <h3 class="fw-bold mb-3">Student Tables </h3>
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -535,20 +464,22 @@
                     <table
                       id="add-row"
                       class="display table table-striped table-hover">
-                      <thead>
+                      <thead class="text-center">
                         <tr>
-                          <th>Class_ID</th>
+                          <th>User_ID</th>
                           <th>Name</th>
-                          <th>Section</th>
-                          <th style="width: 15%">Action</th>
+                          <th>Email</th>
+                          <th style="width: 20%">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>
+                      <tbody class="text-center">
+                                    <?php
+                           $allRows = $sth->fetchAll();
+                           foreach($allRows as $Row) {
+                           echo "<tr><td>".$Row['user_id']."</td>";
+                           echo "<td>".$Row['name']."</td>";
+                           echo "<td>".$Row['email']."</td>";
+                           echo '<td>
                             <div class="form-button-action">
                               <button
                                 type="button"
@@ -566,34 +497,19 @@
                                 data-original-title="Remove">
                                 <i class="fa fa-times"></i>
                               </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          <td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
                               <button
                                 type="button"
                                 data-bs-toggle="tooltip"
                                 title=""
                                 class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
+                                data-original-title="Disable">
+                                <i class="fa fa-ban"></i>
                               </button>
                             </div>
-                          </td>
-                        </tr>
+                          </td>';
+                                              echo "</tr>";
+                                          }
+                            ?>
                       </tbody>
                     </table>
                   </div>

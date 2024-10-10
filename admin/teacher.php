@@ -443,11 +443,6 @@ require_once('../includes/db.php');
                 <a href="register_staff.php" class="btn btn-primary btn-round">Add Teacher</a>
             </div>
           </div>
-          <?php
-                  $s = "SELECT * FROM staff WHERE user_type = 'teacher'";
-                  $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-                  $sth->execute();
-                                    ?>
 
                 
           <div class="page-header">
@@ -457,127 +452,68 @@ require_once('../includes/db.php');
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
-                  <!-- Modal -->
-                  
+                <?php
+
+                  $s = "SELECT * FROM teacher";
+                  $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                  $sth->execute();
+                  ?>
+
                   <div class="table-responsive">
-                    <table
-                      id="add-row"
-                      class="display table table-striped table-hover">
-                      <thead class="text-center">
-                        <tr>
-                          <th>User_ID</th>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th style="width: 20%">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody class="text-center">
-                                    <?php
-                           $allRows = $sth->fetchAll();
-                           foreach($allRows as $Row) {
-                           echo "<tr><td>".$Row['user_id']."</td>";
-                           echo "<td>".$Row['name']."</td>";
-                           echo "<td>".$Row['email']."</td>";
-                           echo '<td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Disable">
-                                <i class="fa fa-ban"></i>
-                              </button>
-                            </div>
-                          </td>';
-                                              echo "</tr>";
-                                          }
-                                          // echo "</tbody></table></div>";
-                                          ?>
-                        <!-- <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Disable">
-                                <i class="fa fa-ban"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          <td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Disable">
-                                <i class="fa fa-ban"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr> -->
-                      </tbody>
-                    </table>
+                      <table id="add-row" class="display table table-striped table-hover">
+                          <thead class="text-center">
+                              <tr>
+                                  <th>Teacher ID</th>
+                                  <th>Name</th>
+                                  <th>Email</th>
+                                  <th>Status</th>
+                                  <th style="width: 20%">Action</th>
+                              </tr>
+                          </thead>
+                          <tbody class="text-center">
+                              <?php
+                              $allRows = $sth->fetchAll();
+                              foreach ($allRows as $Row) {
+                                  echo "<tr>";
+                                  echo "<td>" . $Row['teacher_id'] . "</td>";
+                                  echo "<td>" . $Row['name'] . "</td>";
+                                  echo "<td>" . $Row['email'] . "</td>";
+                                  echo "<td>" . $Row['status'] . "</td>";
+                                  echo '<td>
+                                      <div class="form-button-action">
+                                          <button
+                                              type="button"
+                                              class="btn btn-link btn-primary btn-lg"
+                                              data-bs-toggle="tooltip"
+                                              title="Edit Teacher"
+                                              data-original-title="Edit Task">
+                                              <i class="fa fa-edit"></i>
+                                          </button>
+                                          <button
+                                              type="button"
+                                              class="btn btn-link btn-danger"
+                                              data-bs-toggle="tooltip"
+                                              title="Remove Teacher"
+                                              data-original-title="Remove">
+                                              <i class="fa fa-times"></i>
+                                          </button>
+                                          <button
+                                              type="button"
+                                              class="btn btn-link btn-warning"
+                                              data-bs-toggle="tooltip"
+                                              title="Disable Teacher"
+                                              data-original-title="Disable">
+                                              <i class="fa fa-ban"></i>
+                                          </button>
+                                      </div>
+                                  </td>';
+                                  echo "</tr>";
+                              }
+                              ?>
+                          </tbody>
+                      </table>
+
+
                   </div>
                 </div>
               </div>

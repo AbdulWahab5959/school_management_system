@@ -440,17 +440,10 @@ require_once('../includes/db.php');
               <h6 class="op-7 mb-2">Admin Dashboard</h6>
             </div>
             <div class="ms-md-auto py-2 py-md-0">
-                <a href="#" class="btn btn-primary btn-round">Add Customer</a>
+                <a href="register_student.php" class="btn btn-primary btn-round">Add Students</a>
             </div>
           </div>
-         
-          <?php
-                  $s = "SELECT * FROM staff WHERE user_type = 'student'";
-                  $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-                  $sth->execute();
-          ?>
-
-                
+                         
           <div class="page-header">
             <h3 class="fw-bold mb-3">Student Tables </h3>
           </div>
@@ -458,127 +451,66 @@ require_once('../includes/db.php');
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
-                  <!-- Modal -->
-                  
+                  <?php
+
+                        $s = "SELECT * FROM student";
+                        $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                        $sth->execute();
+                  ?>
+
                   <div class="table-responsive">
-                    <table
-                      id="add-row"
-                      class="display table table-striped table-hover">
-                      <thead class="text-center">
-                        <tr>
-                          <th>User_ID</th>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th style="width: 20%">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody class="text-center">
-                                    <?php
-                           $allRows = $sth->fetchAll();
-                           foreach($allRows as $Row) {
-                           echo "<tr><td>".$Row['user_id']."</td>";
-                           echo "<td>".$Row['name']."</td>";
-                           echo "<td>".$Row['email']."</td>";
-                           echo '<td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Disable">
-                                <i class="fa fa-ban"></i>
-                              </button>
-                            </div>
-                          </td>';
-                                              echo "</tr>";
-                                          }
-                                          // echo "</tbody></table></div>";
-                                          ?>
-                        <!-- <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Disable">
-                                <i class="fa fa-ban"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          <td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Disable">
-                                <i class="fa fa-ban"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr> -->
-                      </tbody>
-                    </table>
+                  <table id="add-row" class="display table table-striped table-hover">
+                          <thead class="text-center">
+                              <tr>
+                                  <th>Student ID</th>
+                                  <th>Name</th>
+                                  <th>Email</th>
+                                  <th>Status</th>
+                                  <th style="width: 20%">Action</th>
+                              </tr>
+                          </thead>
+                          <tbody class="text-center">
+                              <?php
+                              $allRows = $sth->fetchAll();
+                              foreach ($allRows as $Row) {
+                                  echo "<tr>";
+                                  echo "<td>" . $Row['student_id'] . "</td>";
+                                  echo "<td>" . $Row['name'] . "</td>";
+                                  echo "<td>" . $Row['email'] . "</td>";
+                                  echo "<td>" . $Row['status'] . "</td>";
+                                  echo '<td>
+                                      <div class="form-button-action">
+                                          <button
+                                              type="button"
+                                              class="btn btn-link btn-primary btn-lg"
+                                              data-bs-toggle="tooltip"
+                                              title="Edit student"
+                                              data-original-title="Edit Task">
+                                              <i class="fa fa-edit"></i>
+                                          </button>
+                                          <button
+                                              type="button"
+                                              class="btn btn-link btn-danger"
+                                              data-bs-toggle="tooltip"
+                                              title="Remove student"
+                                              data-original-title="Remove">
+                                              <i class="fa fa-times"></i>
+                                          </button>
+                                          <button
+                                              type="button"
+                                              class="btn btn-link btn-warning"
+                                              data-bs-toggle="tooltip"
+                                              title="Disable student"
+                                              data-original-title="Disable">
+                                              <i class="fa fa-ban"></i>
+                                          </button>
+                                      </div>
+                                  </td>';
+                                  echo "</tr>";
+                              }
+                              ?>
+                          </tbody>
+                      </table>
                   </div>
                 </div>
               </div>

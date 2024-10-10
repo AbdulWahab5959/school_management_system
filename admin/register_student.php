@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
 
            
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $sql = 'SELECT * FROM teacher WHERE email = :email';
+                $sql = 'SELECT * FROM student WHERE email = :email';
                 $stmt = $pdo->prepare($sql);
                 $p = ['email' => $email];
                 $stmt->execute($p);
@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
                         $image_folder = ''; 
                     }
 
-                    $sql = "INSERT INTO teacher (name,  phone, email, `password`, profileimage, address,  created_at, updated_at) 
+                    $sql = "INSERT INTO student (name,  phone, email, `password`, profileimage, address,  created_at, updated_at) 
                             VALUES (:name,  :phone, :email, :password, :profileimage, :address,  :created_at, :updated_at)";
 
                     try {
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
                         ];
 
                         $handle->execute($params);
-                        $success[] = 'Teacher has been registered successfully';
+                        $success[] = 'Student has been registered successfully';
                     } catch (PDOException $e) {
                         $errors[] = $e->getMessage();
                     }

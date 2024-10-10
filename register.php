@@ -154,7 +154,9 @@ if (isset($_POST['submit'])) {
                             <label for="confirm_password">Password<span>*</span></label>
                             <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
                         </p>
-                                   
+                               <p>
+                                
+                               </p>    
                         <p>
                             <input type="submit" name="submit" value="Sing Up" />
                         </p>
