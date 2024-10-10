@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2024 at 01:08 PM
+-- Generation Time: Oct 10, 2024 at 01:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,6 +47,7 @@ CREATE TABLE `staff` (
   `name` varchar(255) NOT NULL DEFAULT '0',
   `email` varchar(255) NOT NULL DEFAULT '0',
   `password` varchar(255) NOT NULL DEFAULT '0',
+  `user_type` varchar(255) NOT NULL DEFAULT 'student',
   `profile_picture` varchar(250) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -56,8 +57,8 @@ CREATE TABLE `staff` (
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`user_id`, `name`, `email`, `password`, `profile_picture`, `created_at`, `updated_at`) VALUES
-(7, 'admin', 'admin@gmail.com', '$2y$04$KGTc5LJW5.blnvaG0YyZYuVzJ5DmghM4QT2EVG0ocT5J4N9U0yWCG', 'profile2.jpeg', '2024-10-09 05:26:09', '2024-10-09 17:22:46');
+INSERT INTO `staff` (`user_id`, `name`, `email`, `password`, `user_type`, `profile_picture`, `created_at`, `updated_at`) VALUES
+(7, 'admin', 'admin@gmail.com', '$2y$04$KGTc5LJW5.blnvaG0YyZYuVzJ5DmghM4QT2EVG0ocT5J4N9U0yWCG', 'admin', 'profile2.jpeg', '2024-10-09 05:26:09', '2024-10-09 17:22:46')
 
 -- --------------------------------------------------------
 
