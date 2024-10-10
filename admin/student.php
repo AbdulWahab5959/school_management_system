@@ -544,7 +544,9 @@ require_once('../includes/db.php');
               $("#addRowModal").modal("hide");
             });
           });
+          
         </script>
+        
 </body>
 
 </html>
