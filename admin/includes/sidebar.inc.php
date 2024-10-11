@@ -26,35 +26,32 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
-                <li class="nav-item active">
-                    <a
-                        data-bs-toggle="collapse"
-                        href="#dashboard"
-                        class="collapsed"
-                        aria-expanded="false">
+                <li class="nav-item">
+                    <a href="index.php" >
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="dashboard">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="teacher.php">
-                                    <span class="sub-item">Teacher</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="student.php">
-                                    <span class="sub-item">Student</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="class.php">
-                                    <span class="sub-item">Class</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                </li>
+                </li>
+                <li class="nav-item">
+                    <a href="teacher.php">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                        <p>Teacher</p>  
+                    </a>
+
+                </li>
+                <li class="nav-item">
+                    <a href="student.php">
+                    <i class="fas fa-users"></i>
+                        <p>Student</p>  
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="class.php">
+                    <i class="fas fa-chalkboard"></i>
+                        <p>Class</p>  
+                    </a>
+
                 </li>
             </ul>
         </div>

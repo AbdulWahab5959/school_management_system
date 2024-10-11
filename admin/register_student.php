@@ -5,7 +5,7 @@ require_once('../includes/db.php');
 if (isset($_POST['submit'])) {
     if (
         isset($_POST['name'], $_POST['address'], $_POST['email'], $_POST['password'], $_POST['PhoneNo']) &&
-        !empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['email']) && 
+        !empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['email']) &&
         !empty($_POST['password']) && !empty($_POST['PhoneNo'])
     ) {
 
@@ -16,29 +16,29 @@ if (isset($_POST['submit'])) {
         $password = trim($_POST['password']);
         $confirm_password = trim($_POST['confirm_password']);
 
-        
+
         if ($password === $confirm_password) {
             $options = array("cost" => 4);
             $hashPassword = password_hash($password, PASSWORD_BCRYPT, $options);
             $date = date('Y-m-d H:i:s');
 
-           
+
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $sql = 'SELECT * FROM student WHERE email = :email';
                 $stmt = $pdo->prepare($sql);
                 $p = ['email' => $email];
                 $stmt->execute($p);
 
-              
+
                 if ($stmt->rowCount() == 0) {
-                    
+
                     if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
                         $image_name = $_FILES['profile_image']['name'];
                         $image_tmp_name = $_FILES['profile_image']['tmp_name'];
                         $image_folder = '../dashboard_assets/img/uploads/' . $image_name;
                         move_uploaded_file($image_tmp_name, $image_folder);
                     } else {
-                        $image_folder = ''; 
+                        $image_folder = '';
                     }
 
                     $sql = "INSERT INTO student (name,  phone, email, `password`, profileimage, address,  created_at, updated_at) 
@@ -97,98 +97,153 @@ if (isset($_POST['submit'])) {
 ?>
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title> User Login</title>
-    <meta
-        content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-        name="viewport" />
-    <link
-        rel="icon"
-        href="../dashboard_assets/img/kaiadmin/favicon.ico"
-        type="image/x-icon" />
-    <link rel="stylesheet" href="../dashboard_assets/css/bootstrap.min.css" />
-
-    <link rel="stylesheet" href="../dashboard_assets/css/style.css">
+    <?php
+    require_once('../includes/dashboard_header.php')
+    ?>
 </head>
 
 <body>
     <div class="wrapper">
+        <!-- Sidebar -->
         <?php
-        if (isset($success) && count($success) > 0) {
-            foreach ($success as $success_msg) {
-                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">' .
-                    $success_msg .
-                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' .
-                    '</div>';
-            }
-        }
-    
-        if (isset($errors) && count($errors) > 0) {
-            foreach ($errors as $error_msg) {
-                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">' .
-                    $error_msg .
-                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' .
-                    '</div>';
-            }
-        }
+        require_once('includes/sidebar.inc.php')
         ?>
+        <!-- End Sidebar -->
 
-        <div class="container">
-            <div class="col-left">
-                <div class="login-text">
-                    <h1> Welcome Back </h1>
-                    <a class="btn bg-light text-black" href="index.php">Go Back Home</a>
-                </div>
-            </div>
-            <div class="col-right">
-                <div class="login-form">
-                    <h2>Register</h2>
-                    <form method="POST" enctype='multipart/form-data' action="<?php echo $_SERVER['PHP_SELF'];?>">
-                        <p>
-                            <label for="name"> Name:<span>*</span></label>
-                            <input type="text" id="name" name="name" placeholder="Name" required>
-                        </p>
-                        <p>
-                            <label for="email"> Email address:<span>*</span></label>
-                            <input type="text" id="email" name="email" placeholder="Username or Email" required>
-                        </p>
-                        <p>
-                            <label for="PhoneNo">Phone Number:<span>*</span></label>
-                            <input type="text" id="PhoneNo" name="PhoneNo" placeholder="Phone Number" required>
-                        </p>
-                        <p>
-                            <label for="password">Password:<span>*</span></label>
-                            <input type="password" id="password" name="password" placeholder="Password" required>
-                        </p>
-                        <p>
-                            <label for="confirm_password">Password:<span>*</span></label>
-                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
-                        </p>
-                        <p>
-                            <label for="profile_image">Profile Image:<span>*</span></label>
-                            <input type="file" id="profile_image" name="profile_image" placeholder="Upload your profile picture" required>
-                        </p>     
-                        <p>
-                            <label for="address">Address:<span>*</span></label>
-                            <textarea  id="address" name="address" ></textarea>
-                        </p>     
-                        <p>
-                            <input type="submit" name="submit" value="Sing Up" />
-                        </p>
-                       
-                    </form>
+        <div class="main-panel">
+            <?php
+            require_once('includes/navbar.inc.php')
+            ?>
+            <!-- Dashboard started -->
+            <div class="container">
+                <div class="page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title text-center ">Registration Form </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mx-auto d-flex justify-content-center">
+                                        <?php
+                                        if (isset($success) && count($success) > 0) {
+                                            foreach ($success as $success_msg) {
+                                                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">' .
+                                                    $success_msg .
+                                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' .
+                                                    '</div>';
+                                            }
+                                        }
+
+                                        if (isset($errors) && count($errors) > 0) {
+                                            foreach ($errors as $error_msg) {
+                                                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">' .
+                                                    $error_msg .
+                                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' .
+                                                    '</div>';
+                                            }
+                                        }
+                                        ?>
+                                        <div class="col-md-4 col-lg-6">
+                                            <form method="POST" enctype='multipart/form-data' action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                                                <div class="form-group">
+                                                    <label for="name">Name</label>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="name"
+                                                        name="name"
+                                                        required
+                                                        placeholder="Enter Name" />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="email2">Email Address</label>
+                                                    <input
+                                                        type="email"
+                                                        class="form-control"
+                                                        id="email2"
+                                                        name="email"
+                                                        required
+                                                        placeholder="Enter Email" />
+                                                    
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="password">Password</label>
+                                                    <input
+                                                        type="password"
+                                                        class="form-control"
+                                                        id="password"
+                                                        name="password"
+                                                        required
+                                                        placeholder="Password" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="confirm_password">Confirm Password</label>
+                                                    <input
+                                                        type="password"
+                                                        class="form-control"
+                                                        id="confirm_password"
+                                                        name="confirm_password"
+                                                        required
+                                                        placeholder="Confirm Password" />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="PhoneNo">Phone </label>
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="PhoneNo"
+                                                        name="PhoneNo"
+                                                        required
+                                                        placeholder="Enter Phone Number" />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="profile_image">Profile Image</label>
+                                                    <input
+                                                        type="file"
+                                                        class="form-control-file"
+                                                        id="profile_image"
+                                                        name="profile_image" />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="address">Address</label>
+                                                    <textarea
+                                                        class="form-control"
+                                                        id="address"
+                                                        name="address"
+                                                        rows="3"
+                                                        required
+                                                        placeholder="Enter Address"></textarea>
+                                                </div>
+
+                                                <div class="card-action">
+                                                    <button class="btn btn-success" type="submit" name="submit">Submit</button>
+                                                </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="../dashboard_assets/js/core/bootstrap.min.js"></script>
+    <?php
+    require_once('../includes/dashboard_footer.php')
+    ?>
+
 </body>
 
 </html>

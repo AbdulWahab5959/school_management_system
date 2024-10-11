@@ -1,102 +1,64 @@
 <?php
-
 require_once('../includes/db.php');
 
-if (isset($_POST['submit'])) {
-    if (
-        isset($_POST['name'], $_POST['address'], $_POST['email'], $_POST['password'], $_POST['PhoneNo']) &&
-        !empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['email']) && 
-        !empty($_POST['password']) && !empty($_POST['PhoneNo'])
-    ) {
+$name = '';
+$email = '';
+$number = '';
+$address = '';
+$password = '';
 
-        $name = trim($_POST['name']);
-        $address = trim($_POST['address']);
-        $email = trim($_POST['email']);
-        $phone = trim($_POST['PhoneNo']);
-        $password = trim($_POST['password']);
-        $confirm_password = trim($_POST['confirm_password']);
-
-        
-        if ($password === $confirm_password) {
-            $options = array("cost" => 4);
-            $hashPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-            $date = date('Y-m-d H:i:s');
-
-           
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $sql = 'SELECT * FROM teacher WHERE email = :email';
-                $stmt = $pdo->prepare($sql);
-                $p = ['email' => $email];
-                $stmt->execute($p);
-
-              
-                if ($stmt->rowCount() == 0) {
-                    
-                    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-                        $image_name = $_FILES['profile_image']['name'];
-                        $image_tmp_name = $_FILES['profile_image']['tmp_name'];
-                        $image_folder = '../dashboard_assets/img/uploads/' . $image_name;
-                        move_uploaded_file($image_tmp_name, $image_folder);
-                    } else {
-                        $image_folder = ''; 
-                    }
-
-                    $sql = "INSERT INTO teacher (name,  phone, email, `password`, profileimage, address,  created_at, updated_at) 
-                            VALUES (:name,  :phone, :email, :password, :profileimage, :address,  :created_at, :updated_at)";
-
-                    try {
-                        $handle = $pdo->prepare($sql);
-                        $params = [
-                            ':name' => $name,
-                            ':address' => $address,
-                            ':phone' => $phone,
-                            ':email' => $email,
-                            ':password' => $hashPassword,
-                            ':profileimage' => $image_folder,
-                            ':created_at' => $date,
-                            ':updated_at' => $date
-                        ];
-
-                        $handle->execute($params);
-                        $success[] = 'Teacher has been registered successfully';
-                    } catch (PDOException $e) {
-                        $errors[] = $e->getMessage();
-                    }
-                } else {
-                    $errors[] = 'Email address already registered';
-                }
-            } else {
-                $errors[] = "Email address is not valid";
-            }
-        } else {
-            $errors[] = "Passwords do not match";
-        }
+if(isset($_GET["id"])) {
+    $id = $_GET['id'];
+    
+    $sql = "SELECT * FROM student WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    $student = $stmt->fetch(PDO::FETCH_ASSOC); 
+    
+    if ($student) {
+        $name = $student['name'];
+        $email = $student['email'];
+        $number = $student['phone'];
+        $address = $student['address'];
     } else {
-        if (!isset($_POST['name']) || empty($_POST['name'])) {
-            $errors[] = 'Name is required';
-        }
-
-        if (!isset($_POST['address']) || empty($_POST['address'])) {
-            $errors[] = 'Address is required';
-        }
-
-        if (!isset($_POST['email']) || empty($_POST['email'])) {
-            $errors[] = 'Email is required';
-        }
-
-        if (!isset($_POST['password']) || empty($_POST['password'])) {
-            $errors[] = 'Password is required';
-        }
-
-        if (!isset($_POST['PhoneNo']) || empty($_POST['PhoneNo'])) {
-            $errors[] = 'Phone number is required';
-        }
+        $error[] = "Error: Student not found.";
     }
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
+    $id = $_POST['id'];
+    $email = $_POST['email'];
+    $name = $_POST['name'];
+    $number = $_POST['PhoneNo'];
+    $address = $_POST['address'];
+    $new_password = $_POST['password']; 
+    $confirm_password = $_POST['confirm_password']; 
+    
+    if ($new_password !== $confirm_password) {
+        $error[] = "Password and Confirm Password do not match.";
+    } else {
+        if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+            $image_name = $_FILES['profile_image']['name'];
+            $image_tmp_name = $_FILES['profile_image']['tmp_name'];
+            $image_folder = '../dashboard_assets/img/uploads/' . $image_name;
+            move_uploaded_file($image_tmp_name, $image_folder);
+        } else {
+            $image_folder = '';
+        }
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        $sql_update = "UPDATE student SET name=?, email=?, phone=?, profileimage=?,  address=?, password=? WHERE id=?";
+        $stmt = $pdo->prepare($sql_update);
+        if ($stmt->execute([$name, $email, $number, $image_folder, $address, $hashed_password, $id])) {
+            $success[] = "student information updated successfully.";
+        header("Location: student.php");
+          exit();
+
+        } else {
+            $error[] = "Error updating student information.";
+        }
+    }
+}
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -150,6 +112,7 @@ if (isset($_POST['submit'])) {
                                         ?>
                                         <div class="col-md-4 col-lg-6">
                                             <form method="POST" enctype='multipart/form-data' action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                                                <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
                                                     <input
@@ -158,6 +121,7 @@ if (isset($_POST['submit'])) {
                                                         id="name"
                                                         name="name"
                                                         required
+                                                        value="<?php echo isset($name) ? $name : ''; ?>"
                                                         placeholder="Enter Name" />
                                                 </div>
 
@@ -166,9 +130,10 @@ if (isset($_POST['submit'])) {
                                                     <input
                                                         type="email"
                                                         class="form-control"
-                                                        id="email2"
+                                                        id="email"
                                                         name="email"
                                                         required
+                                                        value="<?php echo isset($email) ? $email : ''; ?>"
                                                         placeholder="Enter Email" />
                                                     
                                                 </div>
@@ -202,6 +167,7 @@ if (isset($_POST['submit'])) {
                                                         id="PhoneNo"
                                                         name="PhoneNo"
                                                         required
+                                                        value="<?php echo isset($number) ? $number : ''; ?>"
                                                         placeholder="Enter Phone Number" />
                                                 </div>
 
@@ -216,17 +182,18 @@ if (isset($_POST['submit'])) {
 
                                                 <div class="form-group">
                                                     <label for="address">Address</label>
-                                                    <textarea
+                                                    <input
                                                         class="form-control"
                                                         id="address"
                                                         name="address"
                                                         rows="3"
                                                         required
-                                                        placeholder="Enter Address"></textarea>
+                                                        value="<?php echo isset($address) ? $address : ''; ?>"
+                                                        placeholder="Enter Address" />
                                                 </div>
 
                                                 <div class="card-action">
-                                                    <button class="btn btn-success" type="submit" name="submit">Submit</button>
+                                                    <button class="btn btn-success" type="submit" name="profile_update">Submit</button>
                                                 </div>
                                         </div>
                                         </form>
