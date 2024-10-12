@@ -12,6 +12,7 @@ if (isset($_POST['submit'])) {
         $name = trim($_POST['name']);
         $address = trim($_POST['address']);
         $email = trim($_POST['email']);
+        $class = trim($_POST['class']);
         $phone = trim($_POST['PhoneNo']);
         $password = trim($_POST['password']);
         $confirm_password = trim($_POST['confirm_password']);
@@ -41,8 +42,8 @@ if (isset($_POST['submit'])) {
                         $image_folder = '';
                     }
 
-                    $sql = "INSERT INTO student (name,  phone, email, `password`, profileimage, address,  created_at, updated_at) 
-                            VALUES (:name,  :phone, :email, :password, :profileimage, :address,  :created_at, :updated_at)";
+                    $sql = "INSERT INTO student (name,  phone, email, class_id, `password`, profileimage, address,  created_at, updated_at) 
+                            VALUES (:name,  :phone, :email,  :class_id,  :password, :profileimage, :address,  :created_at, :updated_at)";
 
                     try {
                         $handle = $pdo->prepare($sql);
@@ -50,6 +51,7 @@ if (isset($_POST['submit'])) {
                             ':name' => $name,
                             ':address' => $address,
                             ':phone' => $phone,
+                            ':class_id' => $class,
                             ':email' => $email,
                             ':password' => $hashPassword,
                             ':profileimage' => $image_folder,
@@ -171,7 +173,7 @@ if (isset($_POST['submit'])) {
                                                         name="email"
                                                         required
                                                         placeholder="Enter Email" />
-                                                    
+
                                                 </div>
 
                                                 <div class="form-group">
@@ -193,7 +195,31 @@ if (isset($_POST['submit'])) {
                                                         name="confirm_password"
                                                         required
                                                         placeholder="Confirm Password" />
-                                                </div>
+                                                </div>  
+                                                        <?php
+                                                    $s = "SELECT class.id, class.name, class.section, COUNT(student.id) AS max_student , class.strength
+                                                    FROM class
+                                                    LEFT JOIN student ON class.id = Student.class_id
+                                                    GROUP BY class.id, class.name, class.section, class.strength
+                                                    HAVING COUNT(student.id) < class.strength";
+                                                        $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                                                        $sth->execute();
+                                                        ?>
+                                                        <div class="form-group">
+                                                            <label for="class">Choose a class</label>
+                                                            <select name="class" class="form-select">
+                                                                <?php
+                                                                if ($sth->rowCount() > 0) {
+                                                                    while ($row = $sth->fetch()) {
+                                                                        echo "<option value='" . $row["id"] . "'>" . $row["name"] . " " . $row["section"] . "</option>";
+                                                                    }
+                                                                } else {
+                                                                    echo "<option>No classes available</option>";
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+
 
                                                 <div class="form-group">
                                                     <label for="PhoneNo">Phone </label>

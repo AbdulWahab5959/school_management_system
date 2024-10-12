@@ -33,13 +33,13 @@ require_once('../includes/db.php');
               <h6 class="op-7 mb-2">Admin Dashboard</h6>
             </div>
             <div class="ms-md-auto py-2 py-md-0">
-                <a href="register_staff.php" class="btn btn-primary btn-round">Add Teacher</a>
+                <a href="register_teacher.php" class="btn btn-primary btn-round">Add Teacher</a>
             </div>
           </div>
 
                 
           <div class="page-header">
-            <h3 class="fw-bold mb-3">teacher Tables </h3>
+            <h3 class="fw-bold mb-3">Teacher Tables </h3>
           </div>
           <div class="row">
             <div class="col-md-12">

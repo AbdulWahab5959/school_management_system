@@ -1,3 +1,18 @@
+<?php
+$id=$_SESSION['id'];
+$sql = "SELECT * FROM staff WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    $staff = $stmt->fetch(PDO::FETCH_ASSOC); 
+    
+    if ($staff) {
+        $name = $staff['name'];
+        $email = $staff['email'];
+       
+    } else {
+        $error[] = "Error: staff not found.";
+    }
+?>
 <div class="main-header">
         <div class="main-header-logo">
           <!-- Logo Header -->
@@ -309,7 +324,7 @@
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
-                    <span class="fw-bold">Hizrian</span>
+                    <span class="fw-bold"> <?php echo $name;?></span>
                   </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -323,8 +338,8 @@
                             class="avatar-img rounded" />
                         </div>
                         <div class="u-text">
-                          <h4>Hizrian</h4>
-                          <p class="text-muted">hello@example.com</p>
+                          <h4></h4>
+                          <p class="text-muted"><?php echo $email;?> </p>
                           <a
                             href="profile.php"
                             class="btn btn-xs btn-secondary btn-sm">View Profile</a>

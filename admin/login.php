@@ -21,11 +21,7 @@ if(isset($_POST['submit']))
 				if(password_verify($password, $getRow['password']))
 				{
 					unset($getRow['password']);
-					$_SESSION['user_id']=($getRow['user_id']);
-					$_SESSION['name']=($getRow['name']);
-					$_SESSION['email']=($getRow['email']);
-					$_SESSION['user_type']=($getRow['user_type']);
-				
+					$_SESSION['id']=($getRow['id']);				
 					header('location:index.php');
 					exit();
 				}
@@ -88,7 +84,7 @@ if(isset($_POST['submit']))
         <div class="container">
             <div class="col-left">
             <div class="login-text">
-                <h1>Welcome Back</h1>
+                <h1 class="text-start">Welcome Back</h1>
             </div>
             </div>
             <div class="col-right">

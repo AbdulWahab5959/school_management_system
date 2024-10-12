@@ -112,24 +112,24 @@ require_once('../includes/db.php');
     <?php
     require_once('../includes/dashboard_footer.php')
     ?>
-  <script>
-  $(document).ready(function() {
-    
-
-    // Edit student
-    $(document).on('click', '.edit', function() {
-      var id = $(this).data('id');
-      window.location.href = 'student_edit.php?id=' + id; 
-    });
-    // delete student
-    $(document).on('click', '.delete', function() {
-      var id = $(this).data('id');
-      window.location.href = 'student_delete.php?id=' + id; 
-    });
+    <script>
+      $(document).ready(function() {
 
 
-  });
-</script>
+        // Edit student
+        $(document).on('click', '.edit', function() {
+          var id = $(this).data('id');
+          window.location.href = 'student_edit.php?id=' + id;
+        });
+        // delete student
+        $(document).on('click', '.delete', function() {
+          var id = $(this).data('id');
+          window.location.href = 'student_delete.php?id=' + id;
+        });
+
+
+      });
+    </script>
 
 </body>
 
