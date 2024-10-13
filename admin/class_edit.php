@@ -16,9 +16,10 @@ if (isset($_GET["id"])) {
 
     if ($class) {
         $id = $class['id'];
-        $name = $class['name'];
+        $class_name = $class['name'];
         $fees = $class['fees'];
         $section = $class['section'];
+        $teacher_id = $class['teacher_id'];
     } else {
         $error[] = "Error: class not found.";
     }
@@ -28,12 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
     $id = $_POST['id'];
     $fees = $_POST['fees'];
     $name = $_POST['name'];
+    $teacher = $_POST['teacher'];
     $section = $_POST['section'];
     $date = date('Y-m-d H:i:s');
 
-        $sql_update = "UPDATE class SET name=?, fees=?,  section=?, updated_at=? WHERE id=?";
+        $sql_update = "UPDATE class SET name=?, fees=?,  section=?, teacher_id=?, updated_at=? WHERE id=?";
         $stmt = $pdo->prepare($sql_update);
-        if ($stmt->execute([$name, $fees, $section, $date, $id])) {
+        if ($stmt->execute([$name, $fees, $section, $teacher, $date, $id])) {
             $success[] = "class information updated successfully.";
             header("Location: class.php");
             exit();
@@ -111,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
                                                         id="name"
                                                         name="name"
                                                         required
-                                                        value="<?php echo isset($name) ? $name : ''; ?>"
+                                                        value="<?php echo isset($class_name) ? $class_name : ''; ?>"
                                                         placeholder="Enter Name" />
                                                 </div>
 
@@ -138,6 +140,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
                             
                                                     </select>
                                                 </div>
+                                                <?php
+                                                    $s = "SELECT teacher.id, teacher.name 
+                                                    FROM teacher  
+                                                    LEFT JOIN class  
+                                                    ON teacher.id = class.teacher_id 
+                                                    WHERE class.teacher_id IS NULL OR class.teacher_id='$teacher_id'";
+                                                $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                                                $sth->execute();
+                                                ?>
+                                                
+                                                <div class="form-group">
+                                                    <label for="teacher">Choose a Teacher</label>
+
+                                                    <select name="teacher" class="form-select">
+                                                        <?php
+                                                        if ($sth->rowCount() > 0) {
+                                                            while ($row = $sth->fetch()){ 
+                                                                echo "<option value='" . $row["id"] . "'>" . $row["name"] . "</option>";
+                                                            }
+                                                        } else {
+                                                            echo "<option>No teachers available</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+
                                                 <div class="card-action">
                                                     <button class="btn btn-success" type="submit" name="class_update">Submit</button>
                                                 </div>

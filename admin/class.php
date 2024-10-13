@@ -38,17 +38,95 @@ require_once('../includes/db.php');
           </div>
 
                 
+         
           <div class="page-header">
-            <h3 class="fw-bold mb-3">Class Tables </h3>
+            <h3 class="fw-bold mb-3">Active Class Tables </h3>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
                 <?php
+                  $s = "SELECT class.*, teacher.id AS teacher_id, teacher.name AS teacher_name 
+                  FROM class
+                  INNER JOIN teacher 
+                  ON class.teacher_id = teacher.id
+                  WHERE class.status = '1'";           
 
-                  $s = "SELECT * FROM class";
+                  // $s = "SELECT * FROM class where status='1'";
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                  $sth->execute();
+                  ?>
+
+                  <div class="table-responsive">
+                      <table id="add-row" class="display table table-striped table-hover">
+                          <thead class="text-center">
+                              <tr>
+                                  <th>ID</th>
+                                  <th>Name</th>
+                                  <th>Class Teacher</th>
+                                  <th>Section</th>
+                                  <th>fFees</th>
+                                  <th style="width: 20%">Action</th>
+                              </tr>
+                          </thead>
+                          <tbody class="text-center">
+                              <?php
+                              $allRows = $sth->fetchAll();
+                              foreach ($allRows as $Row) {
+                                  echo "<tr>";
+                                  echo "<td>" . $Row['id'] . "</td>";
+                                  echo "<td>" . $Row['name'] . "</td>";
+                                  echo "<td>" . $Row['teacher_name'] . "</td>";
+                                  echo "<td>" . $Row['section'] . "</td>";
+                                  echo "<td>" . $Row['fees'] . "</td>";
+                                  echo '<td>
+                                  <div class="form-button-action">
+                                      <button
+                                          type="button"
+                                          class="btn btn-link btn-primary btn-lg edit"
+                                          data-id="' . $Row['id'] . '"
+                                          title="Edit class">
+                                          <i class="fa fa-edit"></i>
+                                      </button>
+                                      <button
+                                          type="button"
+                                          class="btn btn-link btn-danger delete"
+                                          data-id="' . $Row['id'] . '"
+                                          title="Remove class">
+                                          <i class="fa fa-times"></i>
+                                      </button>
+                                      <button
+                                          type="button"
+                                          class="btn btn-link btn-warning disable"
+                                          data-id="' . $Row['id'] . '"
+                                          title="disable class">
+                                          <i class="fa fa-lock" aria-hidden="true"></i>
+                                      </button>
+                                  </div>
+                                </td>';
+                                            echo "</tr>";
+                                          }
+                                          ?>
+                                        </tbody>
+                      </table>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page-header">
+            <h3 class="fw-bold mb-3">Disable Class Tables </h3>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body">
+                <?php
+                  $s="SELECT * FROM class where status=0";
+                  $sth = $pdo->prepare($s);
                   $sth->execute();
                   ?>
 
@@ -90,10 +168,10 @@ require_once('../includes/db.php');
                                       </button>
                                       <button
                                           type="button"
-                                          class="btn btn-link btn-warning disable"
+                                          class="btn btn-link btn-success active"
                                           data-id="' . $Row['id'] . '"
-                                          title="Disable class">
-                                          <i class="fa fa-ban"></i>
+                                          title="active class">
+                                          <i class="fa fa-unlock" aria-hidden="true"></i>
                                       </button>
                                   </div>
                                 </td>';
@@ -128,6 +206,14 @@ require_once('../includes/db.php');
     $(document).on('click', '.delete', function() {
       var id = $(this).data('id');
       window.location.href = 'class_delete.php?id=' + id; 
+    });
+    $(document).on('click', '.disable', function() {
+      var id = $(this).data('id');
+      window.location.href = 'class_disable.php?id=' + id; 
+    });
+    $(document).on('click', '.active', function() {
+      var id = $(this).data('id');
+      window.location.href = 'class_active.php?id=' + id; 
     });
 
 

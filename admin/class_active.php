@@ -1,66 +1,59 @@
 <?php
-
 require_once('../includes/db.php');
 
-if (isset($_POST['submit'])) {
-    if (isset($_POST['name'],  $_POST['fees'], $_POST['section'] ) &&  !empty($_POST['name']) && !empty($_POST['fees'])  && !empty($_POST['section'])) {
+$name = '';
+$fees = '';
+$section = '';
+$teacher_id = '';
 
-        $name = trim($_POST['name']);
-        $fees = trim($_POST['fees']);
-        $strength = trim($_POST['strength']);
-        $section = trim($_POST['section']);
-        $teacher = trim($_POST['teacher']);
-        $date = date('Y-m-d H:i:s');
 
-                $sql = 'SELECT * FROM class WHERE  name Like :name and section Like :section';
-                $stmt = $pdo->prepare($sql);
-                $p = [
-                    'name' => $name,
-                    'section' => $section
-                    ];
-                $stmt->execute($p);
 
-              
-                if ($stmt->rowCount() == 0) {
-                    $sql = "INSERT INTO class (name, section, strength,  teacher_id,   fees, created_at, updated_at) 
-                            VALUES (:name,  :section, :strength, :teacher_id,  :fees, :created_at, :updated_at)";
-                    try {
-                        $handle = $pdo->prepare($sql);
-                        $params = [
-                            ':name' => $name,
-                            ':section' => $section,
-                            ':strength' => $strength,
-                            ':teacher_id' => $teacher,
-                            ':fees' => $fees,
-                            ':created_at' => $date,
-                            ':updated_at' => $date
-                        ];
+if (isset($_GET["id"])) {
+    $id = $_GET['id'];
 
-                        $handle->execute($params);
-                        $success[] = 'Class has been registered successfully';
-                    } catch (PDOException $e) {
-                        $errors[] = $e->getMessage();
-                    }
-                } 
-                else
-                {
-                    $errors[] = 'Class already registered';   
-                }
-            } 
-          
-            else {
-                    if (!isset($_POST['name']) || empty($_POST['name'])) {
-                        $errors[] = 'Name is required';
-                    }
-            
-                    if (!isset($_POST['fees']) || empty($_POST['fees'])) {
-                        $errors[] = 'fees is required';
-                    }  
-                }
+    $sql = "SELECT * FROM class WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    $class = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($class) {
+        $id = $class['id'];
+        $class_name = $class['name'];
+        $fees = $class['fees'];
+        $section = $class['section'];
+        $teacher_id = $class['teacher_id'];
+    } else {
+        $error[] = "Error: class not found.";
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
+    $id = $_POST['id'];
+    $fees = $_POST['fees'];
+    $name = $_POST['name'];
+    $teacher = $_POST['teacher'];
+    $section = $_POST['section'];
+    $status = 1;
+    $date = date('Y-m-d H:i:s');
+
+        $sql_update = "UPDATE class SET name=?, fees=?,  section=?, teacher_id=?, status=?,  updated_at=? WHERE id=?";
+        $stmt = $pdo->prepare($sql_update);
+        if ($stmt->execute([$name, $fees, $section, $teacher, $status, $date, $id])) {
+            $success[] = "class information updated successfully.";
+            header("Location: class.php");
+            exit();
         }
+        else {
+            $error[] = "Error updating class information.";
+        }
+
+    }
+
+    else {
+        $error[] = "Error updating class information.";
+    }
+
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -114,7 +107,8 @@ if (isset($_POST['submit'])) {
                                         ?>
                                         <div class="col-md-4 col-lg-6">
                                             <form method="POST" enctype='multipart/form-data' action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                                <div class="form-group">
+                                            <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
+                                            <div class="form-group">
                                                     <label for="name">Name</label>
                                                     <input
                                                         type="text"
@@ -122,6 +116,7 @@ if (isset($_POST['submit'])) {
                                                         id="name"
                                                         name="name"
                                                         required
+                                                        value="<?php echo isset($class_name) ? $class_name : ''; ?>"
                                                         placeholder="Enter Name" />
                                                 </div>
 
@@ -135,37 +130,25 @@ if (isset($_POST['submit'])) {
                                                         min="1000"
                                                         max="5000"
                                                         required
+                                                        value="<?php echo isset($fees) ? $fees : ''; ?>"
                                                         placeholder="Enter Fees Between 1000 to 5000 " />
-                                                    
+
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="strength">Strength</label>
-                                                    <input
-                                                        type="number"
-                                                        class="form-control"
-                                                        id="strength"
-                                                        name="strength"
-                                                        min="20"
-                                                        max="30"
-                                                        required
-                                                        placeholder="Enter strength Between 20 to 30 " />
-                                                    
-                                                </div>
-                                                <div class="form-group">
-                                                <label for="section">Choose a Section</label>
-                                                <select class="form-select" name="section" id="section">
-                                                <option value="A">A</option>
-                                                    <option value="B">B</option>
-                                                    <option value="C">C</option>
-                                                    <option value="D">D</option>
-                                                </select>
+                                                    <label for="section">Choose a Section</label>
+                                                    <select class="form-select" name="section" id="section">
+                                                    <option value="A" <?php echo $section == 'A'?'selected':'';?>>A</option>
+                                                    <option value="B" <?php echo $section == 'B'?'selected':'';?>>B</option>
+                                                    <option value="C" <?php echo $section == 'C'?'selected':'';?>>C</option>
+                            
+                                                    </select>
                                                 </div>
                                                 <?php
                                                     $s = "SELECT teacher.id, teacher.name 
                                                     FROM teacher  
                                                     LEFT JOIN class  
                                                     ON teacher.id = class.teacher_id 
-                                                    WHERE class.teacher_id IS NULL";
+                                                    WHERE class.teacher_id IS NULL OR class.teacher_id='$teacher_id'";
                                                 $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                                                 $sth->execute();
                                                 ?>
@@ -185,8 +168,9 @@ if (isset($_POST['submit'])) {
                                                         ?>
                                                     </select>
                                                 </div>
+
                                                 <div class="card-action">
-                                                    <button class="btn btn-success" type="submit" name="submit">Submit</button>
+                                                    <button class="btn btn-success" type="submit" name="class_update">Submit</button>
                                                 </div>
                                         </div>
                                         </form>
