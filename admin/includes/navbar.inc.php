@@ -1,8 +1,8 @@
 <?php
-$id=$_SESSION['id'];
+$admin_id=$_SESSION['id'];
 $sql = "SELECT * FROM staff WHERE id = ?";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id]);
+    $stmt->execute([$admin_id]);
     $staff = $stmt->fetch(PDO::FETCH_ASSOC); 
     
     if ($staff) {

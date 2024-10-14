@@ -9,15 +9,15 @@ $teacher_id = '';
 
 
 if (isset($_GET["id"])) {
-    $id = $_GET['id'];
+    $class_id = $_GET['id'];
 
     $sql = "SELECT * FROM class WHERE id = ?";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id]);
+    $stmt->execute([$class_id]);
     $class = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($class) {
-        $id = $class['id'];
+        $class_id = $class['id'];
         $class_name = $class['name'];
         $fees = $class['fees'];
         $section = $class['section'];
@@ -28,7 +28,7 @@ if (isset($_GET["id"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
-    $id = $_POST['id'];
+    $class_id = $_POST['id'];
     $fees = $_POST['fees'];
     $name = $_POST['name'];
     $teacher = $_POST['teacher'];
@@ -38,8 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
 
         $sql_update = "UPDATE class SET name=?, fees=?,  section=?, teacher_id=?, status=?,  updated_at=? WHERE id=?";
         $stmt = $pdo->prepare($sql_update);
-        if ($stmt->execute([$name, $fees, $section, $teacher, $status, $date, $id])) {
-            $success[] = "class information updated successfully.";
+        if ($stmt->execute([$name, $fees, $section, $teacher, $status, $date, $class_id])) {
+         
             header("Location: class.php");
             exit();
         }
@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
                                         ?>
                                         <div class="col-md-4 col-lg-6">
                                             <form method="POST" enctype='multipart/form-data' action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                            <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
+                                            <input type="hidden" name="id" value="<?php echo isset($class_id) ? $class_id : ''; ?>">
                                             <div class="form-group">
                                                     <label for="name">Name</label>
                                                     <input

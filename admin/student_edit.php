@@ -8,11 +8,11 @@ $address = '';
 $password = '';
 
 if(isset($_GET["id"])) {
-    $id = $_GET['id'];
+    $student_id = $_GET['id'];
     
     $sql = "SELECT * FROM student WHERE id = ?";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id]);
+    $stmt->execute([$student_id]);
     $student = $stmt->fetch(PDO::FETCH_ASSOC); 
     
     if ($student) {
@@ -26,7 +26,7 @@ if(isset($_GET["id"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
-    $id = $_POST['id'];
+    $student_id = $_POST['id'];
     $email = $_POST['email'];
     $name = $_POST['name'];
     $number = $_POST['PhoneNo'];
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         $sql_update = "UPDATE student SET name=?, email=?, phone=?, profileimage=?,  address=?, password=? WHERE id=?";
         $stmt = $pdo->prepare($sql_update);
-        if ($stmt->execute([$name, $email, $number, $image_folder, $address, $hashed_password, $id])) {
+        if ($stmt->execute([$name, $email, $number, $image_folder, $address, $hashed_password, $student_id])) {
             $success[] = "student information updated successfully.";
         header("Location: student.php");
           exit();
@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
                                         ?>
                                         <div class="col-md-4 col-lg-6">
                                             <form method="POST" enctype='multipart/form-data' action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                                <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
+                                                <input type="hidden" name="id" value="<?php echo isset($student_id) ? $student_id : ''; ?>">
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
                                                     <input
