@@ -136,7 +136,6 @@ require_once('../includes/db.php');
                         <?php
                         $allRows = $sth->fetchAll();
                         foreach ($allRows as $Row) {
-                          echo $Row['name'];
                           echo "<tr>";
                           echo "<td>" . $Row['id'] . "</td>";
                           echo "<td>" . $Row['name'] . "</td>";

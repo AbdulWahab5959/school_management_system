@@ -51,7 +51,7 @@ require_once('../includes/db.php');
                   FROM class
                   INNER JOIN teacher 
                   ON class.teacher_id = teacher.id
-                  WHERE class.status = '1'";           
+                  WHERE class.teacher_id IS NOT NULL";           
 
                   // $s = "SELECT * FROM class where status='1'";
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -129,7 +129,6 @@ require_once('../includes/db.php');
                   $sth = $pdo->prepare($s);
                   $sth->execute();
                   ?>
-
                   <div class="table-responsive">
                       <table id="add-row" class="display table table-striped table-hover">
                           <thead class="text-center">

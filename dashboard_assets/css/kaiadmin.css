@@ -3741,30 +3741,6 @@ label.error {
   -webkit-box-shadow: 1px 1px 14px 0px rgba(18, 38, 63, 0.26);
   -moz-box-shadow: 1px 1px 14px 0px rgba(18, 38, 63, 0.26);
   box-shadow: 1px 1px 14px 0px rgba(18, 38, 63, 0.26); }
-  .alert [data-notify="icon"] {
-    display: block; }
-    .alert [data-notify="icon"]::before {
-      line-height: 35px;
-      font-size: 22px;
-      display: block;
-      left: 15px;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 35px;
-      height: 35px;
-      border-radius: 30px;
-      text-align: center;
-      color: #fff; }
-  .alert [data-notify="title"] {
-    display: block;
-    color: #2b2b2b;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 5px; }
-  .alert [data-notify="message"] {
-    font-size: 13px;
-    color: #908e8e; }
   .alert .close {
     background: rgba(255, 255, 255, 0.8);
     width: 25px;
@@ -3778,39 +3754,39 @@ label.error {
 
 /*    Alert States    */
 .alert-black {
-  border-left: 4px solid #1a2035; }
-  .alert-black [data-notify="icon"]:before {
-    background: #1a2035; }
+  border: 1px solid #1a2035;
+  background-color: #179d08;
+  color: white; }
 
 .alert-primary {
-  border-left: 4px solid #1572E8; }
-  .alert-primary [data-notify="icon"]:before {
-    background: #1572E8; }
+  border: 1px solid #1572E8; 
+  background-color: blue;
+  color: white;}
 
 .alert-secondary {
-  border-left: 4px solid #6861CE; }
-  .alert-secondary [data-notify="icon"]:before {
-    background: #6861CE; }
+  border: 1px solid #6861CE;
+  background-color: gray;
+  color: black; }
 
 .alert-info {
-  border-left: 4px solid #48ABF7; }
-  .alert-info [data-notify="icon"]:before {
-    background: #48ABF7; }
-
+  border: 1px solid #48ABF7;
+  background-color: skyblue;
+  color: white; }
+  
 .alert-success {
-  border-left: 4px solid #31CE36; }
-  .alert-success [data-notify="icon"]:before {
-    background: #31CE36; }
-
+  border: 1px solid #31CE36; 
+  background-color: #179d08;
+  color: white;
+}
 .alert-warning {
-  border-left: 4px solid #FFAD46; }
-  .alert-warning [data-notify="icon"]:before {
-    background: #FFAD46; }
+  border: 1px solid #FFAD46;
+  background-color: orangered;
+  color: white; }
 
 .alert-danger {
-  border-left: 4px solid #F25961; }
-  .alert-danger [data-notify="icon"]:before {
-    background: #F25961; }
+  border: 1px solid #F25961;
+  background-color: red;
+  color: white; }
 
 /*    Button    */
 .btn {
