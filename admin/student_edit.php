@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
     $student_id = $_POST['id'];
     $email = $_POST['email'];
     $name = $_POST['name'];
+    $class = trim($_POST['class']);
     $number = $_POST['PhoneNo'];
     $address = $_POST['address'];
     $new_password = $_POST['password']; 
@@ -46,9 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
             $image_folder = '';
         }
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-        $sql_update = "UPDATE student SET name=?, email=?, phone=?, profileimage=?,  address=?, password=? WHERE id=?";
+        $sql_update = "UPDATE student SET name=?, email=?, class_id=?, phone=?, profileimage=?,  address=?, password=? WHERE id=?";
         $stmt = $pdo->prepare($sql_update);
-        if ($stmt->execute([$name, $email, $number, $image_folder, $address, $hashed_password, $student_id])) {
+        if ($stmt->execute([$name, $email, $class, $number, $image_folder, $address, $hashed_password, $student_id])) {
             $success[] = "student information updated successfully.";
         header("Location: student.php");
           exit();
@@ -157,8 +158,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
                                                         name="confirm_password"
                                                         required
                                                         placeholder="Confirm Password" />
-                                                </div>
-
+                                                </div> 
+                                                    <?php
+                                                    $s = "SELECT class.id, class.name, class.section, COUNT(student.id) AS max_student , class.strength
+                                                    FROM class
+                                                    LEFT JOIN student ON class.id = Student.class_id
+                                                    GROUP BY class.id, class.name, class.section, class.strength
+                                                    HAVING COUNT(student.id) < class.strength";
+                                                        $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                                                        $sth->execute();
+                                                        ?>
+                                                        <div class="form-group">
+                                                            <label for="class">Choose a class</label>
+                                                            <select name="class" class="form-select">
+                                                                <?php
+                                                                if ($sth->rowCount() > 0) {
+                                                                    while ($row = $sth->fetch()) {
+                                                                        echo "<option value='" . $row["id"] . "'>" . $row["name"] . " " . $row["section"] . "</option>";
+                                                                    }
+                                                                } else {
+                                                                    echo "<option>No classes available</option>";
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
                                                 <div class="form-group">
                                                     <label for="PhoneNo">Phone </label>
                                                     <input

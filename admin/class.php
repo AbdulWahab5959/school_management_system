@@ -154,6 +154,13 @@ require_once('../includes/db.php');
                                   <div class="form-button-action">
                                       <button
                                           type="button"
+                                          class="btn btn-link btn-danger delete"
+                                          data-id="' . $Row['id'] . '"
+                                          title="Remove class">
+                                          <i class="fa fa-times"></i>
+                                      </button>
+                                  <button
+                                          type="button"
                                           class="btn btn-link btn-success active"
                                           data-id="' . $Row['id'] . '"
                                           title="active class">

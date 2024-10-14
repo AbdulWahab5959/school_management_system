@@ -6,8 +6,8 @@ $sql = "SELECT * FROM staff WHERE id = ?";
     $staff = $stmt->fetch(PDO::FETCH_ASSOC); 
     
     if ($staff) {
-        $name = $staff['name'];
-        $email = $staff['email'];
+        $admin_name = $staff['name'];
+        $admin_email = $staff['email'];
        
     } else {
         $error[] = "Error: staff not found.";
@@ -324,7 +324,7 @@ $sql = "SELECT * FROM staff WHERE id = ?";
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
-                    <span class="fw-bold"> <?php echo $name;?></span>
+                    <span class="fw-bold"> <?php echo $admin_name;?></span>
                   </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -339,7 +339,7 @@ $sql = "SELECT * FROM staff WHERE id = ?";
                         </div>
                         <div class="u-text">
                           <h4></h4>
-                          <p class="text-muted"><?php echo $email;?> </p>
+                          <p class="text-muted"><?php echo $admin_email;?> </p>
                           <a
                             href="profile.php"
                             class="btn btn-xs btn-secondary btn-sm">View Profile</a>
