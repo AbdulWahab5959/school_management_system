@@ -21,7 +21,6 @@ if (isset($_GET["id"])) {
         $name = $teacher['name'];
         $email = $teacher['email'];
         $number = $teacher['phone'];
-        $class_id = $teacher['class_id'];
         $address = $teacher['address'];
     } else {
         $error[] = "Error: teacher not found.";
@@ -32,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['teacher_update'])) {
     $teacher_id = $_POST['id'];
     $email = $_POST['email'];
     $name = $_POST['name'];
-    $class = trim($_POST['class']);
     $number = $_POST['PhoneNo'];
     $address = $_POST['address'];
     $status = 1;
@@ -50,10 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['teacher_update'])) {
         } else {
             $image_folder = '';
         }
+
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-        $sql_update = "UPDATE teacher SET name=?, email=?, class_id=?, phone=?, status=?, profileimage=?,  address=?, password=? WHERE id=?";
+        $sql_update = "UPDATE teacher SET name=?, email=?, phone=?, status=?, profileimage=?,  address=?, password=? WHERE id=?";
         $stmt = $pdo->prepare($sql_update);
-        if ($stmt->execute([$name, $email, $class, $number,  $status, $image_folder, $address, $hashed_password, $teacher_id])) {
+        if ($stmt->execute([$name, $email, $number,  $status, $image_folder, $address, $hashed_password, $teacher_id])) {
             header("Location: teacher.php");
           exit();
 
@@ -163,29 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['teacher_update'])) {
                                                         required
                                                         placeholder="Confirm Password" />
                                                 </div> 
-                                                    <?php
-                                                        $s = "SELECT class.id, class.name, class.section
-                                                        FROM class
-                                                        LEFT JOIN teacher ON class.teacher_id = teacher.id
-                                                        WHERE teacher.id IS NULL;";
-                                                        $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-                                                        $sth->execute();
-                                                        ?>
-                                                        <div class="form-group">
-                                                            <label for="class">Choose a class</label>
-                                                            <select name="class" class="form-select">
-                                                                <?php
-                                                                if ($sth->rowCount() > 0) {
-                                                                    while ($row = $sth->fetch()) {
-                                                                        echo "<option value='" . $row["id"] . "'>" . $row["name"] . " " . $row["section"] . "</option>";
-                                                                    }
-                                                                } else {
-                                                                    echo "<option>No classes available</option>";
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                <div class="form-group">
+                                                    <div class="form-group">
                                                     <label for="PhoneNo">Phone </label>
                                                     <input
                                                         type="text"

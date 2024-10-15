@@ -11,7 +11,7 @@ if(isset($_POST['submit']))
  
 		if(filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
-			$sql = "select * from staff where email = :email ";
+			$sql = "SELECT * from teacher where email = :email ";
 			$handle = $pdo->prepare($sql);
 			$params = ['email'=>$email];
 			$handle->execute($params);
@@ -21,22 +21,18 @@ if(isset($_POST['submit']))
 				if(password_verify($password, $getRow['password']))
 				{
 					unset($getRow['password']);
-					$_SESSION['user_id']=($getRow['user_id']);
-					$_SESSION['name']=($getRow['name']);
-					$_SESSION['email']=($getRow['email']);
-					$_SESSION['user_type']=($getRow['user_type']);
-				
+					$_SESSION['id']=($getRow['id']);				
 					header('location:index.php');
 					exit();
 				}
 				else
 				{
-					$errors[] = "Wrong  Password";
+					$errors[] = "Query Error";
 				}
 			}
 			else
 			{
-				$errors[] = "Wrong Email";
+				$errors[] = "Wrong  Password";
 			}
 			
 		}

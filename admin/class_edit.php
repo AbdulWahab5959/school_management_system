@@ -39,9 +39,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
     $sql_update = "UPDATE class SET `name`=?, fees=?,  section=?, teacher_id=?, updated_at=? WHERE id=?";
     $stmt = $pdo->prepare($sql_update);
     if ($stmt->execute([$name, $fees, $section, $teacher, $date, $class_id])) {
-            $success[] = "class information updated successfully.";
-             header("Location: class.php");
+        $sql_update = "UPDATE teacher SET  status=? WHERE id=?";
+        $stmt = $pdo->prepare($sql_update);
+        if ($stmt->execute([$status,  $teacher])) {
+            header("Location: class.php");
             exit();
+            } else {
+             $error[] = "Error updating teacher information.";
+            }
+            
         }
         else {
             $error[] = "Error updating class information.";

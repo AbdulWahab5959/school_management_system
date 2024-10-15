@@ -117,9 +117,7 @@ require_once('../includes/db.php');
               <div class="card">
                 <div class="card-body">
                   <?php
-                  $s = "SELECT *
-                  FROM teacher
-                  WHERE status =0";
+                  $s = "SELECT * FROM teacher WHERE status =0";
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                   $sth->execute();
                   ?>

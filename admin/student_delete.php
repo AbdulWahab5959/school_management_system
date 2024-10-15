@@ -8,7 +8,6 @@ if (isset($_GET['id'])) {
   $stmt = $pdo->prepare($sql);
   if ($stmt !== false) {
       $stmt->bindParam(':id', $student_id, PDO::PARAM_INT);
-
       if ($stmt->execute()) {
         $success[] = "student information deleted successfully.";
           header("Location: student.php");
