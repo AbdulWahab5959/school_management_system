@@ -34,22 +34,23 @@ require_once('../includes/db.php');
           </div>
 
           <div class="page-header">
-            <h3 class="fw-bold mb-3">Teacher Data Tables </h3>
+            <h3 class="fw-bold mb-3"> Active Student Tables </h3>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
                   <?php
-                  $s = "SELECT teacher.*, class.id AS class_id, class.name AS class_name, class.section AS class_section
-                  FROM class 
-                  INNER JOIN teacher ON teacher.id = class.teacher_id
-                  WHERE class.teacher_id IS NOT NULL AND teacher.status='1' AND teacher.id= '$user_id' ";
-                  $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-                  $sth->execute();
-                  ?>
-
-                  <div class="table-responsive">
+                     $s = "SELECT student.*, class.id AS class_id, class.name AS class_name,
+                    class.section AS class_section, class.teacher_id AS class_teacher_id
+                    FROM class
+                    INNER JOIN student ON student.class_id = class.id
+                    WHERE student.class_id IS NOT NULL AND class.teacher_id= '$user_id' ";
+                    $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                    $sth->execute();
+                                    ?>
+                 
+                 <div class="table-responsive">
                     <table id="add-row" class="display table table-striped table-hover">
                       <thead class="text-center">
                         <tr>
@@ -69,8 +70,6 @@ require_once('../includes/db.php');
                           echo "<td>" . $Row['name'] . "</td>";
                           echo "<td>" . $Row['email'] . "</td>";
                           echo "<td>" . $Row['class_name'] ." ".$Row['class_section']. "</td>";
-                          echo '<td>
-                        </td>';
                           echo "</tr>";
                         }
                         ?>
@@ -88,7 +87,6 @@ require_once('../includes/db.php');
     <?php
     require_once('../includes/dashboard_footer.php')
     ?>
-    
 </body>
 
 </html>

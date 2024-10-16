@@ -34,23 +34,16 @@
                 </li>
                 </li>
                 <li class="nav-item">
-                    <a href="teacher.php">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                        <p>Teacher</p>  
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="student.php">
                     <i class="fas fa-users"></i>
                         <p>Student</p>  
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="class.php">
-                    <i class="fas fa-chalkboard"></i>
-                        <p>Class</p>  
+                    <a href="attendance.php">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                        <p>Attendance</p>  
                     </a>
-
                 </li>
             </ul>
         </div>
