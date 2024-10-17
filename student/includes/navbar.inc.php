@@ -1,6 +1,6 @@
 <?php
 $user_id=$_SESSION['id'];
-$sql = "SELECT * FROM teacher WHERE id = ?";
+$sql = "SELECT * FROM student WHERE id = ?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$user_id]);
     $staff = $stmt->fetch(PDO::FETCH_ASSOC); 
@@ -178,8 +178,8 @@ $sql = "SELECT * FROM teacher WHERE id = ?";
                       <div class="user-box">
                         <div class="avatar-lg">
                           <img
-                          src="<?php echo $user_profile; ?>"
-                          alt="image profile"
+                            src="<?php echo $user_profile; ?>"
+                            alt="image profile"
                             class="avatar-img rounded" />
                         </div>
                         <div class="u-text">

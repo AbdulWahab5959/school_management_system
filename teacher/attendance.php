@@ -3,37 +3,65 @@ require_once('../includes/db.php');
 
 if (isset($_POST['submit_attendance'])) {
   $teacher_id = $_POST['teacher_id'];
-  $date = date('Y-m-d H:i:s');
+  $date = date('Y-m-d');
   $attendance_records = $_POST['attendance'];
-  $created_at = $date;
-  $updated_at = $date;
+  $created_at = date('Y-m-d H:i:s');
+  $updated_at = date('Y-m-d H:i:s');
+  
+  if (!empty($attendance_records)) {
+    $s = "SELECT student.id 
+          FROM student 
+          INNER JOIN class ON student.class_id = class.id 
+          WHERE class.teacher_id = :teacher_id";
+    $sth = $pdo->prepare($s);
+    $sth->execute([':teacher_id' => $teacher_id]);
+    $allStudents = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-  foreach ($attendance_records as $student_id => $status) {
-    $sql = "INSERT INTO attendance (teacher_id, student_id, date, status, created_at, updated_at) VALUES (:teacher_id, :student_id, :date, :status, :created_at, :updated_at)";
-    $stmt = $pdo->prepare($sql);
-    $params = [
-      ':teacher_id' => $teacher_id,
-      ':student_id' => $student_id,
-      ':date' => $date,
-      ':status' => $status,
-      ':created_at' => $created_at,
-      ':updated_at' => $updated_at
-    ];
-    $stmt->execute($params);
+    $AttendanceMarked = count($allStudents) === count($attendance_records);
+
+    if (!$AttendanceMarked) {
+      $error[] = "Error: Please mark attendance for all students.";
+    } else {
+      $sql = "SELECT * FROM attendance WHERE teacher_id = ? AND date = ?";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([$teacher_id, $date]);
+      $attendance = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      if ($attendance) {
+        $error[] = "Error: Attendance Already Completed.";
+      } else {
+        foreach ($attendance_records as $student_id => $status) {
+          $sql = "INSERT INTO attendance (teacher_id, student_id, date, status, created_at, updated_at) 
+                  VALUES (:teacher_id, :student_id, :date, :status, :created_at, :updated_at)";
+          $stmt = $pdo->prepare($sql);
+          $params = [
+            ':teacher_id' => $teacher_id,
+            ':student_id' => $student_id,
+            ':date' => $date,
+            ':status' => $status,
+            ':created_at' => $created_at,
+            ':updated_at' => $updated_at
+          ];
+          $stmt->execute($params);
+        }
+        header("Location: attendance.php");
+        exit();
+      }
+    }
+  } else {
+    $error[] = "Error: Attendance checks not completed.";
   }
-
-  header("Location: attendance.php");
-  exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <?php require_once('../includes/dashboard_header.php') ?>
-</head>
-
-<body>
+  
+  <head>
+    <?php require_once('../includes/dashboard_header.php') ?>
+  </head>
+  
+  <body>
   <div class="wrapper">
     <!-- Sidebar -->
     <?php require_once('includes/sidebar.inc.php') ?>
@@ -43,6 +71,7 @@ if (isset($_POST['submit_attendance'])) {
       <!-- Dashboard started -->
       <div class="container">
         <div class="page-inner">
+
           <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
               <h3 class="fw-bold mb-3">Dashboard</h3>
@@ -53,6 +82,18 @@ if (isset($_POST['submit_attendance'])) {
             <h3 class="fw-bold mb-3">Active Student Tables</h3>
           </div>
           <div class="row">
+              <?php 
+              if(isset($error) && count($error) > 0)
+              {
+                foreach($error as $error_msg)
+                {
+                  echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'.
+                    $error_msg.
+                  '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'.
+                  '</div>';
+                }
+              }
+            ?>
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
@@ -92,10 +133,10 @@ if (isset($_POST['submit_attendance'])) {
                             echo "<td>
                               <input type='radio' name='attendance[" . $Row['id'] . "]' value='present'> Present
                               <input type='radio' name='attendance[" . $Row['id'] . "]' value='absent'> Absent
-                            </td>";
-                            echo "<td>
-                                     <a href='edit_attendance.php?id=" . $Row['id'] . "' class='btn btn-link btn-primary'>
-                                     <i class='fa fa-edit'></i>
+                              </td>";
+                              echo "<td>
+                              <a href='edit_attendance.php?id=" . $Row['id'] . "' class='btn btn-link btn-primary'>
+                              <i class='fa fa-edit'></i>
                                     </a>
                                   </td>";
 
