@@ -53,7 +53,7 @@ if(isset($_POST['submit']))
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title> Admin Login</title>
+    <title> Teacher Login</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"

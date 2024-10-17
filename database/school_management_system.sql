@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 17, 2024 at 09:54 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Oct 17, 2024 at 10:39 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -73,7 +73,7 @@ CREATE TABLE `class` (
 
 INSERT INTO `class` (`id`, `name`, `teacher_id`, `section`, `strength`, `fees`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'One', 1, 'A', 25, 2500, 1, '2024-10-11 09:49:45', '2024-10-14 02:40:15'),
-(2, 'Two', 5, 'A', 25, 1500, 1, '2024-10-12 09:42:18', '2024-10-15 05:00:32'),
+(2, 'Two', NULL, 'A', 25, 1500, 0, '2024-10-12 09:42:18', '2024-10-15 05:00:32'),
 (6, 'One', NULL, 'B', 25, 2500, 0, '2024-10-14 12:22:57', '2024-10-15 08:49:05');
 
 -- --------------------------------------------------------
@@ -124,10 +124,9 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `name`, `email`, `password`, `phone`, `class_id`, `profileimage`, `status`, `address`, `created_at`, `updated_at`) VALUES
-(2, 'test444', 'test1@gmail.com', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '1234567', 1, '../dashboard_assets/img/uploads/profile2.jpg', 0, 'aaaa bbbbb ccc ddd eee', '2024-10-10 10:47:39', '2024-10-14 06:18:59'),
-(3, 'test224', 'test224@gmail.com', '$2y$10$cItcBg1IViRfiDUhioRS2.ZLwuaQ6m.WjwINuzP9Cp/oulIk9x2FC', '1111111 2222 33333 4444', 2, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaaaaaa bbbbb cccccccc', '2024-10-10 10:59:20', '2024-10-10 10:59:20'),
-(7, 'test1234', 'test1234@gmail.com', '$2y$10$u4mRpUH6m9C/iTGsN29yVup/JZlQHlMuhkJIjFLkzcqY6NjjVwKry', '1111111 2222 33333', 1, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'ssssssssssss aaaaaaaaaa cccccccc', '2024-10-11 18:56:51', '2024-10-14 04:02:08'),
-(8, 'test15', 'test15@gmail.com', '$2y$04$nVF/E7IPkOq8wVz/FjS3v.ftvFg2BUmMsEtudwC8JVtxIxHSswOF2', '1111111 2222 33333 4444', NULL, '../dashboard_assets/img/uploads/mlane.jpg', 0, 'aaa bb cc', '2024-10-14 06:20:57', '2024-10-14 08:01:38');
+(2, 'test444', 'test1@gmail.com', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '1234567', NULL, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaaa bbbbb ccc ddd eee', '2024-10-10 10:47:39', '2024-10-17 17:21:12'),
+(3, 'test224', 'test224@gmail.com', '$2y$10$cItcBg1IViRfiDUhioRS2.ZLwuaQ6m.WjwINuzP9Cp/oulIk9x2FC', '1111111 2222 33333 4444', NULL, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaaaaaa bbbbb cccccccc', '2024-10-10 10:59:20', '2024-10-17 17:21:11'),
+(8, 'test15', 'test15@gmail.com', '$2y$04$nVF/E7IPkOq8wVz/FjS3v.ftvFg2BUmMsEtudwC8JVtxIxHSswOF2', '1111111 2222 33333 4444', NULL, '../dashboard_assets/img/uploads/mlane.jpg', 1, 'aaa bb cc', '2024-10-14 06:20:57', '2024-10-14 08:01:38');
 
 -- --------------------------------------------------------
 
@@ -154,8 +153,7 @@ CREATE TABLE `teacher` (
 
 INSERT INTO `teacher` (`id`, `name`, `password`, `phone`, `email`, `profileimage`, `status`, `address`, `created_at`, `updated_at`) VALUES
 (1, 'test22', '$2y$04$KGTc5LJW5.blnvaG0YyZYuVzJ5DmghM4QT2EVG0ocT5J4N9U0yWCG', '1234567', 'test22@gmail.com', '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaa, aaaaaa, bbbb', '2024-10-10 03:37:27', '2024-10-14 09:04:30'),
-(4, 'test1122', '$2y$10$hH/7BjYKc3YzlnXSdrCISeeqBG4QGM5bLe/8gZCIn3j9JU.ACbhsK', '1111111 2222 33333', 'test1122@gmail.com', '../dashboard_assets/img/uploads/profile2.jpg', 0, 'aaaaaaaaaa bbbbbbbb cccccc', '2024-10-12 09:23:46', '2024-10-15 08:49:13'),
-(5, 'test444', '$2y$10$wvEc2yleaJv6G/kcomIHV.SfVjqere2huUgUmh/vK8Xq2/.dRsr4q', '111111112222222', 'test444@gmail.com', '../dashboard_assets/img/uploads/chadengle.jpg', 1, 'aaaa bbbbbb ccccccc ddddd', '2024-10-12 10:00:53', '2024-10-15 07:59:04');
+(4, 'test1122', '$2y$10$hH/7BjYKc3YzlnXSdrCISeeqBG4QGM5bLe/8gZCIn3j9JU.ACbhsK', '1111111 2222 33333', 'test1122@gmail.com', '../dashboard_assets/img/uploads/profile2.jpg', 0, 'aaaaaaaaaa bbbbbbbb cccccc', '2024-10-12 09:23:46', '2024-10-15 08:49:13');
 
 --
 -- Indexes for dumped tables
@@ -228,24 +226,6 @@ ALTER TABLE `student`
 --
 ALTER TABLE `teacher`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `attendance`
---
-ALTER TABLE `attendance`
-  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`),
-  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`);
-
---
--- Constraints for table `student`
---
-ALTER TABLE `student`
-  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `student_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

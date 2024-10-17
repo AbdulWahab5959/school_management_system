@@ -1,18 +1,9 @@
 <?php
-$admin_id=$_SESSION['id'];
-$sql = "SELECT * FROM staff WHERE id = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$admin_id]);
-    $staff = $stmt->fetch(PDO::FETCH_ASSOC); 
-    
-    if ($staff) {
-        $admin_name = $staff['name'];
-        $admin_email = $staff['email'];
-        $admin_profile = $staff['profile_picture'];
+
+$admin_name     = $_SESSION['admin_name'];
+$admin_email    = $_SESSION['admin_email'];
+$admin_profile  = $_SESSION['admin_profile'];
        
-    } else {
-        $error[] = "Error: staff not found.";
-    }
 ?>
 <div class="main-header">
         <div class="main-header-logo">

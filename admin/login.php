@@ -21,7 +21,16 @@ if(isset($_POST['submit']))
 				if(password_verify($password, $getRow['password']))
 				{
 					unset($getRow['password']);
-					$_SESSION['id']=($getRow['id']);				
+					
+					$_SESSION['login'] 			= true;
+					$_SESSION['login_type'] 	= 'admin';
+					$_SESSION['user_id']		= $getRow['id'];
+					$_SESSION['user_email'] 	= $getRow['email'];
+					$_SESSION['admin_name'] 	= $getRow['name'];
+					$_SESSION['admin_email'] 	= $getRow['email'];
+					$_SESSION['admin_profile'] 	= $getRow['profile_picture'];
+
+					
 					header('location:index.php');
 					exit();
 				}

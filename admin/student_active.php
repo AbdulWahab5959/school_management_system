@@ -166,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['student_update'])) {
                                                     <?php
                                                     $s = "SELECT class.id, class.name, class.section, COUNT(student.id) AS max_student , class.strength
                                                     FROM class
-                                                    LEFT JOIN student ON class.id = Student.class_id
+                                                    LEFT JOIN student ON class.id = student.class_id
                                                     GROUP BY class.id, class.name, class.section, class.strength
                                                     HAVING COUNT(student.id) < class.strength";
                                                         $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
