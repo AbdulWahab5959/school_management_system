@@ -197,7 +197,7 @@ require_once('../includes/db.php');
       var id = $(this).data('id');
       window.location.href = 'teacher_active.php?id=' + id; 
     });
-
+    
       });
     </script>
 

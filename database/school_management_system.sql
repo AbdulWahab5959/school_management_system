@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2024 at 01:36 PM
+-- Generation Time: Oct 17, 2024 at 09:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,10 +42,12 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `teacher_id`, `student_id`, `date`, `status`, `created_at`, `updated_at`) VALUES
-(5, 1, 2, '2024-10-14', 'absent', '2024-10-16 06:25:58', '2024-10-16 06:25:58'),
+(5, 1, 2, '2024-10-14', 'present', '2024-10-17 04:04:43', '2024-10-17 04:04:43'),
 (6, 1, 7, '2024-10-09', 'present', '2024-10-16 06:24:39', '2024-10-16 06:24:39'),
-(9, 1, 2, '2024-10-16', 'present', '2024-10-15 19:00:00', '2024-10-15 19:00:00'),
-(10, 1, 7, '2024-10-16', 'present', '2024-10-15 19:00:00', '2024-10-15 19:00:00');
+(9, 1, 2, '2024-10-16', 'present', '2024-10-17 04:04:43', '2024-10-17 04:04:43'),
+(10, 1, 7, '2024-10-16', 'present', '2024-10-15 19:00:00', '2024-10-15 19:00:00'),
+(21, 1, 2, '2024-10-17', 'present', '2024-10-17 04:04:43', '2024-10-17 04:04:43'),
+(22, 1, 7, '2024-10-17', 'absent', '2024-10-17 04:01:51', '2024-10-17 04:01:51');
 
 -- --------------------------------------------------------
 
@@ -95,7 +97,7 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`id`, `name`, `email`, `password`, `profile_picture`, `created_at`, `updated_at`) VALUES
-(7, 'admin', 'admin@gmail.com', '$2y$04$KGTc5LJW5.blnvaG0YyZYuVzJ5DmghM4QT2EVG0ocT5J4N9U0yWCG', 'profile2.jpeg', '2024-10-09 05:26:09', '2024-10-09 17:22:46');
+(7, 'admin', 'admin@gmail.com', '$2y$04$KGTc5LJW5.blnvaG0YyZYuVzJ5DmghM4QT2EVG0ocT5J4N9U0yWCG', '../dashboard_assets/img/uploads/profile2.jpg', '2024-10-09 05:26:09', '2024-10-16 22:02:35');
 
 -- --------------------------------------------------------
 
@@ -122,7 +124,7 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `name`, `email`, `password`, `phone`, `class_id`, `profileimage`, `status`, `address`, `created_at`, `updated_at`) VALUES
-(2, 'test444', 'test4444@gmail.com', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '1234567', 1, '1', 0, 'aaaa bbbbb ccc ddd eee', '2024-10-10 10:47:39', '2024-10-14 06:18:59'),
+(2, 'test444', 'test1@gmail.com', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '1234567', 1, '../dashboard_assets/img/uploads/profile2.jpg', 0, 'aaaa bbbbb ccc ddd eee', '2024-10-10 10:47:39', '2024-10-14 06:18:59'),
 (3, 'test224', 'test224@gmail.com', '$2y$10$cItcBg1IViRfiDUhioRS2.ZLwuaQ6m.WjwINuzP9Cp/oulIk9x2FC', '1111111 2222 33333 4444', 2, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaaaaaa bbbbb cccccccc', '2024-10-10 10:59:20', '2024-10-10 10:59:20'),
 (7, 'test1234', 'test1234@gmail.com', '$2y$10$u4mRpUH6m9C/iTGsN29yVup/JZlQHlMuhkJIjFLkzcqY6NjjVwKry', '1111111 2222 33333', 1, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'ssssssssssss aaaaaaaaaa cccccccc', '2024-10-11 18:56:51', '2024-10-14 04:02:08'),
 (8, 'test15', 'test15@gmail.com', '$2y$04$nVF/E7IPkOq8wVz/FjS3v.ftvFg2BUmMsEtudwC8JVtxIxHSswOF2', '1111111 2222 33333 4444', NULL, '../dashboard_assets/img/uploads/mlane.jpg', 0, 'aaa bb cc', '2024-10-14 06:20:57', '2024-10-14 08:01:38');
@@ -152,7 +154,7 @@ CREATE TABLE `teacher` (
 
 INSERT INTO `teacher` (`id`, `name`, `password`, `phone`, `email`, `profileimage`, `status`, `address`, `created_at`, `updated_at`) VALUES
 (1, 'test22', '$2y$04$KGTc5LJW5.blnvaG0YyZYuVzJ5DmghM4QT2EVG0ocT5J4N9U0yWCG', '1234567', 'test22@gmail.com', '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaa, aaaaaa, bbbb', '2024-10-10 03:37:27', '2024-10-14 09:04:30'),
-(4, 'test1122', '$2y$10$hH/7BjYKc3YzlnXSdrCISeeqBG4QGM5bLe/8gZCIn3j9JU.ACbhsK', '1111111 2222 33333', 'test1122@gmail.com', '', 0, 'aaaaaaaaaa bbbbbbbb cccccc', '2024-10-12 09:23:46', '2024-10-15 08:49:13'),
+(4, 'test1122', '$2y$10$hH/7BjYKc3YzlnXSdrCISeeqBG4QGM5bLe/8gZCIn3j9JU.ACbhsK', '1111111 2222 33333', 'test1122@gmail.com', '../dashboard_assets/img/uploads/profile2.jpg', 0, 'aaaaaaaaaa bbbbbbbb cccccc', '2024-10-12 09:23:46', '2024-10-15 08:49:13'),
 (5, 'test444', '$2y$10$wvEc2yleaJv6G/kcomIHV.SfVjqere2huUgUmh/vK8Xq2/.dRsr4q', '111111112222222', 'test444@gmail.com', '../dashboard_assets/img/uploads/chadengle.jpg', 1, 'aaaa bbbbbb ccccccc ddddd', '2024-10-12 10:00:53', '2024-10-15 07:59:04');
 
 --
@@ -201,7 +203,7 @@ ALTER TABLE `teacher`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `class`

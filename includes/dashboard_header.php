@@ -37,3 +37,5 @@
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="../dashboard_assets/css/demo.css" />
+    <!-- DATA TABLE BUTTON -->
+     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css">
