@@ -179,6 +179,8 @@ if (isset($_POST['submit'])) {
                                                             while ($row = $sth->fetch()){ 
                                                                 echo "<option value='" . $row["id"] . "'>" . $row["name"] . "</option>";
                                                             }
+                                                            echo "<option> Empty Teacher </option>";
+
                                                         } else {
                                                             echo "<option>No teachers available</option>";
                                                         }

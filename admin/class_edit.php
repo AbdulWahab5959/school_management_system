@@ -5,7 +5,6 @@ $name = '';
 $fees = '';
 $section = '';
 
-
 if (isset($_GET["id"])) {
     $class_id = $_GET['id'];
 
@@ -32,9 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
     $teacher = $_POST['teacher'];
     $section = $_POST['section'];
     $date = date('Y-m-d H:i:s');
-
-
-    
+ 
     
     $sql_update = "UPDATE class SET `name`=?, fees=?,  section=?, teacher_id=?, updated_at=? WHERE id=?";
     $stmt = $pdo->prepare($sql_update);
@@ -58,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
     else {
         $error[] = "Error updating class information.";
     }
+
 
 ?>
 <!DOCTYPE html>
@@ -111,6 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
                                             }
                                         }
                                         ?>
+                                        
                                         <div class="col-md-4 col-lg-6">
                                             <form method="POST" enctype='multipart/form-data' action="<?php echo $_SERVER['PHP_SELF']; ?>">
                                             <input type="hidden" name="id" value="<?=$class_id?>">

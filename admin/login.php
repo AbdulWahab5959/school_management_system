@@ -109,7 +109,7 @@ if(isset($_POST['submit']))
                     <input type="password"  id="password" name="password" placeholder="Password" required>
                 </p>
                 <p>
-                    <input type="submit" name="submit" value="Sing In" />
+                    <input type="submit" name="submit" value="Sign In" />
                 </p>
                 </form>
             </div>

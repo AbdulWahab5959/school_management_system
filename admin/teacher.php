@@ -37,21 +37,20 @@ require_once('../includes/db.php');
           </div>
 
           <div class="page-header">
-            <h3 class="fw-bold mb-3"> Active Teacher Tables </h3>
+            <h3 class="fw-bold mb-3 ">Active Teacher Tables</h3>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
                   <?php
-                  $s = "SELECT teacher.*, class.id AS class_id, class.name AS class_name, class.section AS class_section
-                  FROM class 
-                  INNER JOIN teacher ON teacher.id = class.teacher_id
-                  WHERE class.teacher_id IS NOT NULL AND teacher.status='1' ";
+                 $s = "SELECT teacher.*, class.id AS class_id, class.name AS class_name, class.section AS class_section
+                 FROM teacher
+                 LEFT JOIN class ON teacher.id = class.teacher_id
+                 WHERE teacher.status = '1'";           
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                   $sth->execute();
                   ?>
-
                   <div class="table-responsive">
                     <table id="add-row" class="display table table-striped table-hover">
                       <thead class="text-center">
@@ -67,33 +66,20 @@ require_once('../includes/db.php');
                         <?php
                         $allRows = $sth->fetchAll();
                         foreach ($allRows as $Row) {
-
                           echo "<tr>";
                           echo "<td>" . $Row['id'] . "</td>";
                           echo "<td>" . $Row['name'] . "</td>";
                           echo "<td>" . $Row['email'] . "</td>";
-                          echo "<td>" . $Row['class_name'] ." ".$Row['class_section']. "</td>";
+                          echo "<td>" . ($Row['class_name'] ? $Row['class_name'] . " " . $Row['class_section'] : "Class not assigned") . "</td>";
                           echo '<td>
                           <div class="form-button-action">
-                              <button
-                                  type="button"
-                                  class="btn btn-link btn-primary btn-lg edit"
-                                  data-id="' . $Row['id'] . '"
-                                  title="Edit teacher">
+                              <button type="button" class="btn btn-link btn-primary btn-lg edit" data-id="' . $Row['id'] . '" title="Edit teacher">
                                   <i class="fa fa-edit"></i>
                               </button>
-                              <button
-                                  type="button"
-                                  class="btn btn-link btn-danger delete"
-                                  data-id="' . $Row['id'] . '"
-                                  title="Remove teacher">
+                              <button type="button" class="btn btn-link btn-danger delete" data-id="' . $Row['id'] . '" title="Remove teacher">
                                   <i class="fa fa-times"></i>
                               </button>
-                              <button
-                                  type="button"
-                                  class="btn btn-link btn-warning disable"
-                                  data-id="' . $Row['id'] . '"
-                                  title="Disable teacher">
+                              <button type="button" class="btn btn-link btn-success disable" data-id="' . $Row['id'] . '" title="Disable teacher">
                                   <i class="fa fa-lock"></i>
                               </button>
                           </div>
@@ -102,7 +88,6 @@ require_once('../includes/db.php');
                         }
                         ?>
                       </tbody>
-
                     </table>
                   </div>
                 </div>
@@ -110,14 +95,14 @@ require_once('../includes/db.php');
             </div>
           </div>
           <div class="page-header">
-            <h3 class="fw-bold mb-3"> Disable Teacher Tables </h3>
+            <h3 class="fw-bold mb-3">Disable Teacher Tables</h3>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
                   <?php
-                  $s = "SELECT * FROM teacher WHERE status =0";
+                  $s = "SELECT * FROM teacher WHERE status = 0";
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                   $sth->execute();
                   ?>
@@ -151,9 +136,9 @@ require_once('../includes/db.php');
                               </button>
                               <button
                                   type="button"
-                                  class="btn btn-link btn-success active"
+                                  class="btn btn-link btn-warning active"
                                   data-id="' . $Row['id'] . '"
-                                  title="Active teacher">
+                                  title="Activate teacher">
                                   <i class="fa fa-unlock"></i>
                               </button>
                           </div>
@@ -178,26 +163,63 @@ require_once('../includes/db.php');
     <script>
       $(document).ready(function() {
 
-
         // Edit teacher
         $(document).on('click', '.edit', function() {
           var id = $(this).data('id');
           window.location.href = 'teacher_edit.php?id=' + id;
         });
-        // delete teacher
+
         $(document).on('click', '.delete', function() {
           var id = $(this).data('id');
-          window.location.href = 'teacher_delete.php?id=' + id;
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'teacher_delete.php?id=' + id;
+            }
+          });
         });
+
         $(document).on('click', '.disable', function() {
-      var id = $(this).data('id');
-      window.location.href = 'teacher_disable.php?id=' + id; 
-    });
-    $(document).on('click', '.active', function() {
-      var id = $(this).data('id');
-      window.location.href = 'teacher_active.php?id=' + id; 
-    });
-    
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to disable this teacher!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, disable it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'teacher_disable.php?id=' + id;
+            }
+          });
+        });
+
+        $(document).on('click', '.active', function() {
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to activate this teacher!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, activate it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'teacher_active.php?id=' + id;
+            }
+          });
+        });
+
       });
     </script>
 

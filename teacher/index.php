@@ -44,7 +44,7 @@ require_once('../includes/db.php');
                   $s = "SELECT teacher.*, class.id AS class_id, class.name AS class_name, class.section AS class_section
                   FROM class 
                   INNER JOIN teacher ON teacher.id = class.teacher_id
-                  WHERE class.teacher_id IS NOT NULL AND teacher.status='1' AND teacher.id= '$user_id' ";
+                  WHERE  teacher.id= '$user_id' ";
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                   $sth->execute();
                   ?>

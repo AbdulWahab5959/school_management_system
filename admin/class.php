@@ -49,9 +49,9 @@ require_once('../includes/db.php');
                 <?php
                   $s = "SELECT class.*, teacher.id AS teacher_id, teacher.name AS teacher_name 
                   FROM class
-                  INNER JOIN teacher 
+                  LEFT JOIN teacher 
                   ON class.teacher_id = teacher.id
-                  WHERE class.teacher_id IS NOT NULL";           
+                  WHERE class.status=1";           
 
                   // $s = "SELECT * FROM class where status='1'";
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -77,7 +77,7 @@ require_once('../includes/db.php');
                                   echo "<tr>";
                                   echo "<td>" . $Row['id'] . "</td>";
                                   echo "<td>" . $Row['name'] . "</td>";
-                                  echo "<td>" . $Row['teacher_name'] . "</td>";
+                                  echo "<td>" . ($Row['teacher_name'] ? $Row['teacher_name'] : "Teacher not assigned") . "</td>";
                                   echo "<td>" . $Row['section'] . "</td>";
                                   echo "<td>" . $Row['fees'] . "</td>";
                                   echo '<td>
@@ -185,31 +185,68 @@ require_once('../includes/db.php');
         <?php
         require_once('../includes/dashboard_footer.php')
         ?>
-        <script>
-  $(document).ready(function() {
-    
+ <script>
+      $(document).ready(function() {
 
-    // Edit class
-    $(document).on('click', '.edit', function() {
-      var id = $(this).data('id');
-      window.location.href = 'class_edit.php?id=' + id; 
-    });
-    // delete class
-    $(document).on('click', '.delete', function() {
-      var id = $(this).data('id');
-      window.location.href = 'class_delete.php?id=' + id; 
-    });
-    $(document).on('click', '.disable', function() {
-      var id = $(this).data('id');
-      window.location.href = 'class_disable.php?id=' + id; 
-    });
-    $(document).on('click', '.active', function() {
-      var id = $(this).data('id');
-      window.location.href = 'class_active.php?id=' + id; 
-    });
+        $(document).on('click', '.edit', function() {
+          var id = $(this).data('id');
+          window.location.href = 'class_edit.php?id=' + id;
+        });
 
+        $(document).on('click', '.delete', function() {
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'class_delete.php?id=' + id;
+            }
+          });
+        });
 
-  });
+        $(document).on('click', '.disable', function() {
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to disable this class!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, disable it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'class_disable.php?id=' + id;
+            }
+          });
+        });
+
+        $(document).on('click', '.active', function() {
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to activate this class!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, activate it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'class_active.php?id=' + id;
+            }
+          });
+        });
+
+      });
+    </script>
+
 </script>
 </body>
 

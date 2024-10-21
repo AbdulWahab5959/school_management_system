@@ -35,7 +35,5 @@
     <link rel="stylesheet" href="../dashboard_assets/css/plugins.min.css" />
     <link rel="stylesheet" href="../dashboard_assets/css/kaiadmin.min.css" />
 
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="../dashboard_assets/css/demo.css" />
-    <!-- DATA TABLE BUTTON -->
-     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    

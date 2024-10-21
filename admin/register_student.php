@@ -215,6 +215,7 @@ if (isset($_POST['submit'])) {
                                                                     while ($row = $sth->fetch()) {
                                                                         echo "<option value='" . $row["id"] . "'>" . $row["name"] . " " . $row["section"] . "</option>";
                                                                     }
+                                                                    echo "<option> Empty class </option>";
                                                                 } else {
                                                                     echo "<option>No classes available</option>";
                                                                 }

@@ -1,62 +1,51 @@
 <?php
-
 require_once('../includes/db.php');
- 
-if(isset($_POST['submit']))
-{
-	if(isset($_POST['email'],$_POST['password']) && !empty($_POST['email']) && !empty($_POST['password']))
-	{
-		$email = trim($_POST['email']);
-		$password = trim($_POST['password']);
- 
-		if(filter_var($email, FILTER_VALIDATE_EMAIL))
-		{
-			$sql = "SELECT * from student where email = :email ";
-			$handle = $pdo->prepare($sql);
-			$params = ['email'=>$email];
-			$handle->execute($params);
-			if($handle->rowCount() > 0)
-			{
-				$getRow = $handle->fetch(PDO::FETCH_ASSOC);
-				if(password_verify($password, $getRow['password']))
-				{
-					unset($getRow['password']);
-					$_SESSION['id']=($getRow['id']);
-					$_SESSION['name']=($getRow['name']);
-					$_SESSION['email']=($getRow['email']);
-				
-					header('location:index.php');
-					exit();
-				}
-				else
-				{
-					$errors[] = "Wrong Email or Password";
-				}
-			}
-			else
-			{
-				$errors[] = "Wrong Email or Password";
-			}
-			
-		}
-		else
-		{
-			$errors[] = "Email address is not valid";	
-		}
- 
-	}
-	else
-	{
-		$errors[] = "Email and Password are required";	
-	}
- 
+
+if (isset($_POST['submit'])) {
+    if (isset($_POST['email'], $_POST['password']) && !empty($_POST['email']) && !empty($_POST['password'])) {
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $sql = "SELECT * FROM student WHERE email = :email";
+            $handle = $pdo->prepare($sql);
+            $params = ['email' => $email];
+            $handle->execute($params);
+
+            if ($handle->rowCount() > 0) {
+                $getRow = $handle->fetch(PDO::FETCH_ASSOC);
+
+                if ($getRow['status'] == 0) {
+                    $errors[] = "Your account is currently disabled. Please contact the administrator.";
+                } else {
+                    // Verify the password
+                    if (password_verify($password, $getRow['password'])) {
+                        unset($getRow['password']);
+                        $_SESSION['id'] = $getRow['id'];
+                        header('location:index.php');
+                        exit();
+                    } else {
+                        $errors[] = "Wrong Password";
+                    }
+                }
+            } else {
+                $errors[] = "Invalid email or account does not exist.";
+            }
+        } else {
+            $errors[] = "Email address is not valid";
+        }
+    } else {
+        $errors[] = "Email and Password are required";
+    }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title> Admin Login</title>
+    <title> Student Login</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
@@ -103,7 +92,7 @@ if(isset($_POST['submit']))
                     <input type="password"  id="password" name="password" placeholder="Password" required>
                 </p>
                 <p>
-                    <input type="submit" name="submit" value="Sing In" />
+                    <input type="submit" name="submit" value="Sign In" />
                 </p>
                 </form>
             </div>

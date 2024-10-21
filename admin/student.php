@@ -45,9 +45,9 @@ require_once('../includes/db.php');
                 <div class="card-body">
                   <?php
                   $s = "SELECT student.*, class.id AS class_id, class.name AS class_name, class.section AS class_section
-                  FROM class
-                  INNER JOIN student ON student.class_id = class.id
-                  WHERE student.class_id IS NOT NULL";
+                  FROM student
+                  LEFT JOIN class ON student.class_id = class.id
+                  WHERE student.status=1";
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                   $sth->execute();
                   ?>
@@ -72,7 +72,7 @@ require_once('../includes/db.php');
                           echo "<td>" . $Row['id'] . "</td>";
                           echo "<td>" . $Row['name'] . "</td>";
                           echo "<td>" . $Row['email'] . "</td>";
-                          echo "<td>" . $Row['class_name'] ." ".$Row['class_section']. "</td>";
+                          echo "<td>" . ($Row['class_name'] ? $Row['class_name'] . " " . $Row['class_section'] : "Class not assigned") . "</td>";
                           echo '<td>
                           <div class="form-button-action">
                               <button
@@ -91,10 +91,10 @@ require_once('../includes/db.php');
                               </button>
                               <button
                                   type="button"
-                                  class="btn btn-link btn-warning disable"
+                                  class="btn btn-link btn-success disable"
                                   data-id="' . $Row['id'] . '"
                                   title="Disable student">
-                                  <i class="fa fa-lock"></i>
+                                  <i class="fa fa-unlock"></i>
                               </button>
                           </div>
                         </td>';
@@ -117,7 +117,7 @@ require_once('../includes/db.php');
               <div class="card">
                 <div class="card-body">
                   <?php
-                  $s = "SELECT * from student WHERE class_id IS NULL";
+                  $s = "SELECT * from student WHERE status=0";
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                   $sth->execute();
                   ?>
@@ -151,10 +151,10 @@ require_once('../includes/db.php');
                               </button>
                               <button
                                   type="button"
-                                  class="btn btn-link btn-success active"
+                                  class="btn btn-link btn-warning active"
                                   data-id="' . $Row['id'] . '"
                                   title="Active student">
-                                  <i class="fa fa-unlock"></i>
+                                  <i class="fa fa-lock"></i>
                               </button>
                           </div>
                         </td>';
@@ -176,30 +176,68 @@ require_once('../includes/db.php');
     require_once('../includes/dashboard_footer.php')
     ?>
     <script>
-      $(document).ready(function() {
+  $(document).ready(function () {
+    $(document).on('click', '.edit', function () {
+      var id = $(this).data('id');
+      window.location.href = 'student_edit.php?id=' + id;
+    });
 
-
-        // Edit student
-        $(document).on('click', '.edit', function() {
-          var id = $(this).data('id');
-          window.location.href = 'student_edit.php?id=' + id;
-        });
-        // delete student
-        $(document).on('click', '.delete', function() {
-          var id = $(this).data('id');
+    $(document).on('click', '.delete', function () {
+      var id = $(this).data('id');
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to delete this student?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
           window.location.href = 'student_delete.php?id=' + id;
-        });
-        $(document).on('click', '.disable', function() {
-      var id = $(this).data('id');
-      window.location.href = 'student_disable.php?id=' + id; 
-    });
-    $(document).on('click', '.active', function() {
-      var id = $(this).data('id');
-      window.location.href = 'student_active.php?id=' + id; 
+        }
+      });
     });
 
+    $(document).on('click', '.disable', function () {
+      var id = $(this).data('id');
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to disable this student?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, disable it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'student_disable.php?id=' + id;
+        }
       });
-    </script>
+    });
+
+    $(document).on('click', '.active', function () {
+      var id = $(this).data('id');
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to activate this student?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, activate it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'student_active.php?id=' + id;
+        }
+      });
+    });
+  });
+</script>
+
 
 </body>
 

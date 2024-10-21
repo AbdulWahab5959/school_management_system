@@ -195,7 +195,7 @@ $sql = "SELECT * FROM teacher WHERE id = ?";
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">My Profile</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Account Setting</a>
+                      <a class="dropdown-item" href="password_setting.php">Password Setting</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="includes/logout.php">Logout</a>
                     </li>

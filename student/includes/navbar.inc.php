@@ -186,7 +186,7 @@ $sql = "SELECT * FROM student WHERE id = ?";
                           <h4></h4>
                           <p class="text-muted"><?php echo $user_email;?> </p>
                           <a
-                            href="profile.php"
+                            href="#"
                             class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                         </div>
                       </div>
@@ -195,7 +195,7 @@ $sql = "SELECT * FROM student WHERE id = ?";
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">My Profile</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Account Setting</a>
+                      <a class="dropdown-item" href="includes/password_setting.php">Password Setting</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="includes/logout.php">Logout</a>
                     </li>
