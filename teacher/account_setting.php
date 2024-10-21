@@ -3,32 +3,12 @@ require_once('../includes/db.php');
 
 $errors = [];
 $success = "";
-if (isset($_GET["id"])) {
-    $id = $_GET['id'];
 
-
-    $sql = "SELECT * FROM teacher WHERE id = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id]);
-    $teacher = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($teacher) {
-        $id = $teacher['id'];
-        $name = $teacher['name'];
-        $email = $teacher['email'];
-        $number = $teacher['phone'];
-        $address = $teacher['address'];
-        $profile_image = $teacher['profileimage'];
-
-    } else {
-        $error[] = "Error: teacher not found.";
-    }
-}
 if (isset($_POST['update_password'])) {
     $currentPassword = trim($_POST['current_password']);
     $newPassword = trim($_POST['new_password']);
     $confirmPassword = trim($_POST['confirm_password']);
-    $teacherId = $_POST['id'];
+    $teacherId = $_SESSION['id'];
 
     if (!empty($currentPassword) && !empty($newPassword) && !empty($confirmPassword)) {
         if ($newPassword === $confirmPassword) {
@@ -46,9 +26,6 @@ if (isset($_POST['update_password'])) {
 
                 if ($updateStmt->execute($updateParams)) {
                     $success = "Password updated successfully!";
-                    header("Location: teacher.php?id=" . $teacherId);
-                    exit();
-                    
                 } else {
                     $errors[] = "Error updating password. Please try again.";
                 }
@@ -63,6 +40,25 @@ if (isset($_POST['update_password'])) {
     }
 }
 
+if (isset($_SESSION["id"])) {
+    $id = $_SESSION['id'];
+
+    $sql = "SELECT * FROM teacher WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+    $teacher = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($teacher) {
+        $name = $teacher['name'];
+        $email = $teacher['email'];
+        $number = $teacher['phone'];
+        $address = $teacher['address'];
+        $profile_image = $teacher['profileimage'];
+
+    } else {
+        $error[] = "Error: teacher not found.";
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
     $id = $_POST['id'];
@@ -76,13 +72,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
     $stmt = $pdo->prepare($sql_update);
     if ($stmt->execute([$name, $email, $number, $address, $date, $id])) {
         $success="Teacher information updated successfully.";
-        header("Location: teacher_edit.php?id=" . $id);
-        exit();
     } else {
         $error[] = "Error updating teacher information.";
     }
 }
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
+if (isset($_POST['image_profile'])) {
     if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
         $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
         $file_name = $_FILES['profile_picture']['name'];
@@ -95,17 +89,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
             $upload_path = $upload_dir . $new_file_name;
 
             if (move_uploaded_file($file_tmp, $upload_path)) {
-                $id = $_POST['id'];
+                $teacher_id = $_SESSION['id'];
 
                 $update_query = "UPDATE teacher SET profileimage = :profileimage WHERE id = :id";
                 $stmt = $pdo->prepare($update_query);
                 $stmt->bindParam(':profileimage', $upload_path);
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->bindParam(':id', $teacher_id, PDO::PARAM_INT);
 
                 if ($stmt->execute()) {
 
                     $success = "Profile picture updated successfully!";
-                    header("Location: teacher_edit.php?id=" . $id);
+                    header("Location: account_setting.php");
                     exit();
                 } else {
                     $errors[] = "Failed to update profile picture.";
@@ -168,6 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
                                 <div class="card-body">
                                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                                         <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
+
                                         <div class="form-group">
                                             <label for="name">Name</label>
                                             <input type="text" class="form-control" id="name" name="name" required value="<?php echo isset($name) ? $name : ''; ?>" placeholder="Enter Name" />
@@ -203,7 +198,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
                                 </div>
                                 <div class="card-body">
                                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                    <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
                                         <div class="form-group">
                                             <label for="current_password">Current Password</label>
                                             <input type="password" class="form-control" id="current_password" name="current_password" required placeholder="Enter Current Password" />
@@ -238,8 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
         </div>
         <div class="card-body">
             <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">    
-            <div class="form-group text-center mb-4">
+                <div class="form-group text-center mb-4">
                     <?php
                     $profile_image = !empty($teacher['profileimage']) ? $teacher['profileimage'] : 'default-profile.png'; // Fetch from DB
                     ?>
