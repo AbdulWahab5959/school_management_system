@@ -25,8 +25,7 @@ require_once('../includes/db.php');
       <!-- Dashboard started -->
       <div class="container">
         <div class="page-inner">
-          <div
-            class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
               <h3 class="fw-bold mb-3">Dashboard</h3>
               <h6 class="op-7 mb-2">Admin Dashboard</h6>
@@ -37,7 +36,7 @@ require_once('../includes/db.php');
           </div>
 
           <div class="page-header">
-            <h3 class="fw-bold mb-3"> Active Student Tables </h3>
+            <h3 class="fw-bold mb-3">Active Student Tables</h3>
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -102,15 +101,15 @@ require_once('../includes/db.php');
                         }
                         ?>
                       </tbody>
-
                     </table>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           <div class="page-header">
-            <h3 class="fw-bold mb-3"> Disable Student Tables </h3>
+            <h3 class="fw-bold mb-3">Disable Student Tables</h3>
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -123,7 +122,7 @@ require_once('../includes/db.php');
                   ?>
 
                   <div class="table-responsive">
-                    <table id="add-row" class="display table table-striped table-hover">
+                    <table id="disable-row" class="display table table-striped table-hover">
                       <thead class="text-center">
                         <tr>
                           <th>ID</th>
@@ -153,7 +152,7 @@ require_once('../includes/db.php');
                                   type="button"
                                   class="btn btn-link btn-warning active"
                                   data-id="' . $Row['id'] . '"
-                                  title="Active student">
+                                  title="Activate student">
                                   <i class="fa fa-lock"></i>
                               </button>
                           </div>
@@ -162,83 +161,110 @@ require_once('../includes/db.php');
                         }
                         ?>
                       </tbody>
-
                     </table>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
+
     <?php
     require_once('../includes/dashboard_footer.php')
     ?>
-    <script>
+
+<script>
   $(document).ready(function () {
-    $(document).on('click', '.edit', function () {
-      var id = $(this).data('id');
-      window.location.href = 'student_edit.php?id=' + id;
-    });
-
-    $(document).on('click', '.delete', function () {
-      var id = $(this).data('id');
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to delete this student?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = 'student_delete.php?id=' + id;
-        }
-      });
-    });
-
-    $(document).on('click', '.disable', function () {
-      var id = $(this).data('id');
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to disable this student?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, disable it!',
-        cancelButtonText: 'Cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = 'student_disable.php?id=' + id;
-        }
-      });
-    });
-
-    $(document).on('click', '.active', function () {
-      var id = $(this).data('id');
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "Do you want to activate this student?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#28a745',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, activate it!',
-        cancelButtonText: 'Cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = 'student_active.php?id=' + id;
-        }
-      });
-    });
+    $('#add-row, #disable-row').DataTable({
+      pageLength: 5,
+    dom: 'Bfrtip', // Include buttons in the table
+    buttons: [
+      {
+        extend: 'csv',
+        text: 'Export CSV',
+        className: 'btn btn-primary' // Add Bootstrap class for color
+      },
+      {
+        extend: 'excel',
+        text: 'Export Excel',
+        className: 'btn btn-success' // Add Bootstrap class for color
+      },
+      {
+        extend: 'pdf',
+        text: 'Export PDF',
+        className: 'btn btn-danger' // Add Bootstrap class for color
+      },
+      {
+        extend: 'print',
+        text: 'Print',
+        className: 'btn btn-info' // Add Bootstrap class for color
+      }
+    ]
   });
-</script>
 
+        $(document).on('click', '.edit', function () {
+          var id = $(this).data('id');
+          window.location.href = 'student_edit.php?id=' + id;
+        });
 
+        $(document).on('click', '.delete', function () {
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this student?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'student_delete.php?id=' + id;
+            }
+          });
+        });
+
+        $(document).on('click', '.disable', function () {
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to disable this student?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, disable it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'student_disable.php?id=' + id;
+            }
+          });
+        });
+
+        $(document).on('click', '.active', function () {
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to activate this student?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, activate it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'student_active.php?id=' + id;
+            }
+          });
+        });
+      });
+    </script>
 </body>
 
 </html>

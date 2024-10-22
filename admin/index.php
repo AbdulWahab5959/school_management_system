@@ -4,11 +4,9 @@ require_once('../includes/db.php');
 
 
 // Login check
-if(!isset($_SESSION['login']))
-{
+if (!isset($_SESSION['login'])) {
   echo "<script>window.location.replace('login.php')</script>";
-}
-else if ($_SESSION['login_type'] != 'admin'){
+} else if ($_SESSION['login_type'] != 'admin') {
   echo "<script>window.location.replace('login.php')</script>";
 }
 
@@ -27,14 +25,14 @@ else if ($_SESSION['login_type'] != 'admin'){
   <div class="wrapper">
     <!-- Sidebar -->
     <?php
-      require_once('includes/sidebar.inc.php')
+    require_once('includes/sidebar.inc.php')
     ?>
     <!-- End Sidebar -->
 
     <div class="main-panel">
-    <?php
+      <?php
       require_once('includes/navbar.inc.php')
-    ?>
+      ?>
       <!-- Dashboard started -->
       <div class="container">
         <div class="page-inner">
@@ -45,7 +43,7 @@ else if ($_SESSION['login_type'] != 'admin'){
               <h6 class="op-7 mb-2">Admin Dashboard</h6>
             </div>
             <div class="ms-md-auto py-2 py-md-0">
-                <a href="#" class="btn btn-primary btn-round">Add Customer</a>
+              <a href="#" class="btn btn-primary btn-round">Add Customer</a>
             </div>
           </div>
           <div class="row">
@@ -139,7 +137,7 @@ else if ($_SESSION['login_type'] != 'admin'){
               <div class="card">
                 <div class="card-body">
                   <!-- Modal -->
-                  
+
                   <div class="table-responsive">
                     <table
                       id="add-row"
@@ -213,32 +211,32 @@ else if ($_SESSION['login_type'] != 'admin'){
         </div>
       </div>
     </div>
-        <?php
-        require_once('../includes/dashboard_footer.php')
-        ?>
-        <script>
-          $(document).ready(function() {
-            // Add Row
-            $("#add-row").DataTable({
-              pageLength: 5,
-            });
+    <?php
+    require_once('../includes/dashboard_footer.php')
+    ?>
+    <script>
+      $(document).ready(function() {
+        // Add Row
+        $("#add-row").DataTable({
+          pageLength: 5,
+        });
 
-            var action =
-              '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+        var action =
+          '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
 
-            $("#addRowButton").click(function() {
-              $("#add-row")
-                .dataTable()
-                .fnAddData([
-                  $("#addName").val(),
-                  $("#addPosition").val(),
-                  $("#addOffice").val(),
-                  action,
-                ]);
-              $("#addRowModal").modal("hide");
-            });
-          });
-        </script>
+        $("#addRowButton").click(function() {
+          $("#add-row")
+            .dataTable()
+            .fnAddData([
+              $("#addName").val(),
+              $("#addPosition").val(),
+              $("#addOffice").val(),
+              action,
+            ]);
+          $("#addRowModal").modal("hide");
+        });
+      });
+    </script>
 </body>
 
 </html>

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 17, 2024 at 10:39 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Oct 22, 2024 at 10:07 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -72,9 +72,10 @@ CREATE TABLE `class` (
 --
 
 INSERT INTO `class` (`id`, `name`, `teacher_id`, `section`, `strength`, `fees`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'One', 1, 'A', 25, 2500, 1, '2024-10-11 09:49:45', '2024-10-14 02:40:15'),
-(2, 'Two', NULL, 'A', 25, 1500, 0, '2024-10-12 09:42:18', '2024-10-15 05:00:32'),
-(6, 'One', NULL, 'B', 25, 2500, 0, '2024-10-14 12:22:57', '2024-10-15 08:49:05');
+(1, 'One', 4, 'A', 25, 2500, 1, '2024-10-11 09:49:45', '2024-10-21 05:36:11'),
+(4, 'One', 5, 'C', 25, 1500, 1, '2024-10-12 09:42:18', '2024-10-21 06:08:46'),
+(6, 'One', 1, 'B', 25, 2500, 1, '2024-10-14 12:22:57', '2024-10-21 10:23:35'),
+(8, 'Three', 0, 'A', 25, 3000, 1, '2024-10-21 10:30:27', '2024-10-21 10:30:27');
 
 -- --------------------------------------------------------
 
@@ -124,9 +125,26 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `name`, `email`, `password`, `phone`, `class_id`, `profileimage`, `status`, `address`, `created_at`, `updated_at`) VALUES
-(2, 'test444', 'test1@gmail.com', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '1234567', NULL, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaaa bbbbb ccc ddd eee', '2024-10-10 10:47:39', '2024-10-17 17:21:12'),
-(3, 'test224', 'test224@gmail.com', '$2y$10$cItcBg1IViRfiDUhioRS2.ZLwuaQ6m.WjwINuzP9Cp/oulIk9x2FC', '1111111 2222 33333 4444', NULL, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaaaaaa bbbbb cccccccc', '2024-10-10 10:59:20', '2024-10-17 17:21:11'),
-(8, 'test15', 'test15@gmail.com', '$2y$04$nVF/E7IPkOq8wVz/FjS3v.ftvFg2BUmMsEtudwC8JVtxIxHSswOF2', '1111111 2222 33333 4444', NULL, '../dashboard_assets/img/uploads/mlane.jpg', 1, 'aaa bb cc', '2024-10-14 06:20:57', '2024-10-14 08:01:38');
+(2, 'test444', 'test444@gmail.com', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '1234567', 1, '../dashboard_assets/img/uploads/6716ac653fe6b.jpg', 1, 'aaaa bbbbb ccc ddd eee', '2024-10-10 10:47:39', '2024-10-21 16:32:35'),
+(3, 'test224', 'test224@gmail.com', '$2y$10$cItcBg1IViRfiDUhioRS2.ZLwuaQ6m.WjwINuzP9Cp/oulIk9x2FC', '1111111 2222 33333 4444', NULL, '../dashboard_assets/img/uploads/profile2.jpg', 0, 'aaaaaaa bbbbb cccccccc', '2024-10-10 10:59:20', '2024-10-21 06:33:33'),
+(7, 'test1234', 'test1234@gmail.com', '$2y$10$u4mRpUH6m9C/iTGsN29yVup/JZlQHlMuhkJIjFLkzcqY6NjjVwKry', '1111111 2222 33333', 1, '../dashboard_assets/img/uploads/profile2.jpg', 1, 'ssssssssssss aaaaaaaaaa cccccccc', '2024-10-11 18:56:51', '2024-10-14 04:02:08'),
+(8, 'test15', 'test15@gmail.com', '$2y$04$nVF/E7IPkOq8wVz/FjS3v.ftvFg2BUmMsEtudwC8JVtxIxHSswOF2', '1111111 2222 33333 4444', 6, '../dashboard_assets/img/uploads/mlane.jpg', 1, 'aaa bb cc', '2024-10-14 06:20:57', '2024-10-21 05:46:32'),
+(28, 'Jane Smith', 'jane.smith2@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '2345678901', 1, '../dashboard_assets/img/uploads/profile2.jpg', 1, '456 Elm St', '2024-10-21 07:17:48', '2024-10-21 06:05:10'),
+(29, 'Alice Johnson', 'alice.johnson3@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '3456789012', 6, '../dashboard_assets/img/uploads/profile2.jpg', 1, '789 Oak St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(30, 'Bob Brown', 'bob.brown4@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '4567890123', 1, '../dashboard_assets/img/uploads/profile2.jpg', 1, '101 Maple St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(31, 'Charlie Davis', 'charlie.davis5@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '5678901234', 4, '../dashboard_assets/img/uploads/profile2.jpg', 1, '202 Birch St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(32, 'David Wilson', 'david.wilson6@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '6789012345', 6, '../dashboard_assets/img/uploads/profile2.jpg', 1, '303 Pine St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(34, 'Frank Miller', 'frank.miller8@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '8901234567', 4, '../dashboard_assets/img/uploads/profile2.jpg', 1, '505 Walnut St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(35, 'Grace Lee', 'grace.lee9@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '9012345678', 6, '../dashboard_assets/img/uploads/profile2.jpg', 1, '606 Cherry St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(36, 'Hank Young', 'hank.young10@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '0123456789', 1, '../dashboard_assets/img/uploads/profile2.jpg', 1, '707 Aspen St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(37, 'Ivy King', 'ivy.king11@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '9876543210', 4, '../dashboard_assets/img/uploads/profile2.jpg', 1, '808 Cypress St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(38, 'Jack Green', 'jack.green12@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '8765432109', 6, '../dashboard_assets/img/uploads/profile2.jpg', 1, '909 Willow St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(39, 'Karen Hill', 'karen.hill13@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '7654321098', 1, '../dashboard_assets/img/uploads/profile2.jpg', 1, '100 Magnolia St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(40, 'Leo Scott', 'leo.scott14@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '6543210987', 4, '../dashboard_assets/img/uploads/profile2.jpg', 1, '111 Fir St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(41, 'Mona Adams', 'mona.adams15@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '5432109876', 6, '../dashboard_assets/img/uploads/profile2.jpg', 1, '122 Spruce St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(42, 'Nick Harris', 'nick.harris16@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '4321098765', 1, '../dashboard_assets/img/uploads/profile2.jpg', 1, '133 Hemlock St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(43, 'Olive Martin', 'olive.martin17@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '3210987654', 4, '../dashboard_assets/img/uploads/profile2.jpg', 1, '144 Alder St', '2024-10-21 07:17:48', '2024-10-21 07:17:48'),
+(44, 'Paul Baker', 'paul.baker18@school.edu', '$2y$10$kG.vHby6WPdT4Mh2/OyxSOPt1lSqRENMkMFo8/rZM56hG.ETo45Sa', '2109876543', 6, '../dashboard_assets/img/uploads/profile2.jpg', 1, '155 Poplar St', '2024-10-21 07:17:48', '2024-10-21 07:17:48');
 
 -- --------------------------------------------------------
 
@@ -152,8 +170,9 @@ CREATE TABLE `teacher` (
 --
 
 INSERT INTO `teacher` (`id`, `name`, `password`, `phone`, `email`, `profileimage`, `status`, `address`, `created_at`, `updated_at`) VALUES
-(1, 'test22', '$2y$04$KGTc5LJW5.blnvaG0YyZYuVzJ5DmghM4QT2EVG0ocT5J4N9U0yWCG', '1234567', 'test22@gmail.com', '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaa, aaaaaa, bbbb', '2024-10-10 03:37:27', '2024-10-14 09:04:30'),
-(4, 'test1122', '$2y$10$hH/7BjYKc3YzlnXSdrCISeeqBG4QGM5bLe/8gZCIn3j9JU.ACbhsK', '1111111 2222 33333', 'test1122@gmail.com', '../dashboard_assets/img/uploads/profile2.jpg', 0, 'aaaaaaaaaa bbbbbbbb cccccc', '2024-10-12 09:23:46', '2024-10-15 08:49:13');
+(1, 'test2', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1W9BFstRs/m', '12345678', 'test2@gmail.com', '../dashboard_assets/img/uploads/6716abb2136bf.jpg', 1, 'aaa, aaaaaa, bbbb', '2024-10-10 03:37:27', '2024-10-21 16:30:03'),
+(4, 'test1122', '$2y$10$hH/7BjYKc3YzlnXSdrCISeeqBG4QGM5bLe/8gZCIn3j9JU.ACbhsK', '1111111 2222 33333', 'test1122@gmail.com', '../dashboard_assets/img/uploads/profile2.jpg', 1, 'aaaaaaaaaa bbbbbbbb cccccc', '2024-10-12 09:23:46', '2024-10-21 05:34:12'),
+(5, 'test4', '$2y$10$wvEc2yleaJv6G/kcomIHV.SfVjqere2huUgUmh/vK8Xq2/.dRsr4q', '111111112222222', 'test444@gmail.com', '../dashboard_assets/img/uploads/chadengle.jpg', 1, 'aaaa bbbbbb ccccccc ddddd', '2024-10-12 10:00:53', '2024-10-21 06:35:06');
 
 --
 -- Indexes for dumped tables
@@ -207,7 +226,7 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `staff`
@@ -219,13 +238,24 @@ ALTER TABLE `staff`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `teacher`
 --
 ALTER TABLE `teacher`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`),
+  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

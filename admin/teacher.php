@@ -6,27 +6,26 @@ require_once('../includes/db.php');
 
 <head>
   <?php
-  require_once('../includes/dashboard_header.php')
+  require_once('../includes/dashboard_header.php');
   ?>
-</head>
+  </head>
 
 <body>
   <div class="wrapper">
     <!-- Sidebar -->
     <?php
-    require_once('includes/sidebar.inc.php')
+    require_once('includes/sidebar.inc.php');
     ?>
     <!-- End Sidebar -->
 
     <div class="main-panel">
       <?php
-      require_once('includes/navbar.inc.php')
+      require_once('includes/navbar.inc.php');
       ?>
       <!-- Dashboard started -->
       <div class="container">
         <div class="page-inner">
-          <div
-            class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
               <h3 class="fw-bold mb-3">Dashboard</h3>
               <h6 class="op-7 mb-2">Admin Dashboard</h6>
@@ -52,7 +51,7 @@ require_once('../includes/db.php');
                   $sth->execute();
                   ?>
                   <div class="table-responsive">
-                    <table id="add-row" class="display table table-striped table-hover">
+                    <table id="teacher-table" class="display table table-stripe  table-hover">
                       <thead class="text-center">
                         <tr>
                           <th>ID</th>
@@ -94,8 +93,10 @@ require_once('../includes/db.php');
               </div>
             </div>
           </div>
+
+          <!-- Disabled Teachers Table -->
           <div class="page-header">
-            <h3 class="fw-bold mb-3">Disable Teacher Tables</h3>
+            <h3 class="fw-bold mb-3">Disabled Teacher Tables</h3>
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -106,9 +107,8 @@ require_once('../includes/db.php');
                   $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                   $sth->execute();
                   ?>
-
                   <div class="table-responsive">
-                    <table id="add-row" class="display table table-striped table-hover">
+                    <table id="disabled-teacher-table" class="display table table-striped table-hover">
                       <thead class="text-center">
                         <tr>
                           <th>ID</th>
@@ -127,18 +127,10 @@ require_once('../includes/db.php');
                           echo "<td>" . $Row['email'] . "</td>";
                           echo '<td>
                           <div class="form-button-action">
-                                <button
-                                  type="button"
-                                  class="btn btn-link btn-danger delete"
-                                  data-id="' . $Row['id'] . '"
-                                  title="Remove teacher">
+                                <button type="button" class="btn btn-link btn-danger delete" data-id="' . $Row['id'] . '" title="Remove teacher">
                                   <i class="fa fa-times"></i>
                               </button>
-                              <button
-                                  type="button"
-                                  class="btn btn-link btn-warning active"
-                                  data-id="' . $Row['id'] . '"
-                                  title="Activate teacher">
+                              <button type="button" class="btn btn-link btn-warning active" data-id="' . $Row['id'] . '" title="Activate teacher">
                                   <i class="fa fa-unlock"></i>
                               </button>
                           </div>
@@ -147,23 +139,81 @@ require_once('../includes/db.php');
                         }
                         ?>
                       </tbody>
-
                     </table>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
-    <?php
-    require_once('../includes/dashboard_footer.php')
-    ?>
-    <script>
-      $(document).ready(function() {
 
-        // Edit teacher
+    <?php
+    require_once('../includes/dashboard_footer.php');
+    ?>
+    
+    
+
+    <script>
+     
+      $(document).ready(function() {
+        $('#teacher-table').DataTable({
+          pageLength: 5,
+    dom: 'Bfrtip', // Include buttons in the table
+    buttons: [
+      {
+        extend: 'csv',
+        text: 'Export CSV',
+        className: 'btn btn-primary' // Add Bootstrap class for color
+      },
+      {
+        extend: 'excel',
+        text: 'Export Excel',
+        className: 'btn btn-success' // Add Bootstrap class for color
+      },
+      {
+        extend: 'pdf',
+        text: 'Export PDF',
+        className: 'btn btn-danger' // Add Bootstrap class for color
+      },
+      {
+        extend: 'print',
+        text: 'Print',
+        className: 'btn btn-info' // Add Bootstrap class for color
+      }
+    ]
+        });
+
+        $('#disabled-teacher-table').DataTable({
+          pageLength: 5,
+    dom: 'Bfrtip', // Include buttons in the table
+    buttons: [
+      {
+        extend: 'csv',
+        text: 'Export CSV',
+        className: 'btn btn-primary' // Add Bootstrap class for color
+      },
+      {
+        extend: 'excel',
+        text: 'Export Excel',
+        className: 'btn btn-success' // Add Bootstrap class for color
+      },
+      {
+        extend: 'pdf',
+        text: 'Export PDF',
+        className: 'btn btn-danger' // Add Bootstrap class for color
+      },
+      {
+        extend: 'print',
+        text: 'Print',
+        className: 'btn btn-info' // Add Bootstrap class for color
+      }
+    ]
+        });
+
+        // Event Handlers
         $(document).on('click', '.edit', function() {
           var id = $(this).data('id');
           window.location.href = 'teacher_edit.php?id=' + id;
@@ -219,10 +269,9 @@ require_once('../includes/db.php');
             }
           });
         });
-
       });
     </script>
-
+  </div>
 </body>
 
 </html>
