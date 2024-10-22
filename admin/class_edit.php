@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 require_once('../includes/db.php');
 
 $name = '';
@@ -31,30 +36,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
     $teacher = $_POST['teacher'];
     $section = $_POST['section'];
     $date = date('Y-m-d H:i:s');
- 
-    
+
+
     $sql_update = "UPDATE class SET `name`=?, fees=?,  section=?, teacher_id=?, updated_at=? WHERE id=?";
     $stmt = $pdo->prepare($sql_update);
     if ($stmt->execute([$name, $fees, $section, $teacher, $date, $class_id])) {
-        $sql_update = "UPDATE teacher SET  status=? WHERE id=?";
-        $stmt = $pdo->prepare($sql_update);
-        if ($stmt->execute([$status,  $teacher])) {
-            header("Location: class.php");
-            exit();
-            } else {
-             $error[] = "Error updating teacher information.";
-            }
-            
-        }
-        else {
-            $error[] = "Error updating class information.";
-        }
 
-    }
+        header("Location: class.php");
 
-    else {
+        // $sql_update = "UPDATE teacher SET  `status`=? WHERE id=?";
+        // $stmt = $pdo->prepare($sql_update);
+        // if ($stmt->execute([$status,  $teacher])) {
+        //     exit();
+        // } else {
+        //     $error[] = "Error updating teacher information.";
+        // }
+    } else {
         $error[] = "Error updating class information.";
     }
+} else {
+    $error[] = "Error updating class information.";
+}
 
 
 ?>
@@ -109,11 +111,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
                                             }
                                         }
                                         ?>
-                                        
+
                                         <div class="col-md-4 col-lg-6">
                                             <form method="POST" enctype='multipart/form-data' action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                            <input type="hidden" name="id" value="<?=$class_id?>">
-                                            <div class="form-group">
+                                                <input type="hidden" name="id" value="<?= $class_id ?>">
+                                                <div class="form-group">
                                                     <label for="name">Name</label>
                                                     <input
                                                         type="text"
@@ -142,14 +144,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
                                                 <div class="form-group">
                                                     <label for="section">Choose a Section</label>
                                                     <select class="form-select" name="section" id="section">
-                                                    <option value="A" <?php echo $section == 'A'?'selected':'';?>>A</option>
-                                                    <option value="B" <?php echo $section == 'B'?'selected':'';?>>B</option>
-                                                    <option value="C" <?php echo $section == 'C'?'selected':'';?>>C</option>
-                            
+                                                        <option value="A" <?php echo $section == 'A' ? 'selected' : ''; ?>>A</option>
+                                                        <option value="B" <?php echo $section == 'B' ? 'selected' : ''; ?>>B</option>
+                                                        <option value="C" <?php echo $section == 'C' ? 'selected' : ''; ?>>C</option>
+
                                                     </select>
                                                 </div>
                                                 <?php
-                                                    $s = "SELECT teacher.id, teacher.name 
+                                                $s = "SELECT teacher.id, teacher.name 
                                                     FROM teacher  
                                                     LEFT JOIN class  
                                                     ON teacher.id = class.teacher_id 
@@ -157,14 +159,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
                                                 $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                                                 $sth->execute();
                                                 ?>
-                                                
+
                                                 <div class="form-group">
                                                     <label for="teacher">Choose a Teacher</label>
 
                                                     <select name="teacher" class="form-select">
                                                         <?php
                                                         if ($sth->rowCount() > 0) {
-                                                            while ($row = $sth->fetch()){ 
+                                                            while ($row = $sth->fetch()) {
                                                                 echo "<option value='" . $row["id"] . "'>" . $row["name"] . "</option>";
                                                             }
                                                         } else {

@@ -17,16 +17,16 @@ if (isset($_GET['id'])) {
       $sql_update = "UPDATE class SET status=?, teacher_id=?,  updated_at=? WHERE id=?";
       $stmt = $pdo->prepare($sql_update);
       if ($stmt->execute([$disable, null,  $date, $class_id])) {
-        $sql_update = "UPDATE teacher SET status=?, updated_at=? WHERE id=?";
-        $stmt = $pdo->prepare($sql_update);
-        if ($stmt->execute([$disable, $date, $teacher_id])) {
-            $success[] = "teacher Disable successfully.";
-            header("Location: class.php");
-              exit();
-        }
-        else {
-            $error[] = "Error updating teacher information.";
-        }
+        header("Location: class.php");
+        // $sql_update = "UPDATE teacher SET status=?, updated_at=? WHERE id=?";
+        // $stmt = $pdo->prepare($sql_update);
+        // if ($stmt->execute([$disable, $date, $teacher_id])) {
+        //     $success[] = "teacher Disable successfully.";
+        //       exit();
+        // }
+        // else {
+        //     $error[] = "Error updating teacher information.";
+        // }
       }
       
       else {
