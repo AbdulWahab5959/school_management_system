@@ -1,12 +1,48 @@
 <?php
 require_once('../includes/db.php');
-require_once('includes/login_checks.php');
 
 $errors = [];
 $success = "";
-if (isset($_GET["id"])) {
-    $id = $_GET['id'];
+$user_id =$_SESSION['student_id'];
 
+if (isset($_POST['update_password'])) {
+    $currentPassword = trim($_POST['current_password']);
+    $newPassword = trim($_POST['new_password']);
+    $confirmPassword = trim($_POST['confirm_password']);
+    $studentId = $_SESSION['student_id'];
+
+    if (!empty($currentPassword) && !empty($newPassword) && !empty($confirmPassword)) {
+        if ($newPassword === $confirmPassword) {
+            $sql = "SELECT password FROM student WHERE id = :id";
+            $handle = $pdo->prepare($sql);
+            $params = ['id' => $studentId];
+            $handle->execute($params);
+            $getRow = $handle->fetch(PDO::FETCH_ASSOC);
+
+            if ($getRow && password_verify($currentPassword, $getRow['password'])) {
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $updateSql = "UPDATE student SET password = :password WHERE id = :id";
+                $updateStmt = $pdo->prepare($updateSql);
+                $updateParams = ['password' => $hashedPassword, 'id' => $studentId];
+
+                if ($updateStmt->execute($updateParams)) {
+                    $success = "Password updated successfully!";
+                } else {
+                    $errors[] = "Error updating password. Please try again.";
+                }
+            } else {
+                $errors[] = "Invalid current password.";
+            }
+        } else {
+            $errors[] = "New password and confirm password do not match.";
+        }
+    } else {
+        $errors[] = "All fields are required.";
+    }
+}
+
+if (isset($_SESSION["student_id"])) {
+    $id = $_SESSION['student_id'];
 
     $sql = "SELECT * FROM student WHERE id = ?";
     $stmt = $pdo->prepare($sql);
@@ -14,7 +50,6 @@ if (isset($_GET["id"])) {
     $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($student) {
-        $id = $student['id'];
         $name = $student['name'];
         $email = $student['email'];
         $number = $student['phone'];
@@ -25,41 +60,6 @@ if (isset($_GET["id"])) {
         $error[] = "Error: student not found.";
     }
 }
-if (isset($_POST['update_password'])) {
-    $newPassword = trim($_POST['new_password']);
-    $confirmPassword = trim($_POST['confirm_password']);
-    $studentId = $_POST['id'];
-
-    if ( !empty($newPassword) && !empty($confirmPassword)) {
-        if ($newPassword === $confirmPassword) {
-            $sql = "SELECT password FROM student WHERE id = :id";
-            $handle = $pdo->prepare($sql);
-            $params = ['id' => $studentId];
-            $handle->execute($params);
-            $getRow = $handle->fetch(PDO::FETCH_ASSOC);
-
-                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                $updateSql = "UPDATE student SET password = :password WHERE id = :id";
-                $updateStmt = $pdo->prepare($updateSql);
-                $updateParams = ['password' => $hashedPassword, 'id' => $studentId];
-
-                if ($updateStmt->execute($updateParams)) {
-                    $success = "Password updated successfully!";
-                    header("Location: student.php?id=" . $studentId);
-                    exit();
-                    
-                } else {
-                    $errors[] = "Error updating password. Please try again.";
-                }
-            
-        } else {
-            $errors[] = "New password and confirm password do not match.";
-        }
-    } else {
-        $errors[] = "All fields are required.";
-    }
-}
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
     $id = $_POST['id'];
@@ -73,13 +73,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
     $stmt = $pdo->prepare($sql_update);
     if ($stmt->execute([$name, $email, $number, $address, $date, $id])) {
         $success="student information updated successfully.";
-        header("Location: student_edit.php?id=" . $id);
-        exit();
     } else {
         $error[] = "Error updating student information.";
     }
 }
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
+if (isset($_POST['image_profile'])) {
     if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
         $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
         $file_name = $_FILES['profile_picture']['name'];
@@ -92,17 +90,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
             $upload_path = $upload_dir . $new_file_name;
 
             if (move_uploaded_file($file_tmp, $upload_path)) {
-                $id = $_POST['id'];
+                $student_id = $_SESSION['student_id'];
 
                 $update_query = "UPDATE student SET profileimage = :profileimage WHERE id = :id";
                 $stmt = $pdo->prepare($update_query);
                 $stmt->bindParam(':profileimage', $upload_path);
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->bindParam(':id', $student_id, PDO::PARAM_INT);
 
                 if ($stmt->execute()) {
 
                     $success = "Profile picture updated successfully!";
-                    header("Location: student_edit.php?id=" . $id);
+                    header("Location: account_setting.php");
                     exit();
                 } else {
                     $errors[] = "Failed to update profile picture.";
@@ -165,6 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
                                 <div class="card-body">
                                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                                         <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
+
                                         <div class="form-group">
                                             <label for="name">Name</label>
                                             <input type="text" class="form-control" id="name" name="name" required value="<?php echo isset($name) ? $name : ''; ?>" placeholder="Enter Name" />
@@ -200,8 +199,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
                                 </div>
                                 <div class="card-body">
                                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                    <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
-                                       
+                                        <div class="form-group">
+                                            <label for="current_password">Current Password</label>
+                                            <input type="password" class="form-control" id="current_password" name="current_password" required placeholder="Enter Current Password" />
+                                        </div>
+
                                         <div class="form-group">
                                             <label for="new_password">New Password</label>
                                             <input type="password" class="form-control" id="new_password" name="new_password" required placeholder="Enter New Password" />
@@ -231,8 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
         </div>
         <div class="card-body">
             <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">    
-            <div class="form-group text-center mb-4">
+                <div class="form-group text-center mb-4">
                     <?php
                     $profile_image = !empty($student['profileimage']) ? $student['profileimage'] : 'default-profile.png'; // Fetch from DB
                     ?>
@@ -261,7 +262,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
 
 <script>
     const showPasswordCheck = document.getElementById('showPasswordCheck');
-    const passwordFields = [document.getElementById('new_password'), document.getElementById('confirm_password')];
+    const passwordFields = [document.getElementById('current_password'), document.getElementById('new_password'), document.getElementById('confirm_password')];
 
     showPasswordCheck.addEventListener('change', () => {
         passwordFields.forEach(field => {

@@ -47,7 +47,6 @@
                     <i class="fas fa-chalkboard"></i>
                         <p>Class</p>  
                     </a>
-
                 </li>
             </ul>
         </div>

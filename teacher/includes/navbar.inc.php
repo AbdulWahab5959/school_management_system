@@ -1,19 +1,3 @@
-<?php
-$user_id=$_SESSION['id'];
-$sql = "SELECT * FROM teacher WHERE id = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$user_id]);
-    $staff = $stmt->fetch(PDO::FETCH_ASSOC); 
-    
-    if ($staff) {
-        $user_name = $staff['name'];
-        $user_email = $staff['email'];
-        $user_profile = $staff['profileimage'];
-       
-    } else {
-        $error[] = "Error: staff not found.";
-    }
-?>
 <div class="main-header">
         <div class="main-header-logo">
           <!-- Logo Header -->
@@ -163,13 +147,13 @@ $sql = "SELECT * FROM teacher WHERE id = ?";
                   aria-expanded="false">
                   <div class="avatar-sm">
                     <img
-                      src="<?php echo $user_profile; ?>"
+                      src="<?php echo $_SESSION['teacher_profile']  ?>"
                       alt="..."
                       class="avatar-img rounded-circle" />
                   </div>
                   <span class="profile-username">
                     <span class="op-7">Hi,</span>
-                    <span class="fw-bold"> <?php echo $user_name;?></span>
+                    <span class="fw-bold"> <?php echo $_SESSION['teacher_name'] ?></span>
                   </span>
                 </a>
                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -178,13 +162,13 @@ $sql = "SELECT * FROM teacher WHERE id = ?";
                       <div class="user-box">
                         <div class="avatar-lg">
                           <img
-                          src="<?php echo $user_profile; ?>"
+                          src="<?php echo $_SESSION['teacher_profile']  ?>"
                           alt="image profile"
                             class="avatar-img rounded" />
                         </div>
                         <div class="u-text">
-                          <h4></h4>
-                          <p class="text-muted"><?php echo $user_email;?> </p>
+                          <h4>Hi</h4>
+                          <p class="text-muted"><?php echo $_SESSION['teacher_email'] ?> </p>
                           <a
                             href="profile.php"
                             class="btn btn-xs btn-secondary btn-sm">View Profile</a>

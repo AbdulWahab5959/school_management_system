@@ -41,6 +41,7 @@ require_once('../includes/db.php');
               <div class="card">
                 <div class="card-body">
                   <?php
+                  $user_id =$_SESSION['teacher_id'] ;
                   $s = "SELECT teacher.*, class.id AS class_id, class.name AS class_name, class.section AS class_section
                   FROM class 
                   INNER JOIN teacher ON teacher.id = class.teacher_id

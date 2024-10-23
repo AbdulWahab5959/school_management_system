@@ -199,11 +199,13 @@ if (isset($_POST['submit'])) {
                                                         placeholder="Confirm Password" />
                                                 </div>  
                                                     <?php
-                                                    $s = "SELECT class.id, class.name, class.section, COUNT(student.id) AS max_student , class.strength
+                                                    $s = "SELECT class.id, class.name, class.section, COUNT(student.id) AS max_student, class.strength
                                                     FROM class
-                                                    LEFT JOIN student ON class.id = Student.class_id
+                                                    LEFT JOIN student ON class.id = student.class_id
+                                                    WHERE class.status = 1
                                                     GROUP BY class.id, class.name, class.section, class.strength
                                                     HAVING COUNT(student.id) < class.strength";
+                                              
                                                         $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                                                         $sth->execute();
                                                         ?>

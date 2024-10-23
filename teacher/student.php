@@ -1,5 +1,7 @@
 <?php
 require_once('../includes/db.php');
+$user_id =$_SESSION['teacher_id'] ;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,6 +43,7 @@ require_once('../includes/db.php');
               <div class="card">
                 <div class="card-body">
                   <?php
+
                      $s = "SELECT student.*, class.id AS class_id, class.name AS class_name,
                     class.section AS class_section, class.teacher_id AS class_teacher_id
                     FROM class
@@ -88,5 +91,34 @@ require_once('../includes/db.php');
     require_once('../includes/dashboard_footer.php')
     ?>
 </body>
-
+<script>
+   $(document).ready(function() {
+        $('#add-row').DataTable({
+          pageLength: 5,
+    dom: 'Bfrtip', // Include buttons in the table
+    buttons: [
+      {
+        extend: 'csv',
+        text: 'Export CSV',
+        className: 'btn btn-primary' // Add Bootstrap class for color
+      },
+      {
+        extend: 'excel',
+        text: 'Export Excel',
+        className: 'btn btn-success' // Add Bootstrap class for color
+      },
+      {
+        extend: 'pdf',
+        text: 'Export PDF',
+        className: 'btn btn-danger' // Add Bootstrap class for color
+      },
+      {
+        extend: 'print',
+        text: 'Print',
+        className: 'btn btn-info' // Add Bootstrap class for color
+      }
+    ]
+        });
+      });
+</script>
 </html>

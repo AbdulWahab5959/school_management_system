@@ -24,8 +24,7 @@ if(isset($_POST['submit']))
 					
 					$_SESSION['login'] 			= true;
 					$_SESSION['login_type'] 	= 'admin';
-					$_SESSION['user_id']		= $getRow['id'];
-					$_SESSION['user_email'] 	= $getRow['email'];
+					$_SESSION['admin_id']		= $getRow['id'];
 					$_SESSION['admin_name'] 	= $getRow['name'];
 					$_SESSION['admin_email'] 	= $getRow['email'];
 					$_SESSION['admin_profile'] 	= $getRow['profile_picture'];

@@ -21,7 +21,12 @@ if (isset($_POST['submit'])) {
                     // Verify the password
                     if (password_verify($password, $getRow['password'])) {
                         unset($getRow['password']);
-                        $_SESSION['id'] = $getRow['id'];
+$_SESSION['login'] 			= true;
+					$_SESSION['login_type'] 	= 'student';
+					$_SESSION['student_id']		= $getRow['id'];
+					$_SESSION['student_name'] 	= $getRow['name'];
+					$_SESSION['student_email'] 	= $getRow['email'];
+					$_SESSION['student_profile'] 	= $getRow['profileimage'];                        
                         header('location:index.php');
                         exit();
                     } else {

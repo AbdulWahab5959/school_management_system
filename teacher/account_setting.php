@@ -3,12 +3,13 @@ require_once('../includes/db.php');
 
 $errors = [];
 $success = "";
+$user_id =$_SESSION['teacher_id'] ;
 
 if (isset($_POST['update_password'])) {
     $currentPassword = trim($_POST['current_password']);
     $newPassword = trim($_POST['new_password']);
     $confirmPassword = trim($_POST['confirm_password']);
-    $teacherId = $_SESSION['id'];
+    $teacherId = $_SESSION['teacher_id'];
 
     if (!empty($currentPassword) && !empty($newPassword) && !empty($confirmPassword)) {
         if ($newPassword === $confirmPassword) {
@@ -40,8 +41,8 @@ if (isset($_POST['update_password'])) {
     }
 }
 
-if (isset($_SESSION["id"])) {
-    $id = $_SESSION['id'];
+if (isset($_SESSION["teacher_id"])) {
+    $id = $_SESSION['teacher_id'];
 
     $sql = "SELECT * FROM teacher WHERE id = ?";
     $stmt = $pdo->prepare($sql);
@@ -89,7 +90,7 @@ if (isset($_POST['image_profile'])) {
             $upload_path = $upload_dir . $new_file_name;
 
             if (move_uploaded_file($file_tmp, $upload_path)) {
-                $teacher_id = $_SESSION['id'];
+                $teacher_id = $_SESSION['teacher_id'];
 
                 $update_query = "UPDATE teacher SET profileimage = :profileimage WHERE id = :id";
                 $stmt = $pdo->prepare($update_query);

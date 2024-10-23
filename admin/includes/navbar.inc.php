@@ -174,7 +174,7 @@ $admin_profile  = $_SESSION['admin_profile'];
                             class="avatar-img rounded" />
                         </div>
                         <div class="u-text">
-                          <h4></h4>
+                          <h4>Hi</h4>
                           <p class="text-muted"><?php echo $admin_email;?> </p>
                           <a
                             href="profile.php"

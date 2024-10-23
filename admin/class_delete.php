@@ -1,6 +1,8 @@
 <?php
 
 require_once('../includes/db.php');
+require_once('includes/login_checks.php');
+
 if (isset($_GET['id'])) {
   $class_id = $_GET['id'];
   $sql = "SELECT * FROM class WHERE id = ?";

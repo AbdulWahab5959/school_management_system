@@ -1,6 +1,7 @@
 <?php
-
 require_once('../includes/db.php');
+require_once('includes/login_checks.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

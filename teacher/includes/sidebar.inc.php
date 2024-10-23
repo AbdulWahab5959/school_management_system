@@ -3,11 +3,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
             <a href="index.php" class="logo">
-                <img
-                    src="../dashboard_assets/img/kaiadmin/logo_light.svg"
-                    alt="navbar brand"
-                    class="navbar-brand"
-                    height="20" />
+            <img width="60" height="48" src="https://img.icons8.com/color/48/teacher--v1.png" alt="administrator-male--v1"/>
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">

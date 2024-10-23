@@ -1,6 +1,8 @@
 <?php
 
 require_once('../includes/db.php');
+require_once('includes/login_checks.php');
+
 
 if (isset($_POST['submit'])) {
     if (
