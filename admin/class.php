@@ -187,6 +187,32 @@ require_once('../includes/db.php');
         ?>
  <script>
       $(document).ready(function() {
+        $('#add-row').DataTable({
+      pageLength: 5,
+    dom: 'Bfrtip', // Include buttons in the table
+    buttons: [
+      {
+        extend: 'csv',
+        text: 'Export CSV',
+        className: 'btn btn-primary' // Add Bootstrap class for color
+      },
+      {
+        extend: 'excel',
+        text: 'Export Excel',
+        className: 'btn btn-success' // Add Bootstrap class for color
+      },
+      {
+        extend: 'pdf',
+        text: 'Export PDF',
+        className: 'btn btn-danger' // Add Bootstrap class for color
+      },
+      {
+        extend: 'print',
+        text: 'Print',
+        className: 'btn btn-info' // Add Bootstrap class for color
+      }
+    ]
+  });
 
         $(document).on('click', '.edit', function() {
           var id = $(this).data('id');

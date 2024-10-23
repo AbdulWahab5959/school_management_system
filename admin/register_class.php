@@ -165,7 +165,7 @@ if (isset($_POST['submit'])) {
                                                     FROM teacher  
                                                     LEFT JOIN class  
                                                     ON teacher.id = class.teacher_id 
-                                                    WHERE class.teacher_id IS NULL";
+                                                    WHERE class.teacher_id IS NULL AND teacher.status=1";
                                                 $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                                                 $sth->execute();
                                                 ?>

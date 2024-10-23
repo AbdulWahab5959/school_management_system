@@ -9,23 +9,16 @@ if (isset($_GET['id'])) {
     $class = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($class) {
       
-        $teacher_id = $class['teacher_id'];
         $sql = "DELETE FROM class WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         if ($stmt !== false) {
         $stmt->bindParam(':id', $class_id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-        $date = date('Y-m-d H:i:s');
-        $sql_update = "UPDATE teacher SET status=?, updated_at=? WHERE id=?";
-        $stmt = $pdo->prepare($sql_update);
-        if ($stmt->execute([0, $date, $teacher_id])) {
+       
           header("Location: class.php");
           exit();
-        }
-        else {
-            $error[] = "Error updating teacher information.";
-        }
+        
           
         
       } else {

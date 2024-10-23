@@ -1,8 +1,6 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+
 
 require_once('../includes/db.php');
 
@@ -44,13 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
 
         header("Location: class.php");
 
-        // $sql_update = "UPDATE teacher SET  `status`=? WHERE id=?";
-        // $stmt = $pdo->prepare($sql_update);
-        // if ($stmt->execute([$status,  $teacher])) {
-        //     exit();
-        // } else {
-        //     $error[] = "Error updating teacher information.";
-        // }
     } else {
         $error[] = "Error updating class information.";
     }

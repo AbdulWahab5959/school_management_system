@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
                     if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
                         $image_name = $_FILES['profile_image']['name'];
                         $image_tmp_name = $_FILES['profile_image']['tmp_name'];
-                        $image_folder = '../dashboard_assets/img/uploads/' . $image_name;
+                        $image_folder = '../uploads/' . $image_name;
                         move_uploaded_file($image_tmp_name, $image_folder);
                     } else {
                         $image_folder = ''; 

@@ -25,12 +25,11 @@ if (isset($_GET["id"])) {
     }
 }
 if (isset($_POST['update_password'])) {
-    $currentPassword = trim($_POST['current_password']);
     $newPassword = trim($_POST['new_password']);
     $confirmPassword = trim($_POST['confirm_password']);
     $studentId = $_POST['id'];
 
-    if (!empty($currentPassword) && !empty($newPassword) && !empty($confirmPassword)) {
+    if ( !empty($newPassword) && !empty($confirmPassword)) {
         if ($newPassword === $confirmPassword) {
             $sql = "SELECT password FROM student WHERE id = :id";
             $handle = $pdo->prepare($sql);
@@ -38,7 +37,6 @@ if (isset($_POST['update_password'])) {
             $handle->execute($params);
             $getRow = $handle->fetch(PDO::FETCH_ASSOC);
 
-            if ($getRow && password_verify($currentPassword, $getRow['password'])) {
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 $updateSql = "UPDATE student SET password = :password WHERE id = :id";
                 $updateStmt = $pdo->prepare($updateSql);
@@ -52,9 +50,7 @@ if (isset($_POST['update_password'])) {
                 } else {
                     $errors[] = "Error updating password. Please try again.";
                 }
-            } else {
-                $errors[] = "Invalid current password.";
-            }
+            
         } else {
             $errors[] = "New password and confirm password do not match.";
         }
@@ -91,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
         
         if (in_array($file_ext, $allowed_types)) {
             $new_file_name = uniqid() . '.' . $file_ext;
-            $upload_dir = '../dashboard_assets/img/uploads/';
+            $upload_dir = '../uploads/';
             $upload_path = $upload_dir . $new_file_name;
 
             if (move_uploaded_file($file_tmp, $upload_path)) {
@@ -204,11 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
                                 <div class="card-body">
                                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                                     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : ''; ?>">
-                                        <div class="form-group">
-                                            <label for="current_password">Current Password</label>
-                                            <input type="password" class="form-control" id="current_password" name="current_password" required placeholder="Enter Current Password" />
-                                        </div>
-
+                                       
                                         <div class="form-group">
                                             <label for="new_password">New Password</label>
                                             <input type="password" class="form-control" id="new_password" name="new_password" required placeholder="Enter New Password" />
@@ -268,7 +260,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
 
 <script>
     const showPasswordCheck = document.getElementById('showPasswordCheck');
-    const passwordFields = [document.getElementById('current_password'), document.getElementById('new_password'), document.getElementById('confirm_password')];
+    const passwordFields = [document.getElementById('new_password'), document.getElementById('confirm_password')];
 
     showPasswordCheck.addEventListener('change', () => {
         passwordFields.forEach(field => {

@@ -85,7 +85,7 @@ if (isset($_POST['image_profile'])) {
         
         if (in_array($file_ext, $allowed_types)) {
             $new_file_name = uniqid() . '.' . $file_ext;
-            $upload_dir = '../dashboard_assets/img/uploads/';
+            $upload_dir = '../uploads/';
             $upload_path = $upload_dir . $new_file_name;
 
             if (move_uploaded_file($file_tmp, $upload_path)) {

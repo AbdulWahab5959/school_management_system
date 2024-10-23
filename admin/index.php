@@ -42,9 +42,6 @@ if (!isset($_SESSION['login'])) {
               <h3 class="fw-bold mb-3">Dashboard</h3>
               <h6 class="op-7 mb-2">Admin Dashboard</h6>
             </div>
-            <div class="ms-md-auto py-2 py-md-0">
-              <a href="#" class="btn btn-primary btn-round">Add Customer</a>
-            </div>
           </div>
           <div class="row">
             <div class="col-sm-6 col-md-3">
@@ -130,84 +127,10 @@ if (!isset($_SESSION['login'])) {
           </div>
 
           <div class="page-header">
-            <h3 class="fw-bold mb-3">Teacher Tables </h3>
+            <!-- page header  -->
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-body">
-                  <!-- Modal -->
+         <!-- dashboard data added here -->
 
-                  <div class="table-responsive">
-                    <table
-                      id="add-row"
-                      class="display table table-striped table-hover">
-                      <thead>
-                        <tr>
-                          <th>User_ID</th>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th style="width: 10%">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          <td>
-                            <div class="form-button-action">
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-primary btn-lg"
-                                data-original-title="Edit Task">
-                                <i class="fa fa-edit"></i>
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-toggle="tooltip"
-                                title=""
-                                class="btn btn-link btn-danger"
-                                data-original-title="Remove">
-                                <i class="fa fa-times"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
