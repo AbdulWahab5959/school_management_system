@@ -62,7 +62,24 @@ if (isset($_POST['submit_attendance'])) {
   
   <head>
     <?php require_once('../includes/dashboard_header.php') ?>
+    
+    <!-- Include FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.css" rel="stylesheet">
+
+    <!-- Include FullCalendar core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.js"></script>
+
+    <!-- jQuery UI files for datetime format -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" defer></script>
+
   </head>
+    <style>
+        .unavailable-date {
+            background-color: red;
+            color: white;
+        }
+    </style>
   
   <body>
   <div class="wrapper">
@@ -74,93 +91,162 @@ if (isset($_POST['submit_attendance'])) {
       <!-- Dashboard started -->
       <div class="container">
         <div class="page-inner">
-
-          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-              <h3 class="fw-bold mb-3">Dashboard</h3>
-              <h6 class="op-7 mb-2">Teacher Dashboard</h6>
-            </div>
-          </div>
-          <div class="page-header">
-            <h3 class="fw-bold mb-3">Active Student Tables</h3>
-          </div>
-          <div class="row">
-              <?php 
-              if(isset($error) && count($error) > 0)
-              {
-                foreach($error as $error_msg)
-                {
-                  echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'.
-                    $error_msg.
-                  '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'.
-                  '</div>';
-                }
-              }
-            ?>
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-body">
-                  <?php
-                  $current_date = date('Y-m-d');
-                  $s = "SELECT student.*, class.id AS class_id, class.name AS class_name, class.section AS class_section, class.teacher_id AS class_teacher_id 
-                        FROM class 
-                        INNER JOIN student ON student.class_id = class.id 
-                        LEFT JOIN attendance ON student.id = attendance.student_id AND attendance.date = :current_date
-                        WHERE class.teacher_id = :teacher_id";
-                  $sth = $pdo->prepare($s);
-                  $sth->execute([':teacher_id' => $user_id, ':current_date' => $current_date]);
-                  ?>
-                  <div class="table-responsive">
-                    <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                      <input type="hidden" name="teacher_id" value="<?php echo $user_id; ?>">
-                      <table id="add-row" class="display table table-striped table-hover">
-                        <thead class="text-center">
-                          <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Class</th>
-                            <th>Attendance</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody class="text-center">
-                          <?php
-                          $allRows = $sth->fetchAll();
-                          foreach ($allRows as $Row) {
-                            echo "<tr>";
-                            echo "<td>" . $Row['id'] . "</td>";
-                            echo "<td>" . $Row['name'] . "</td>";
-                            echo "<td>" . $Row['email'] . "</td>";
-                            echo "<td>" . $Row['class_name'] . " " . $Row['class_section'] . "</td>";
-                            echo "<td>
-                              <input type='radio' name='attendance[" . $Row['id'] . "]' value='present'> Present
-                              <input type='radio' name='attendance[" . $Row['id'] . "]' value='absent'> Absent
-                              </td>";
-                              echo "<td>
-                              <a href='edit_attendance.php?id=" . $Row['id'] . "' class='btn btn-link btn-primary'>
-                              <i class='fa fa-edit'></i>
-                                    </a>
-                                  </td>";
-
-                            echo "</tr>";
-                          }
-                          ?>
-                        </tbody>
-                      </table>
-                      <div class="d-flex justify-content-center align-items-center">
-                        <input type="submit" class="btn attendance btn-success btn-round justify-content-center" name="submit_attendance" value="Submit Attendance">
-                      </div>
-                    </form>
-                  </div>
+          <div id="content" class="p-4 p-md-5">
+            <h2>Time Management</h2>
+            <hr>
+            <!-- Main Container Start -->
+              <!-- Edit time slot modal start -->
+    <div class="modal fade" tabindex="-1" id="editTimeSlotModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Time Slot</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-              </div>
+                <form id="EditTimeSlotForm" method="post">
+                    <input type="hidden" name="editTimeSlotFormSubmit" value="editTimeSlotFormSubmit">
+                    <input type="hidden" name="editTimeSlotID" id="edit_TimeSlotID">
+                    <div class="modal-body">
+                        <p>Date: <span class="badge bg-dark" id="show_selected_timeslot"></span></p>
+                        <label for="edit_date">Date:</label>
+                        <input type="text" id="edit_date" class="form-control" name="date" readonly>
+                        <label for="edit_slot_title">Time Slot Name:</label>
+                        <input type="text" class="form-control" id="edit_slot_title" name="slot_title" placeholder="Title">
+                        <table class="table">
+                            <tr>
+                                <td width="50%">
+                                    <label for="start_hour">Start (24-hour format):</label>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control half-width" placeholder="hour" name="start_hour" min="0" max="23" step="1">
+                                    <input type="number" class="form-control half-width" placeholder="minutes" name="start_minute" min="0" max="59" step="1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%">
+                                    <label for="end_hour">End (24-hour format):</label>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control half-width" placeholder="hour" name="end_hour" min="0" max="23" step="1">
+                                    <input type="number" class="form-control half-width" placeholder="minutes" name="end_minute" min="0" max="59" step="1">
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table mt-3">
+                            <tr>
+                                <td>
+                                    <label for="edit_background_clr">Background Color:</label>
+                                </td>
+                                <td>
+                                    <input type="color" id="edit_background_clr" name="background_clr" value="#2c3e50">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="edit_text_clr">Text Color:</label>
+                                </td>
+                                <td>
+                                    <input type="color" id="edit_text_clr" name="text_clr" value="#f8f9fa">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="delete-slot-btn">Delete</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button name="EditSlot" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </div>
+        </div>
+    </div>
+    <!-- Edit time slot modal end -->
+
+    <!-- Add new time slot modal start -->
+    <div class="modal fade" tabindex="-1" id="AddTimeSlotModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Time Slot</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="AddNewSlotForm" method="post">
+                    <input type="hidden" name="addNewSlotFormSubmit" value="addNewSlotFormSubmit">
+                    <div class="modal-body">
+                        <p>Date: <span class="badge bg-dark" id="show_selected_date"></span></p>
+                        <input type="text" id="selected_date" class="form-control" name="date" readonly>
+                        <label for="slot_title">Time Slot Name:</label>
+                        <input type="text" class="form-control" name="slot_title" placeholder="Title">
+                        <table class="table">
+                            <tr>
+                                <td width="50%">
+                                    <label for="start_hour">Start (24-hour format):</label>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control half-width" placeholder="hour" name="start_hour" min="0" max="23" step="1">
+                                    <input type="number" class="form-control half-width" placeholder="minutes" name="start_minute" min="0" max="59" step="1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%">
+                                    <label for="end_hour">End (24-hour format):</label>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control half-width" placeholder="hour" name="end_hour" min="0" max="23" step="1">
+                                    <input type="number" class="form-control half-width" placeholder="minutes" name="end_minute" min="0" max="59" step="1">
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table mt-3">
+                            <tr>
+                                <td>
+                                    <label for="background_clr">Background Color:</label>
+                                </td>
+                                <td>
+                                    <input type="color" name="background_clr" value="#2c3e50">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="text_clr">Text Color:</label>
+                                </td>
+                                <td>
+                                    <input type="color" name="text_clr" value="#f8f9fa">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button name="AddSlot" class="btn btn-primary">Add Time Slot</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+            <div class="height-100 bg-light">
+                <button class="btn btn-outline-dark ms-3 mb-3 mt-3" id="switchToMonthButton" style="display: none;">Monthly View</button>
+                <button class="btn btn-outline-primary ms-3 mb-3 mt-3" id="addNewTimeSlotbtn" style="display: none;">Add New Time Slot</button>
+                <main class="ms-5">
+                    <div id="calendar"></div>
+                </main>
+            </div>
+            <!-- Main Container End -->
+        </div>
+
         </div>
       </div>
     </div>
     <?php require_once('../includes/dashboard_footer.php') ?>
+
+
+
 </body>
 <script>
    $(document).ready(function() {

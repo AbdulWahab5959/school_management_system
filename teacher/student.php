@@ -3,6 +3,16 @@ require_once('../includes/db.php');
 require_once('includes/login_check.php');
 
 $user_id =$_SESSION['teacher_id'] ;
+$sql = "SELECT * FROM class WHERE teacher_id = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$user_id]);
+$class = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($class) {
+    $class_id = $class['id'];
+} else {
+    $error[] = "Error: class not found.";
+}
 
 ?>
 <!DOCTYPE html>
@@ -29,11 +39,52 @@ $user_id =$_SESSION['teacher_id'] ;
       <!-- Dashboard started -->
       <div class="container">
         <div class="page-inner">
-          <div
-            class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-              <h3 class="fw-bold mb-3">Dashboard</h3>
-              <h6 class="op-7 mb-2">Teacher Dashboard</h6>
+        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div class="card card-stats card-round ms-3">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-icon">
+                    <div
+                      class="icon-big text-center icon-primary bubble-shadow-small">
+                      <i class="fas fa-users"></i>
+                    </div>
+                  </div>
+                  <div class="col col-stats ms-3 ms-sm-0">
+                    <div class="numbers">
+                      <p class="card-category">Active Students</p>
+                      <?php
+                      $sql = "SELECT COUNT(*) FROM student WHERE status=1 AND class_id=$class_id ";
+                      $res = $pdo->query($sql);
+                      $count = $res->fetchColumn();
+                      ?>
+                      <h4 class="card-title"> <?php echo $count; ?></h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-stats card-round ms-3">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-icon">
+                    <div
+                      class="icon-big text-center icon-primary bubble-shadow-small">
+                      <i class="fas fa-users"></i>
+                    </div>
+                  </div>
+                  <div class="col col-stats ms-3 ms-sm-0">
+                    <div class="numbers">
+                      <p class="card-category">Disable Students</p>
+                      <?php
+                      $sql = "SELECT COUNT(*) FROM student WHERE status=0 AND class_id=$class_id ";
+                      $res = $pdo->query($sql);
+                      $count = $res->fetchColumn();
+                      ?>
+                      <h4 class="card-title"> <?php echo $count; ?></h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

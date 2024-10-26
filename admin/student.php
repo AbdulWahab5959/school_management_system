@@ -28,52 +28,52 @@ require_once('includes/login_checks.php');
       <div class="container">
         <div class="page-inner">
           <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-          <div class="card card-stats card-round ms-3">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div
-                        class="icon-big text-center icon-primary bubble-shadow-small">
-                        <i class="fas fa-users"></i>
-                      </div>
+            <div class="card card-stats card-round ms-3">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-icon">
+                    <div
+                      class="icon-big text-center icon-primary bubble-shadow-small">
+                      <i class="fas fa-users"></i>
                     </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Active Students</p>
-                        <?php 
-                        $sql = "SELECT COUNT(*) FROM student where status=1 ";
-                        $res = $pdo->query($sql);
-                        $count = $res->fetchColumn();
-                        ?>
-                        <h4 class="card-title"> <?php echo$count; ?></h4>
-                      </div>
+                  </div>
+                  <div class="col col-stats ms-3 ms-sm-0">
+                    <div class="numbers">
+                      <p class="card-category">Active Students</p>
+                      <?php
+                      $sql = "SELECT COUNT(*) FROM student where status=1 ";
+                      $res = $pdo->query($sql);
+                      $count = $res->fetchColumn();
+                      ?>
+                      <h4 class="card-title"> <?php echo $count; ?></h4>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="card card-stats card-round ms-3">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-icon">
-                      <div
-                        class="icon-big text-center icon-primary bubble-shadow-small">
-                        <i class="fas fa-users"></i>
-                      </div>
+            </div>
+            <div class="card card-stats card-round ms-3">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-icon">
+                    <div
+                      class="icon-big text-center icon-primary bubble-shadow-small">
+                      <i class="fas fa-users"></i>
                     </div>
-                    <div class="col col-stats ms-3 ms-sm-0">
-                      <div class="numbers">
-                        <p class="card-category">Disable Students</p>
-                        <?php 
-                        $sql = "SELECT COUNT(*) FROM student where status=0 ";
-                        $res = $pdo->query($sql);
-                        $count = $res->fetchColumn();
-                        ?>
-                        <h4 class="card-title"> <?php echo$count; ?></h4>
-                      </div>
+                  </div>
+                  <div class="col col-stats ms-3 ms-sm-0">
+                    <div class="numbers">
+                      <p class="card-category">Disable Students</p>
+                      <?php
+                      $sql = "SELECT COUNT(*) FROM student where status=0 ";
+                      $res = $pdo->query($sql);
+                      $count = $res->fetchColumn();
+                      ?>
+                      <h4 class="card-title"> <?php echo $count; ?></h4>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
             <div class="ms-md-auto py-2 py-md-0">
               <a href="register_student.php" class="btn btn-primary btn-round">Add Students</a>
             </div>
@@ -220,41 +220,40 @@ require_once('includes/login_checks.php');
     require_once('../includes/dashboard_footer.php')
     ?>
 
-<script>
-  $(document).ready(function () {
-    $('#add-row, #disable-row').DataTable({
-      pageLength: 5,
-    dom: 'Bfrtip', // Include buttons in the table
-    buttons: [
-      {
-        extend: 'csv',
-        text: 'Export CSV',
-        className: 'btn btn-primary' // Add Bootstrap class for color
-      },
-      {
-        extend: 'excel',
-        text: 'Export Excel',
-        className: 'btn btn-success' // Add Bootstrap class for color
-      },
-      {
-        extend: 'pdf',
-        text: 'Export PDF',
-        className: 'btn btn-danger' // Add Bootstrap class for color
-      },
-      {
-        extend: 'print',
-        text: 'Print',
-        className: 'btn btn-info' // Add Bootstrap class for color
-      }
-    ]
-  });
+    <script>
+      $(document).ready(function() {
+        $('#add-row, #disable-row').DataTable({
+          pageLength: 5,
+          dom: 'Bfrtip', // Include buttons in the table
+          buttons: [{
+              extend: 'csv',
+              text: 'Export CSV',
+              className: 'btn btn-primary' // Add Bootstrap class for color
+            },
+            {
+              extend: 'excel',
+              text: 'Export Excel',
+              className: 'btn btn-success' // Add Bootstrap class for color
+            },
+            {
+              extend: 'pdf',
+              text: 'Export PDF',
+              className: 'btn btn-danger' // Add Bootstrap class for color
+            },
+            {
+              extend: 'print',
+              text: 'Print',
+              className: 'btn btn-info' // Add Bootstrap class for color
+            }
+          ]
+        });
 
-        $(document).on('click', '.edit', function () {
+        $(document).on('click', '.edit', function() {
           var id = $(this).data('id');
           window.location.href = 'student_edit.php?id=' + id;
         });
 
-        $(document).on('click', '.delete', function () {
+        $(document).on('click', '.delete', function() {
           var id = $(this).data('id');
           Swal.fire({
             title: 'Are you sure?',
@@ -272,7 +271,7 @@ require_once('includes/login_checks.php');
           });
         });
 
-        $(document).on('click', '.disable', function () {
+        $(document).on('click', '.disable', function() {
           var id = $(this).data('id');
           Swal.fire({
             title: 'Are you sure?',
@@ -290,7 +289,7 @@ require_once('includes/login_checks.php');
           });
         });
 
-        $(document).on('click', '.active', function () {
+        $(document).on('click', '.active', function() {
           var id = $(this).data('id');
           Swal.fire({
             title: 'Are you sure?',

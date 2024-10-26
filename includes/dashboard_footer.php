@@ -28,8 +28,9 @@
  <!-- Sweet Alert -->
  <script src="../dashboard_assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
- <!-- Kaiadmin JS -->
+ <!--  JS -->
  <script src="../dashboard_assets/js/kaiadmin.min.js"></script>
+ <script src="../dashboard_assets/js/script.js"></script>
 
  <!-- DataTables Export Buttons -->
  <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
