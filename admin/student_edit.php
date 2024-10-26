@@ -65,13 +65,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['profile_update'])) {
     $id = $_POST['id'];
     $email = $_POST['email'];
     $name = $_POST['name'];
+    $class = trim($_POST['class']);
     $number = $_POST['PhoneNo'];
     $address = $_POST['address'];
     $date = date('Y-m-d H:i:s');
 
-    $sql_update = "UPDATE student SET name=?, email=?, phone=?, address=?, updated_at=? WHERE id=?";
+    $sql_update = "UPDATE student SET name=?, email=?, class_id=?, phone=?, address=?, updated_at=? WHERE id=?";
     $stmt = $pdo->prepare($sql_update);
-    if ($stmt->execute([$name, $email, $number, $address, $date, $id])) {
+    if ($stmt->execute([$name, $email,  $class, $number,  $address, $date, $id])) {
         $success="student information updated successfully.";
         header("Location: student_edit.php?id=" . $id);
         exit();
@@ -174,8 +175,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['image_profile'])) {
                                             <label for="email">Email Address</label>
                                             <input type="email" class="form-control" id="email" name="email" required value="<?php echo isset($email) ? $email : ''; ?>" placeholder="Enter Email" />
                                         </div>
-
-                                        <div class="form-group">
+                                        <?php
+                                                    $s = "SELECT class.id, class.name, class.section, COUNT(student.id) AS max_student, class.strength
+                                                    FROM class
+                                                    LEFT JOIN student ON class.id = student.class_id
+                                                    WHERE class.status = 1
+                                                    GROUP BY class.id, class.name, class.section, class.strength
+                                                    HAVING COUNT(student.id) < class.strength";
+                                              
+                                                        $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                                                        $sth->execute();
+                                                        ?>
+                                                        <div class="form-group">
+                                                            <label for="class">Choose a class</label>
+                                                            <select name="class" class="form-select">
+                                                                <?php
+                                                                if ($sth->rowCount() > 0) {
+                                                                    while ($row = $sth->fetch()) {
+                                                                        echo "<option value='" . $row["id"] . "'>" . $row["name"] . " " . $row["section"] . "</option>";
+                                                                    }
+                                                                    echo "<option> Empty class </option>";
+                                                                } else {
+                                                                    echo "<option>No classes available</option>";
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>                                        <div class="form-group">
                                             <label for="PhoneNo">Phone</label>
                                             <input type="text" class="form-control" id="PhoneNo" name="PhoneNo" required value="<?php echo isset($number) ? $number : ''; ?>" placeholder="Enter Phone Number" />
                                         </div>

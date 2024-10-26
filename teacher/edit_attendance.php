@@ -1,5 +1,7 @@
 <?php
 require_once('../includes/db.php');
+require_once('includes/login_check.php');
+
 if(isset($_GET["id"])){
     $id = $_GET['id'];
 }

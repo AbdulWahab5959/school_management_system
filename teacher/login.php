@@ -1,6 +1,7 @@
 <?php
 require_once('../includes/db.php');
 
+
 if (isset($_POST['submit'])) {
     if (isset($_POST['email'], $_POST['password']) && !empty($_POST['email']) && !empty($_POST['password'])) {
         $email = trim($_POST['email']);

@@ -28,10 +28,52 @@ require_once('includes/login_checks.php');
       <div class="container">
         <div class="page-inner">
           <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-              <h3 class="fw-bold mb-3">Dashboard</h3>
-              <h6 class="op-7 mb-2">Admin Dashboard</h6>
-            </div>
+          <div class="card card-stats card-round ms-3">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-icon">
+                      <div
+                        class="icon-big text-center icon-primary bubble-shadow-small">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                      </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                      <div class="numbers">
+                        <p class="card-category">Active Teacher</p>
+                        <?php 
+                        $sql = "SELECT COUNT(*) FROM teacher where status=1 ";
+                        $res = $pdo->query($sql);
+                        $count = $res->fetchColumn();
+                        ?>
+                        <h4 class="card-title"> <?php echo$count; ?></h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card card-stats card-round ms-3">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-icon">
+                      <div
+                        class="icon-big text-center icon-primary bubble-shadow-small">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                      </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                      <div class="numbers">
+                        <p class="card-category">Disable Teachers</p>
+                        <?php 
+                        $sql = "SELECT COUNT(*) FROM teacher where status=0 ";
+                        $res = $pdo->query($sql);
+                        $count = $res->fetchColumn();
+                        ?>
+                        <h4 class="card-title"> <?php echo$count; ?></h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <div class="ms-md-auto py-2 py-md-0">
               <a href="register_teacher.php" class="btn btn-primary btn-round">Add teachers</a>
             </div>

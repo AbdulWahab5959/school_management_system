@@ -27,12 +27,53 @@ require_once('includes/login_checks.php');
       <!-- Dashboard started -->
       <div class="container">
         <div class="page-inner">
-          <div
-            class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-              <h3 class="fw-bold mb-3">Dashboard</h3>
-              <h6 class="op-7 mb-2">Admin Dashboard</h6>
-            </div>
+          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+              <div class="card card-stats card-round ms-3">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-icon">
+                      <div
+                        class="icon-big text-center icon-primary bubble-shadow-small">
+                        <i class="fas fa-chalkboard"></i>
+                      </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                      <div class="numbers">
+                        <p class="card-category">Active Class</p>
+                        <?php 
+                        $sql = "SELECT COUNT(*) FROM class where status=1 ";
+                        $res = $pdo->query($sql);
+                        $count = $res->fetchColumn();
+                        ?>
+                        <h4 class="card-title"> <?php echo$count; ?></h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card card-stats card-round ms-3">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-icon">
+                      <div
+                        class="icon-big text-center icon-primary bubble-shadow-small">
+                        <i class="fas fa-chalkboard"></i>
+                      </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                      <div class="numbers">
+                        <p class="card-category">Disable Class</p>
+                        <?php 
+                        $sql = "SELECT COUNT(*) FROM class where status=0 ";
+                        $res = $pdo->query($sql);
+                        $count = $res->fetchColumn();
+                        ?>
+                        <h4 class="card-title"> <?php echo$count; ?></h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <div class="ms-md-auto py-2 py-md-0">
                 <a href="register_class.php" class="btn btn-primary btn-round">Add class</a>
             </div>
@@ -83,6 +124,13 @@ require_once('includes/login_checks.php');
                                   echo "<td>" . $Row['fees'] . "</td>";
                                   echo '<td>
                                   <div class="form-button-action">
+                                      <button
+                                          type="button"
+                                          class="btn btn-link btn-secondary btn-lg user"
+                                          data-id="' . $Row['id'] . '"
+                                          title=" class Student">
+                                          <i class="fa fa-user"></i>
+                                      </button>
                                       <button
                                           type="button"
                                           class="btn btn-link btn-primary btn-lg edit"
@@ -267,6 +315,22 @@ require_once('includes/login_checks.php');
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.href = 'class_active.php?id=' + id;
+            }
+          });
+        });
+        $(document).on('click', '.user', function() {
+          var id = $(this).data('id');
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to Class student this class!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#1085d9',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, show it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = 'class_student.php?id=' + id;
             }
           });
         });

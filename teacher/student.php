@@ -1,5 +1,7 @@
 <?php
 require_once('../includes/db.php');
+require_once('includes/login_check.php');
+
 $user_id =$_SESSION['teacher_id'] ;
 
 ?>
