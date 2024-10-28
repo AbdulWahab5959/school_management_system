@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2024 at 06:34 PM
+-- Generation Time: Oct 28, 2024 at 09:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,10 +29,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `attendance` (
   `id` int(11) NOT NULL,
+  `class_id` int(11) DEFAULT NULL,
   `teacher_id` int(11) DEFAULT NULL,
   `student_id` int(11) DEFAULT NULL,
   `date` date DEFAULT NULL,
-  `status` varchar(10) DEFAULT NULL,
+  `status` enum('Present','Leave','Absent','') DEFAULT 'Present',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -41,13 +42,19 @@ CREATE TABLE `attendance` (
 -- Dumping data for table `attendance`
 --
 
-INSERT INTO `attendance` (`id`, `teacher_id`, `student_id`, `date`, `status`, `created_at`, `updated_at`) VALUES
-(5, 1, 2, '2024-10-14', 'present', '2024-10-17 04:04:43', '2024-10-17 04:04:43'),
-(6, 1, 7, '2024-10-09', 'present', '2024-10-16 06:24:39', '2024-10-16 06:24:39'),
-(9, 1, 2, '2024-10-16', 'present', '2024-10-17 04:04:43', '2024-10-17 04:04:43'),
-(10, 1, 7, '2024-10-16', 'present', '2024-10-15 19:00:00', '2024-10-15 19:00:00'),
-(21, 1, 2, '2024-10-17', 'present', '2024-10-17 04:04:43', '2024-10-17 04:04:43'),
-(22, 1, 7, '2024-10-17', 'absent', '2024-10-17 04:01:51', '2024-10-17 04:01:51');
+INSERT INTO `attendance` (`id`, `class_id`, `teacher_id`, `student_id`, `date`, `status`, `created_at`, `updated_at`) VALUES
+(27, 10, 6, 182, '2024-10-27', 'Leave', '2024-10-27 10:37:49', '2024-10-27 10:37:49'),
+(28, 10, 6, 185, '2024-10-27', 'Leave', '2024-10-27 10:37:49', '2024-10-27 10:37:49'),
+(31, 10, 6, 182, '2024-10-27', 'Present', '2024-10-27 11:16:15', '2024-10-27 11:16:15'),
+(32, 10, 6, 185, '2024-10-27', 'Present', '2024-10-27 11:16:15', '2024-10-27 11:16:15'),
+(33, 10, 6, 182, '2024-10-02', 'Absent', '2024-10-27 11:19:21', '2024-10-27 11:19:21'),
+(34, 10, 6, 185, '2024-10-02', 'Absent', '2024-10-27 11:19:21', '2024-10-27 11:19:21'),
+(35, 10, 6, 182, '2024-10-28', 'Present', '2024-10-27 11:39:28', '2024-10-27 11:39:28'),
+(36, 10, 6, 185, '2024-10-28', 'Present', '2024-10-27 11:39:28', '2024-10-27 11:39:28'),
+(37, 10, 6, 182, '2024-10-01', 'Present', '2024-10-28 06:25:26', '2024-10-28 06:25:26'),
+(38, 10, 6, 185, '2024-10-01', 'Present', '2024-10-28 06:25:26', '2024-10-28 06:25:26'),
+(39, 10, 6, 182, '2024-10-09', 'Leave', '2024-10-28 07:06:33', '2024-10-28 07:06:33'),
+(40, 10, 6, 185, '2024-10-09', 'Leave', '2024-10-28 07:06:33', '2024-10-28 07:06:33');
 
 -- --------------------------------------------------------
 
@@ -73,8 +80,8 @@ CREATE TABLE `class` (
 
 INSERT INTO `class` (`id`, `name`, `teacher_id`, `section`, `strength`, `fees`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Class 1', 11, 'A', 25, 2500, 0, '2024-10-11 09:49:45', '2024-10-23 07:54:24'),
-(2, 'Class 2', 3, 'A', 25, 1500, 1, '2024-10-12 09:42:18', '2024-10-23 10:16:13'),
-(3, 'Class 1', NULL, 'B', 25, 2500, 1, '2024-10-14 12:22:57', '2024-10-22 15:41:37'),
+(2, 'Class 2', 3, 'A', 25, 1500, 1, '2024-10-12 09:42:18', '2024-10-25 14:02:41'),
+(3, 'Class 1', 21, 'B', 25, 2500, 1, '2024-10-14 12:22:57', '2024-10-25 07:17:57'),
 (4, 'Class 3', 1, 'A', 25, 3000, 1, '2024-10-21 10:30:27', '2024-10-23 10:08:11'),
 (5, 'Class 4', 9, 'A', 25, 2500, 1, '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
 (6, 'Class 5', 8, 'A', 25, 2400, 1, '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
@@ -132,7 +139,7 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `name`, `email`, `password`, `phone`, `class_id`, `profileimage`, `status`, `address`, `created_at`, `updated_at`) VALUES
-(2, 'test4', 'test4@gmail.com', '$2y$10$vXui8IoKg1zW6FGAPckzzeSL8tN5AkErZBqx2C830OxLzv0o/F26e', '1234567', 1, '../uploads/67191dd33ad85.jpg', 1, 'aaaa bbbbb ccc ddd ', '2024-10-10 10:47:39', '2024-10-23 13:02:19'),
+(2, 'test4', 'test4@gmail.com', '$2y$10$vXui8IoKg1zW6FGAPckzzeSL8tN5AkErZBqx2C830OxLzv0o/F26e', '1234567', 2, '../uploads/67191dd33ad85.jpg', 1, 'aaaa bbbbb ccc ddd ', '2024-10-10 10:47:39', '2024-10-25 07:24:06'),
 (3, 'test224', 'test224@gmail.com', '$2y$10$cItcBg1IViRfiDUhioRS2.ZLwuaQ6m.WjwINuzP9Cp/oulIk9x2FC', '1111111 2222 33333 4444', NULL, '../uploads/profile2.jpg', 0, 'aaaaaaa bbbbb cccccccc', '2024-10-10 10:59:20', '2024-10-21 06:33:33'),
 (7, 'test1234', 'test1234@gmail.com', '$2y$10$u4mRpUH6m9C/iTGsN29yVup/JZlQHlMuhkJIjFLkzcqY6NjjVwKry', '1111111 2222 33333', 1, '../uploads/profile2.jpg', 1, 'ssssssssssss aaaaaaaaaa cccccccc', '2024-10-11 18:56:51', '2024-10-14 04:02:08'),
 (8, 'test15', 'test15@gmail.com', '$2y$04$nVF/E7IPkOq8wVz/FjS3v.ftvFg2BUmMsEtudwC8JVtxIxHSswOF2', '1111111 2222 33333 4444', 6, '../uploads/mlane.jpg', 1, 'aaa bb cc', '2024-10-14 06:20:57', '2024-10-21 05:46:32'),
@@ -320,11 +327,11 @@ INSERT INTO `teacher` (`id`, `name`, `password`, `phone`, `email`, `profileimage
 (3, 'test4', '$2y$10$wvEc2yleaJv6G/kcomIHV.SfVjqere2huUgUmh/vK8Xq2/.dRsr4q', '111111112222222', 'test444@gmail.com', '../uploads/6716abb2136bf.jpg', 0, 'aaaa bbbbbb ccccccc ddddd', '2024-10-12 10:00:53', '2024-10-23 07:16:46'),
 (4, 'Teacher 4', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher4@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'aaa', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
 (5, 'Teacher 5', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher5@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'aaaaaa', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
-(6, 'Teacher 6', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher6@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'bbbb', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
+(6, 'Teacher 6', '$2y$10$2vLJAm/.za8Z/oFHgaQsZuOfQgy1salwgTa4qvCzl7u.km9pCRFyi', '12345678', 'teacher6@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'bbbb', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
 (7, 'Teacher 7', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher7@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'aaa', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
 (8, 'Teacher 8', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher8@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'aaaaaa', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
 (9, 'Teacher 9', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher9@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'bbbb', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
-(10, 'Teacher 10', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher10@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'aaa', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
+(10, 'Teacher 10', '$2y$10$2vLJAm/.za8Z/oFHgaQsZuOfQgy1salwgTa4qvCzl7u.km9pCRFyi', '12345678', 'teacher10@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'aaa', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
 (11, 'Teacher 11', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher11@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'aaaaaa', '2024-10-11 09:49:45', '2024-10-23 07:06:15'),
 (12, 'Teacher 12', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher12@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'bbbb', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
 (13, 'Teacher 13', '$2y$10$EfvNdfjmx4nDWkH02TYugOwgczn2MtJMviTFp.jliR1...', '12345678', 'teacher13@gmail.com', '../uploads/6716abb2136bf.jpg', 1, 'aaa', '2024-10-11 09:49:45', '2024-10-22 12:09:02'),
@@ -349,7 +356,8 @@ INSERT INTO `teacher` (`id`, `name`, `password`, `phone`, `email`, `profileimage
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`),
   ADD KEY `teacher_id` (`teacher_id`),
-  ADD KEY `student_id` (`student_id`);
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `class_id` (`class_id`) USING BTREE;
 
 --
 -- Indexes for table `class`
@@ -369,7 +377,7 @@ ALTER TABLE `staff`
 --
 ALTER TABLE `student`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `class_id` (`class_id`);
+  ADD KEY `fk_class` (`class_id`);
 
 --
 -- Indexes for table `teacher`
@@ -385,13 +393,13 @@ ALTER TABLE `teacher`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `staff`
@@ -416,11 +424,10 @@ ALTER TABLE `teacher`
 --
 
 --
--- Constraints for table `attendance`
+-- Constraints for table `student`
 --
-ALTER TABLE `attendance`
-  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`id`),
-  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`);
+ALTER TABLE `student`
+  ADD CONSTRAINT `fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
