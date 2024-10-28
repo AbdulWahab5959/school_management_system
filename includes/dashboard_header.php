@@ -30,6 +30,18 @@
 
 <!-- DataTables Buttons CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- SweetAlert2 - Keeping only one instance -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Include FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.css" rel="stylesheet">
+
+  <!-- Include FullCalendar core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.js"></script>
+
+  <!-- jQuery UI files for datetime format -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" defer></script>

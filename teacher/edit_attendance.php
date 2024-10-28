@@ -1,7 +1,26 @@
 <?php
 require_once('../includes/db.php');
 require_once('includes/login_check.php');
-
+$s = "SELECT 
+                        attendance.id,
+                        student.id AS student_id,
+                        student.name AS student_name,
+                        class.id AS class_id,
+                        class.name AS class_name,
+                        teacher.id AS teacher_id,
+                        teacher.name AS teacher_name
+                    FROM 
+                        attendance
+                    JOIN 
+                        student ON attendance.student_id = student.id
+                    JOIN 
+                        class ON attendance.class_id = class.id
+                    JOIN 
+                        teacher ON attendance.teacher_id = teacher.id;
+                    ";
+                  $sth = $pdo->prepare($s);
+                  $sth->execute([':teacher_id' => $user_id, ':current_date' => $current_date]);
+                  ?>
 if(isset($_GET["id"])){
     $id = $_GET['id'];
 }

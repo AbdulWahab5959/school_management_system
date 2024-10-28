@@ -1,4 +1,6 @@
  <!--   Core JS Files   -->
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
  <script src="../dashboard_assets/js/core/jquery-3.7.1.min.js"></script>
  <script src="../dashboard_assets/js/core/popper.min.js"></script>
  <script src="../dashboard_assets/js/core/bootstrap.min.js"></script>
@@ -30,6 +32,7 @@
 
  <!--  JS -->
  <script src="../dashboard_assets/js/kaiadmin.min.js"></script>
+ <script src="../dashboard_assets/js/main.js"></script>
  <script src="../dashboard_assets/js/script.js"></script>
 
  <!-- DataTables Export Buttons -->
