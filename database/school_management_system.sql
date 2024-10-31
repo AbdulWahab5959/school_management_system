@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2024 at 09:01 PM
+-- Generation Time: Oct 31, 2024 at 11:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -51,10 +51,33 @@ INSERT INTO `attendance` (`id`, `class_id`, `teacher_id`, `student_id`, `date`, 
 (34, 10, 6, 185, '2024-10-02', 'Absent', '2024-10-27 11:19:21', '2024-10-27 11:19:21'),
 (35, 10, 6, 182, '2024-10-28', 'Present', '2024-10-27 11:39:28', '2024-10-27 11:39:28'),
 (36, 10, 6, 185, '2024-10-28', 'Present', '2024-10-27 11:39:28', '2024-10-27 11:39:28'),
-(37, 10, 6, 182, '2024-10-01', 'Present', '2024-10-28 06:25:26', '2024-10-28 06:25:26'),
-(38, 10, 6, 185, '2024-10-01', 'Present', '2024-10-28 06:25:26', '2024-10-28 06:25:26'),
-(39, 10, 6, 182, '2024-10-09', 'Leave', '2024-10-28 07:06:33', '2024-10-28 07:06:33'),
-(40, 10, 6, 185, '2024-10-09', 'Leave', '2024-10-28 07:06:33', '2024-10-28 07:06:33');
+(57, 10, 6, 182, '2024-10-29', 'Present', '2024-10-29 13:20:59', '2024-10-29 13:20:59'),
+(58, 10, 6, 185, '2024-10-29', 'Present', '2024-10-29 13:20:59', '2024-10-29 13:20:59'),
+(71, 10, 6, 182, '2024-10-30', 'Present', '2024-10-30 06:38:20', '2024-10-30 06:38:20'),
+(72, 10, 6, 185, '2024-10-30', 'Present', '2024-10-30 06:38:20', '2024-10-30 06:38:20'),
+(75, 10, 6, 182, '2024-10-31', 'Present', '2024-10-31 00:49:49', '2024-10-31 00:54:03'),
+(76, 10, 6, 185, '2024-10-31', 'Present', '2024-10-31 00:49:49', '2024-10-31 00:54:03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance_record`
+--
+
+CREATE TABLE `attendance_record` (
+  `id` int(11) NOT NULL,
+  `class_id` varchar(255) NOT NULL,
+  `title` varchar(10) NOT NULL DEFAULT 'Marked',
+  `start_time` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `attendance_record`
+--
+
+INSERT INTO `attendance_record` (`id`, `class_id`, `title`, `start_time`) VALUES
+(5, '10', 'Marked', '2024-10-30'),
+(6, '10', 'Marked', '2024-10-31');
 
 -- --------------------------------------------------------
 
@@ -360,6 +383,12 @@ ALTER TABLE `attendance`
   ADD KEY `class_id` (`class_id`) USING BTREE;
 
 --
+-- Indexes for table `attendance_record`
+--
+ALTER TABLE `attendance_record`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `class`
 --
 ALTER TABLE `class`
@@ -393,7 +422,13 @@ ALTER TABLE `teacher`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+
+--
+-- AUTO_INCREMENT for table `attendance_record`
+--
+ALTER TABLE `attendance_record`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `class`
