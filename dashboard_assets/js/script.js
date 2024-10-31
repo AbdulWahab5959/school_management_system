@@ -1,10 +1,14 @@
 var calendar;
 
-function initializeCalendar(slots) {
+function initializeCalendar(Attendance) {
   var calendarEl = document.getElementById("calendar");
-  events: slots,
+  events: Attendance,
+  
     (calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: "dayGridMonth",
+      editable: true,
+      selectable: true,
+
 
       dateClick: function (info) {
         var clickedDate = info.date;
@@ -91,11 +95,12 @@ function initializeCalendar(slots) {
   calendar.render();
 }
 
+
 $(document).ready(function () {
         let today = new Date();
         let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         let currentDate = today.toLocaleDateString('en-US', options);
-
+        
 
   var switchToMonthButton = document.getElementById("switchToMonthButton");
   switchToMonthButton.addEventListener("click", function () {
@@ -103,14 +108,44 @@ $(document).ready(function () {
     $("#switchToMonthButton").css("display", "none");
     $("#addNewTimeSlotbtn").css("display", "none");
   });
-
+  
   $(document).on("click", "#addNewTimeSlotbtn", function () {
     $("#AddTimeSlotModal").modal("show");
   });
 
   loadCalendar();
 
+  $(document).ready(function loadAttendance_record() {
+    var class_id = document.getElementById("class_id").value;
+    console.log(class_id) ;
+    $.ajax({
+      url: "ajax_api.php",
+      method: "GET", 
+      data: { class_id: class_id }, 
+      success: function (response) {
+        var events = JSON.parse(response);
+        
+        console.log(events) ;
+            events.forEach(event => {
+                calendar.addEvent({
+                    title: 'Marked',
+                    start: event.start_time,
+                    end: null ,
+                    display: 'background',  
+                    backgroundColor: 'Black',
+                    textColor: 'White',
+                    display: 'block'
+                });
+            });
+        },
+        error: function (error) {
+            console.error("Error:", error);
+        },
+    });
+});
+
   function loadCalendar() {
+    
     $.ajax({
       url: "ajax_api.php", 
       method: "POST",
@@ -119,11 +154,9 @@ $(document).ready(function () {
       },
       success: function (response) {
 
-        // Initialize calendar with event data
-        initializeCalendar(response);
+        initializeCalendar(response); 
       },
       error: function (error) {
-        // Handle errors from the AJAX request
         console.error("Error:", error);
       },
     });
@@ -142,7 +175,6 @@ $(document).ready(function () {
         $("#AddTimeSlotModal").modal("hide");
         loadCalendar();
         var jsonResponse = JSON.parse(response);
-        // Show SweetAlert based on the response status
         if (jsonResponse.status === "success") {
           Swal.fire({
             title: "Success!",
@@ -150,7 +182,11 @@ $(document).ready(function () {
             icon: "success",
             confirmButtonText: "OK",
           });
-        } else if (jsonResponse.status === "error") {
+           
+           
+                  
+        } 
+        else if (jsonResponse.status === "error") {
           Swal.fire({
             title: "Error!",
             text: jsonResponse.message,

@@ -32,7 +32,6 @@
 
  <!--  JS -->
  <script src="../dashboard_assets/js/kaiadmin.min.js"></script>
- <script src="../dashboard_assets/js/main.js"></script>
  <script src="../dashboard_assets/js/script.js"></script>
 
  <!-- DataTables Export Buttons -->
