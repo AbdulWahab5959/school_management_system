@@ -205,7 +205,7 @@ require_once('includes/login_checks.php');
       $(document).ready(function() {
         $('#teacher-table').DataTable({
           pageLength: 5,
-    dom: 'Bfrtip', // Include buttons in the table
+      dom: '<"d-flex justify-content-between"<"mr-2"l><"ml-2"B><"ml-2"f>>rtip',// Include buttons in the table
     buttons: [
       {
         extend: 'csv',
@@ -232,7 +232,7 @@ require_once('includes/login_checks.php');
 
         $('#disabled-teacher-table').DataTable({
           pageLength: 5,
-    dom: 'Bfrtip', // Include buttons in the table
+      dom: '<"d-flex justify-content-between"<"mr-2"l><"ml-2"B><"ml-2"f>>rtip',// Include buttons in the table
     buttons: [
       {
         extend: 'csv',

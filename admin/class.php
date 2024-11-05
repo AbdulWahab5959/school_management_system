@@ -237,9 +237,9 @@ require_once('includes/login_checks.php');
  <script>
       $(document).ready(function() {
         $('#add-row').DataTable({
-      pageLength: 5,
-    dom: 'Bfrtip', // Include buttons in the table
-    buttons: [
+          pageLength: 5,
+      dom: '<"d-flex justify-content-between"<"mr-2"l><"ml-2"B><"ml-2"f>>rtip',
+      buttons: [
       {
         extend: 'csv',
         text: 'Export CSV',
@@ -320,22 +320,9 @@ require_once('includes/login_checks.php');
         });
         $(document).on('click', '.user', function() {
           var id = $(this).data('id');
-          Swal.fire({
-            title: 'Are you sure?',
-            text: "You want to Class student this class!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#1085d9',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, show it!'
-          }).then((result) => {
-            if (result.isConfirmed) {
               window.location.href = 'class_student.php?id=' + id;
-            }
           });
         });
-
-      });
     </script>
 
 </script>

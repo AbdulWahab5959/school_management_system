@@ -151,7 +151,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['class_update'])) {
                                                 $sth = $pdo->prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                                                 $sth->execute();
                                                 ?>
-
                                                 <div class="form-group">
                                                     <label for="teacher">Choose a Teacher</label>
 

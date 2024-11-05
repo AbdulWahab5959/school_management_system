@@ -52,6 +52,12 @@ $page = end($path_parts);
                         <p>Class</p>  
                     </a>
                 </li>
+                <li class="nav-item <?php echo $page=='attendance.php'?'active':'';?>">
+                    <a href="attendance.php">
+                    <i class="fas fa-chalkboard"></i>
+                        <p>Attendance</p>  
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

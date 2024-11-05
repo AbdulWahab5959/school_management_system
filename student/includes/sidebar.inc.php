@@ -1,3 +1,7 @@
+<?php
+$path_parts = explode('/', $_SERVER['PHP_SELF']);
+$page = end($path_parts);
+?>
 <div class="sidebar" data-background-color="dark">
     <div class="sidebar-logo">
         <!-- Logo Header -->
@@ -22,33 +26,25 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
-                <li class="nav-item">
+                <li class="nav-item <?php echo $page=='index.php'?'active':'';?>">
                     <a href="index.php" >
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 </li>
-                <li class="nav-item">
-                    <a href="teacher.php">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                        <p>Teacher</p>  
-                    </a>
-
-                </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item <?php echo $page=='student.php'?'active':'';?>">
                     <a href="student.php">
                     <i class="fas fa-users"></i>
                         <p>Student</p>  
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="class.php">
-                    <i class="fas fa-chalkboard"></i>
-                        <p>Class</p>  
+                <li class="nav-item <?php echo $page=='attendance.php'?'active':'';?>">
+                    <a href="attendance.php">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                        <p>Attendance</p>  
                     </a>
-
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

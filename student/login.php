@@ -1,6 +1,5 @@
 <?php
 require_once('../includes/db.php');
-require_once('includes/login_check.php');
 
 if (isset($_POST['submit'])) {
     if (isset($_POST['email'], $_POST['password']) && !empty($_POST['email']) && !empty($_POST['password'])) {

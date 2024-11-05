@@ -43,11 +43,16 @@ $options = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <div class="container">
         <div class="page-inner">
           <input type="hidden" name="class_id" id="class_id" value="<?php echo $class_id; ?>">
+          <div class="d-flex justify-content-between align-items-center">
           <h2>Class Attendance</h2>
+          <button class="btn btn-outline-primary " id="editNewTimeSlotbtn" style="display: none;">Edit Today Attendance</button>
+          <button class="btn btn-outline-primary" id="addNewTimeSlotbtn"> Add Today Attendance</button>
+          </div>
+
           <hr>
 
           <!-- Attendance Modal -->
-          <div class="modal fade" tabindex="-1" id="AddTimeSlotModal">
+          <div class="modal fade" tabindex="-1" id="Attendance">
             <div class="modal-dialog modal-length-custom">
               <div class="modal-content">
                 <div class="modal-header">
@@ -100,7 +105,7 @@ $options = $stmt->fetchAll(PDO::FETCH_ASSOC);
                               <td><?php echo $Row['id']; ?></td>
                               <td><?php echo $Row['name']; ?></td>
                               <td>
-                                <input type="radio" name="attendance[<?php echo $student_id; ?>]" value="Present" <?php echo ($attendance_status == 'Present') ? 'checked' : ''; ?>> Present
+                                <input type="radio" name="attendance[<?php echo $student_id; ?>]" value="Present" <?php echo ($attendance_status == 'Present') ? 'checked' : 'checked'; ?>> Present
                                 <input type="radio" name="attendance[<?php echo $student_id; ?>]" value="Absent" <?php echo ($attendance_status == 'Absent') ? 'checked' : ''; ?>> Absent
                                 <input type="radio" name="attendance[<?php echo $student_id; ?>]" value="Leave" <?php echo ($attendance_status == 'Leave') ? 'checked' : ''; ?>> Leave
                               </td>
@@ -125,8 +130,6 @@ $options = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
 
           <div class="bg-light">
-            <button class="btn btn-outline-dark ms-3 mb-3 mt-3" id="switchToMonthButton" style="display: none;">Monthly View</button>
-            <button class="btn btn-outline-primary ms-3 mb-3 mt-3" id="addNewTimeSlotbtn" style="display: none;">Add Today Attendance</button>
             <main class="ms-5 p-0">
               <div id="calendar"></div>
             </main>

@@ -130,7 +130,7 @@ require_once('includes/login_checks.php');
   $(document).ready(function () {
     $('#add-row, #disable-row').DataTable({
       pageLength: 5,
-    dom: 'Bfrtip', // Include buttons in the table
+      dom: '<"d-flex justify-content-between"<"mr-2"l><"ml-2"B><"ml-2"f>>rtip',
     buttons: [
       {
         extend: 'csv',
