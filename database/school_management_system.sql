@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2024 at 11:52 AM
+-- Generation Time: Nov 05, 2024 at 08:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,7 +56,9 @@ INSERT INTO `attendance` (`id`, `class_id`, `teacher_id`, `student_id`, `date`, 
 (71, 10, 6, 182, '2024-10-30', 'Present', '2024-10-30 06:38:20', '2024-10-30 06:38:20'),
 (72, 10, 6, 185, '2024-10-30', 'Present', '2024-10-30 06:38:20', '2024-10-30 06:38:20'),
 (75, 10, 6, 182, '2024-10-31', 'Present', '2024-10-31 00:49:49', '2024-10-31 00:54:03'),
-(76, 10, 6, 185, '2024-10-31', 'Present', '2024-10-31 00:49:49', '2024-10-31 00:54:03');
+(76, 10, 6, 185, '2024-10-31', 'Present', '2024-10-31 00:49:49', '2024-11-04 21:12:06'),
+(77, 10, 6, 182, '2024-11-05', 'Present', '2024-11-05 07:49:07', '2024-11-05 09:30:15'),
+(78, 10, 6, 185, '2024-11-05', 'Present', '2024-11-05 07:49:07', '2024-11-05 09:30:15');
 
 -- --------------------------------------------------------
 
@@ -77,7 +79,8 @@ CREATE TABLE `attendance_record` (
 
 INSERT INTO `attendance_record` (`id`, `class_id`, `title`, `start_time`) VALUES
 (5, '10', 'Marked', '2024-10-30'),
-(6, '10', 'Marked', '2024-10-31');
+(6, '10', 'Marked', '2024-10-31'),
+(8, '10', 'Marked', '2024-11-05');
 
 -- --------------------------------------------------------
 
@@ -422,13 +425,13 @@ ALTER TABLE `teacher`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `attendance_record`
 --
 ALTER TABLE `attendance_record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `class`
