@@ -45,8 +45,8 @@ $options = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <input type="hidden" name="class_id" id="class_id" value="<?php echo $class_id; ?>">
           <div class="d-flex justify-content-between align-items-center">
           <h2>Class Attendance</h2>
-          <button class="btn btn-outline-primary " id="editNewTimeSlotbtn" style="display: none;">Edit Today Attendance</button>
-          <button class="btn btn-outline-primary" id="addNewTimeSlotbtn"> Add Today Attendance</button>
+          <button class="btn btn-success " id="editNewTimeSlotbtn" style="display: none;">Edit Today Attendance</button>
+          <button class="btn btn-primary" id="addNewTimeSlotbtn" > Add Today Attendance</button>
           </div>
 
           <hr>
