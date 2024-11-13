@@ -2,38 +2,39 @@
 require_once('../includes/db.php');
 require_once('includes/login_checks.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['attendance'], $_POST['class_id'], $_POST['date'])) {
-    $class_id = $_POST['class_id'];
-    $date = $_POST['date'];
-    $attendance_records = $_POST['attendance'];  
-    $updated_at = date('Y-m-d H:i:s');
 
-    try {
-        foreach ($attendance_records as $student_id => $status) {
-            $sql = "UPDATE attendance 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['attendance'], $_POST['class_id'], $_POST['date'])) {
+  $class_id = $_POST['class_id'];
+  $date = $_POST['date'];
+  $attendance_records = $_POST['attendance'];
+  $updated_at = date('Y-m-d H:i:s');
+
+  try {
+    foreach ($attendance_records as $student_id => $status) {
+      $sql = "UPDATE attendance 
                     SET status = :status, updated_at = :updated_at 
                     WHERE class_id = :class_id AND student_id = :student_id AND date = :date";
-            $stmt = $pdo->prepare($sql);
+      $stmt = $pdo->prepare($sql);
 
-            $params = [
-                ':status' => $status,
-                ':updated_at' => $updated_at,
-                ':class_id' => $class_id,
-                ':student_id' => $student_id,
-                ':date' => $date
-            ];
+      $params = [
+        ':status' => $status,
+        ':updated_at' => $updated_at,
+        ':class_id' => $class_id,
+        ':student_id' => $student_id,
+        ':date' => $date
+      ];
 
-            if (!$stmt->execute($params)) {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to update attendance for student ID: ' . $student_id]);
-                exit;
-            }
-        }
-
-        echo json_encode(['status' => 'success', 'message' => 'Attendance updated successfully.' . $student_id]);
-    } catch (PDOException $e) {
-        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+      if (!$stmt->execute($params)) {
+        echo json_encode(['status' => 'error', 'message' => 'Failed to update attendance for student ID: ' . $student_id]);
+        exit;
+      }
     }
-    exit;
+
+    echo json_encode(['status' => 'success', 'message' => 'Attendance updated successfully for student ID: ' . $student_id]);
+  } catch (PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+  }
+  exit;
 }
 ?>
 
@@ -65,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['attendance'], $_POST[
           </div>
 
           <!-- Start of form to submit class and date data -->
-          <form action="" method="post">
+          <form action="" method="Get">
             <div class="row">
               <!-- Class Selection Card -->
               <div class="col-sm-6 col-md-3">
@@ -93,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['attendance'], $_POST[
                               <option value="<?php echo ($row['id']); ?>">
                                 <?php echo ($row['name'] . ' ' . $row['section']); ?>
                               </option>
+
                             <?php endwhile; ?>
                           </select>
                         </div>
@@ -140,18 +142,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['attendance'], $_POST[
           <!-- End of form -->
 
           <?php
-          if (isset($_POST['check_attendance'])) {
-            // Retrieve the selected class and date
-            $selectedClass = $_POST['class'];
-            $attendanceDate = $_POST['attendance_date'];
+          if (isset($_GET['check_attendance'])) {
+            $selectedClass = $_GET['class'];
+            $attendanceDate = $_GET['attendance_date'];
 
-            // Query to get the class name and section for the selected class ID
             $classQuery = "SELECT id, name, section FROM class WHERE id = :class_id";
             $classStmt = $pdo->prepare($classQuery);
             $classStmt->execute(['class_id' => $selectedClass]);
             $classInfo = $classStmt->fetch(PDO::FETCH_ASSOC);
 
-            // Query to get attendance data for the selected class and date
             $attendanceQuery = "SELECT s.id,s.name, a.status, a.date 
                                 FROM attendance a 
                                 JOIN student s ON a.student_id = s.id 
@@ -164,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['attendance'], $_POST[
 
           <?php if (isset($attendanceRecords) && !empty($attendanceRecords) && isset($classInfo)): ?>
             <div class="page-header">
-            <h4>Attendance Records for <?php echo ($classInfo['name'] . ' ' . $classInfo['section']); ?> on <?php echo ($attendanceDate); ?></h4>
+              <h4>Attendance Records for <?php echo ($classInfo['name'] . ' ' . $classInfo['section']); ?> on <?php echo ($attendanceDate); ?></h4>
             </div>
             <table id="attendance-table" class="table table-striped table-bordered">
               <thead>
@@ -184,15 +183,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['attendance'], $_POST[
                     <td><?php echo ($record['status']); ?></td>
                     <td><?php echo ($record['date']); ?></td>
                     <td>
-                                  <div class="form-button-action">
-                                  <button
-                                          type="button"
-                                          class="btn btn-link btn-primary btn-lg edit"
-                                          title="Edit class">
-                                          <i class="fa fa-edit"></i>
-                                      </button>   
-                                  </div>
+                      <button
+                        type="button"
+                        class="btn btn-link btn-primary btn-lg edit"
+                        data-student-id="<?php echo ($record['id']); ?>"
+                        data-student-name="<?php echo ($record['name']); ?>"
+                        data-status="<?php echo ($record['status']); ?>"
+                        data-date="<?php echo ($record['date']); ?>"
+                        data-class-id="<?php echo ($classInfo['id']); ?>"
+                        data-class-name="<?php echo htmlspecialchars($classInfo['name'] . ' ' . $classInfo['section']); ?>"
+                        title="Edit attendance">
+                        <i class="fa fa-edit"></i>
+                      </button>
                     </td>
+
+
                   </tr>
                 <?php endforeach; ?>
               </tbody>
@@ -205,101 +210,138 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['attendance'], $_POST[
       </div>
     </div>
     <div class="modal fade" tabindex="-1" id="AttendanceModal">
-            <div class="modal-dialog modal-length-custom">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Class Attendance</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="Attendance_form" method="post">
-                  <div class="modal-body">
-                    <input type="text" id="selected_date" class="form-control" name="date" readonly value="<?php echo ($record['date']); ?>">
-                    <input type="hidden" name="student_id" value="<?php echo ($record['id']); ?>">
-                    <input type="hidden" name="class_id" value="<?php echo ($classInfo['id']); ?>">
-                    <label for="class_name">Class Name:</label>
-                    <input type="text" class="form-control" name="class_name" value="<?php echo ($classInfo['name']); ?>" readonly>
-                    <div class="table-responsive mt-3">
-                      <table id="add-row" class="table table-striped table-hover">
-                        <thead class="text-center">
-                          <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Attendance</th>
-                          </tr>
-                        </thead>
-                        <tbody class="text-center">
-                            <tr>
-                            <td><?php echo ($record['id']); ?></td>
-                            <td><?php echo ($record['name']); ?></td>
-                              <td>
-                                <input type="radio" name="attendance[<?php echo ($record['id']); ?>]" value="Present" <?php echo (($record['status']) == 'Present') ? 'checked' : ''; ?>> Present
-                                <input type="radio" name="attendance[<?php echo ($record['id']); ?>]" value="Absent" <?php echo (($record['status']) == 'Absent') ? 'checked' : ''; ?>> Absent
-                                <input type="radio" name="attendance[<?php echo ($record['id']); ?>]" value="Leave" <?php echo (($record['status']) == 'Leave') ? 'checked' : ''; ?>> Leave
-                              </td>
-                            </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                  <?php if ($attendanceRecords): ?>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button name="UpdateAttendance"  type="submit" class="btn btn-success">Save</button>
-                  <?php endif; ?>
-                  </div>
-                </form>
+      <div class="modal-dialog modal-length-custom">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Class Attendance</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="Attendance_form" method="post">
+            <div class="modal-body">
+              <input type="text" id="selected_date" class="form-control" name="date" readonly value="<?php echo ($record['date']); ?>">
+              <input type="hidden" name="student_id" id="class_name">
+              <input type="hidden" name="class_id" id="class_name">
+
+              <label for="class_name">Class:</label>
+              <input type="text" class="form-control" name="class_name" id="class_name" readonly>
+
+              <!-- Student Info -->
+              <div class="table-responsive mt-3">
+                <table id="add-row" class="table table-striped table-hover">
+                  <thead class="text-center">
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Attendance</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center">
+                    <tr id="student-row">
+
+                    </tr>
+                  </tbody>
+
+                </table>
               </div>
             </div>
-          </div>
-
+            <div class="modal-footer">
+              <?php if ($attendanceRecords): ?>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button name="UpdateAttendance" type="submit" class="btn btn-success">Save</button>
+              <?php endif; ?>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     <?php
     require_once('../includes/dashboard_footer.php');
     ?>
-<script>
-  $(document).ready(function () {
-    $("#attendance-table").DataTable({
-      pageLength: 5,
-      dom: '<"d-flex justify-content-between"<"mr-2"l><"ml-2"B><"ml-2"f>>rtip',
-      buttons: [
-        { extend: 'csv', text: 'Export CSV', className: 'btn btn-primary' },
-        { extend: 'excel', text: 'Export Excel', className: 'btn btn-success' },
-        { extend: 'pdf', text: 'Export PDF', className: 'btn btn-danger' },
-        { extend: 'print', text: 'Print', className: 'btn btn-info' }
-      ]
-    });
+    <script>
+      $(document).ready(function() {
+        $("#attendance-table").DataTable({
+          pageLength: 5,
+          dom: '<"d-flex justify-content-between"<"mr-2"l><"ml-2"B><"ml-2"f>>rtip',
+          buttons: [{
+              extend: 'csv',
+              text: 'Export CSV',
+              className: 'btn btn-primary'
+            },
+            {
+              extend: 'excel',
+              text: 'Export Excel',
+              className: 'btn btn-success'
+            },
+            {
+              extend: 'pdf',
+              text: 'Export PDF',
+              className: 'btn btn-danger'
+            },
+            {
+              extend: 'print',
+              text: 'Print',
+              className: 'btn btn-info'
+            }
+          ]
+        });
 
-    $(".edit").on("click", function () {
-          
-      $("#AttendanceModal").modal("show");
-          
-    });
+        $(".edit").on("click", function() {
+          var studentId = $(this).data("student-id");
+          var studentName = $(this).data("student-name");
+          var status = $(this).data("status");
+          var date = $(this).data("date");
+          var classId = $(this).data("class-id");
+          var classInfo = $(this).data("class-name");
 
-    $(document).on("submit", "#Attendance_form", function (event) {
-  event.preventDefault();
-  var formData = $(this).serialize();
+          $("#AttendanceModal #selected_date").val(date);
+          $("#AttendanceModal input[name='student_id']").val(studentId);
+          $("#AttendanceModal input[name='class_id']").val(classId);
+          $("#AttendanceModal input[name='class_name']").val(classInfo);
 
-  $.ajax({
-    url: "attendance.php",
-    type: "POST",
-    data: formData,
-    success: function (response) {
-      console.log(response); 
-      var jsonResponse = JSON.parse(response);
-      $("#AttendanceModal").modal("hide");
-      if (jsonResponse.status === "success") {
-        Swal.fire("Success", jsonResponse.message, "success");
-      } else if (jsonResponse.status === "error") {
-        Swal.fire("Error", jsonResponse.message, "error");
-      }
-    },
-    error: function () {
-      Swal.fire("Error", "Failed to update attendance.", "error");
-    },
-  });
-});
+          $("#student_id").text(studentId);
+          $("#student_name").text(studentName);
 
-  });
-</script>
+                  var attendanceOptions = `
+            <td>${studentId}</td>
+            <td>${studentName}</td>
+            <td>
+              <input type="radio" name="attendance[${studentId}]" value="Present" ${status === 'Present' ? 'checked' : ''}> Present
+              <input type="radio" name="attendance[${studentId}]" value="Absent" ${status === 'Absent' ? 'checked' : ''}> Absent
+              <input type="radio" name="attendance[${studentId}]" value="Leave" ${status === 'Leave' ? 'checked' : ''}> Leave
+            </td>
+          `;
+
+          $("#student-row").html(attendanceOptions);
+
+          $("#AttendanceModal").modal("show");
+        });
+
+
+        $(document).on("submit", "#Attendance_form", function(event) {
+          event.preventDefault();
+          var formData = $(this).serialize();
+
+          $.ajax({
+            url: "attendance.php",
+            type: "POST",
+            data: formData,
+            success: function(response) {
+              console.log(response);
+              var jsonResponse = JSON.parse(response);
+              $("#AttendanceModal").modal("hide");
+              if (jsonResponse.status === "success") {
+                Swal.fire("Success", jsonResponse.message, "success");
+              } else if (jsonResponse.status === "error") {
+                Swal.fire("Error", jsonResponse.message, "error");
+              }
+            },
+            error: function() {
+              Swal.fire("Error", "Failed to update attendance.", "error");
+            },
+          });
+        });
+      });
+    </script>
 
 
 </body>

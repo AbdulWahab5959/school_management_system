@@ -58,6 +58,12 @@ $page = end($path_parts);
                         <p>Attendance</p>  
                     </a>
                 </li>
+                <li class="nav-item <?php echo $page=='fees.php'?'active':'';?>">
+                    <a href="fees.php">
+                    <i class="fas fa-file-invoice-dollar"></i>       
+                        <p>Fees</p>  
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
