@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fee Challan</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .challan-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .challan-copy {
+        border: 1px solid black;
+        width: 32%;
+        padding: 10px;
+    }
+    .school-info {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .info-table th, .info-table td {
+        border: 1px solid black;
+        padding: 5px;
+        text-align: left;
+    }
+    .info-table th {
+        background-color: #f2f2f2;
+    }
+    .amount {
+        text-align: right;
+    }
+    .highlight {
+        font-weight: bold;
+        color: red;
+    }
+</style>
+</head>
+<body>
+
+<div class="challan-container">
+    <!-- School/College Copy -->
+    <div class="challan-copy">
+        <div class="school-info">
+            Bank Copy<br><br>
+            Excellent Education System (Demo)<br>
+            G-11 Markaz Islamabad<br>
+            Phone Number: 03114443493
+        </div>
+        <table class="info-table">
+            <tr>
+                <td><strong>Challan Form No:</strong></td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td><strong>Due Date:</strong></td>
+                <td>10-Nov-2020</td>
+            </tr>
+            <tr>
+                <td><strong>Valid Till:</strong></td>
+                <td>30-Nov-2020</td>
+            </tr>
+            <tr>
+                <td><strong>Student Reg No:</strong></td>
+                <td>00126631</td>
+            </tr>
+            <tr>
+                <td><strong>Student Name:</strong></td>
+                <td>Hadia Zahra</td>
+            </tr>
+            <tr>
+                <td><strong>Father Name:</strong></td>
+                <td>Ameer Abbas Awan</td>
+            </tr>
+            <tr>
+                <td><strong>Class:</strong></td>
+                <td>9th - Quaid</td>
+            </tr>
+        </table>
+        <table class="info-table">
+            <tr>
+                <th>Description</th>
+                <th class="amount">Amount</th>
+            </tr>
+            <tr>
+                <td>Monthly fee</td>
+                <td class="amount">1000</td>
+            </tr>
+            <tr>
+                <td>Generator Fund</td>
+                <td class="amount">100</td>
+            </tr>
+            <tr>
+                <td>Previous Fee</td>
+                <td class="amount">0</td>
+            </tr>
+            <tr>
+                <td><strong>Total Fee</strong></td>
+                <td class="amount"><strong>1100</strong></td>
+            </tr>
+            <tr>
+                <td>Discount/Scholarship</td>
+                <td class="amount">100</td>
+            </tr>
+            <tr>
+                <td>Fee Within Due Date (Till 10-Nov-2020)</td>
+                <td class="amount">1000</td>
+            </tr>
+            <tr>
+                <td class="highlight">Fee After Due Date (From 11-Nov-2020)</td>
+                <td class="amount highlight">1000</td>
+            </tr>
+            <tr>
+                <td>Amount in words:</td>
+                <td class="amount">One thousand</td>
+            </tr>
+        </table>
+    </div>
+    <div class="challan-copy">
+        <div class="school-info">
+             Student Copy<br><br>
+            Excellent Education System (Demo)<br>
+            G-11 Markaz Islamabad<br>
+            Phone Number: 03114443493
+        </div>
+        <table class="info-table">
+            <tr>
+                <td><strong>Challan Form No:</strong></td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td><strong>Due Date:</strong></td>
+                <td>10-Nov-2020</td>
+            </tr>
+            <tr>
+                <td><strong>Valid Till:</strong></td>
+                <td>30-Nov-2020</td>
+            </tr>
+            <tr>
+                <td><strong>Student Reg No:</strong></td>
+                <td>00126631</td>
+            </tr>
+            <tr>
+                <td><strong>Student Name:</strong></td>
+                <td>Hadia Zahra</td>
+            </tr>
+            <tr>
+                <td><strong>Father Name:</strong></td>
+                <td>Ameer Abbas Awan</td>
+            </tr>
+            <tr>
+                <td><strong>Class:</strong></td>
+                <td>9th - Quaid</td>
+            </tr>
+        </table>
+        <table class="info-table">
+            <tr>
+                <th>Description</th>
+                <th class="amount">Amount</th>
+            </tr>
+            <tr>
+                <td>Monthly fee</td>
+                <td class="amount">1000</td>
+            </tr>
+            <tr>
+                <td>Generator Fund</td>
+                <td class="amount">100</td>
+            </tr>
+            <tr>
+                <td>Previous Fee</td>
+                <td class="amount">0</td>
+            </tr>
+            <tr>
+                <td><strong>Total Fee</strong></td>
+                <td class="amount"><strong>1100</strong></td>
+            </tr>
+            <tr>
+                <td>Discount/Scholarship</td>
+                <td class="amount">100</td>
+            </tr>
+            <tr>
+                <td>Fee Within Due Date (Till 10-Nov-2020)</td>
+                <td class="amount">1000</td>
+            </tr>
+            <tr>
+                <td class="highlight">Fee After Due Date (From 11-Nov-2020)</td>
+                <td class="amount highlight">1000</td>
+            </tr>
+            <tr>
+                <td>Amount in words:</td>
+                <td class="amount">One thousand</td>
+            </tr>
+        </table>
+    </div>
+    <div class="challan-copy">
+        <div class="school-info">
+            Department copy<br><br>
+            Excellent Education System (Demo)<br>
+            G-11 Markaz Islamabad<br>
+            Phone Number: 03114443493
+        </div>
+        <table class="info-table">
+            <tr>
+                <td><strong>Challan Form No:</strong></td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td><strong>Due Date:</strong></td>
+                <td>10-Nov-2020</td>
+            </tr>
+            <tr>
+                <td><strong>Valid Till:</strong></td>
+                <td>30-Nov-2020</td>
+            </tr>
+            <tr>
+                <td><strong>Student Reg No:</strong></td>
+                <td>00126631</td>
+            </tr>
+            <tr>
+                <td><strong>Student Name:</strong></td>
+                <td>Hadia Zahra</td>
+            </tr>
+            <tr>
+                <td><strong>Father Name:</strong></td>
+                <td>Ameer Abbas Awan</td>
+            </tr>
+            <tr>
+                <td><strong>Class:</strong></td>
+                <td>9th - Quaid</td>
+            </tr>
+        </table>
+        <table class="info-table">
+            <tr>
+                <th>Description</th>
+                <th class="amount">Amount</th>
+            </tr>
+            <tr>
+                <td>Monthly fee</td>
+                <td class="amount">1000</td>
+            </tr>
+            <tr>
+                <td>Generator Fund</td>
+                <td class="amount">100</td>
+            </tr>
+            <tr>
+                <td>Previous Fee</td>
+                <td class="amount">0</td>
+            </tr>
+            <tr>
+                <td><strong>Total Fee</strong></td>
+                <td class="amount"><strong>1100</strong></td>
+            </tr>
+            <tr>
+                <td>Discount/Scholarship</td>
+                <td class="amount">100</td>
+            </tr>
+            <tr>
+                <td>Fee Within Due Date (Till 10-Nov-2020)</td>
+                <td class="amount">1000</td>
+            </tr>
+            <tr>
+                <td class="highlight">Fee After Due Date (From 11-Nov-2020)</td>
+                <td class="amount highlight">1000</td>
+            </tr>
+            <tr>
+                <td>Amount in words:</td>
+                <td class="amount">One thousand</td>
+            </tr>
+        </table>
+    </div>
+
+   
+</div>
+
+</body>
+</html>
