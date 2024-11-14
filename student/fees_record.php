@@ -15,11 +15,9 @@ $student_id = $_SESSION['student_id'];
 
 <body>
     <div class="wrapper">
-        <!-- Sidebar -->
         <?php
         require_once('includes/sidebar.inc.php')
         ?>
-        <!-- End Sidebar -->
 
         <div class="main-panel">
             <?php
@@ -46,7 +44,6 @@ $student_id = $_SESSION['student_id'];
                                     $sth = $pdo->prepare($s);
                                     $sth->execute(['student_id' => $student_id]);
                                     ?>
-
                                     <div class="table-responsive">
                                         <table id="add-row" class="display table table-striped table-hover">
                                             <thead class="text-center">
@@ -118,7 +115,7 @@ $student_id = $_SESSION['student_id'];
     };
     console.log(feeData);
 
-    var form = $('<form action="fee_pdf.php" method="post"></form>');
+    var form = $('<form action="fee_pdf.php" target="_blank"  method="post"></form>');
     $.each(feeData, function(key, value) {
         form.append('<input type="hidden" name="' + key + '" value="' + value + '">');
     });

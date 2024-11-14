@@ -8,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['class_id'])) {
   $classId = $_GET['class_id'];
 
   try {
-    // Fetch records for the selected class
     $fetchSql = "SELECT student.id as student_id, student.name as student_name, class.name as class_name, fees.id , fees.status, fees.start_date, fees.end_date
                      FROM fees
                      JOIN student ON fees.student_id = student.id
