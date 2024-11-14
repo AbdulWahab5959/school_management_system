@@ -68,7 +68,6 @@ $html = "
                 <tr><td class='bold'>Student Name:</td><td> <b>Hadia Zahra</b></td></tr>
                 <tr><td class='bold'>Class:</td><td> <b>9th - Quaid</b></td></tr>
             </table>
-
             <table>
                 <tr><th>Description</th><th class='center'> <b>Amount</b></th></tr>
                 <tr><td>Monthly fee</td><td class='center'> <b>1000</b></td></tr>
