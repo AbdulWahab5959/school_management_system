@@ -3,41 +3,16 @@
 
 <head>
 <?php
-        require_once('includes/header.php');
-    ?>   
+        require_once('website_includes/header.php');
+        ?>    
+    
 </head>
 
 <body>
     <!-- Navbar Start -->
-    <div class="container-fluid bg-light position-relative shadow">
-        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
-            <a href="" class="navbar-brand font-weight-bold text-secondary" style="font-size: 50px;">
-                <i class="flaticon-043-teddy-bear"></i>
-                <span class="text-primary">KidKinder</span>
-            </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                <div class="navbar-nav font-weight-bold mx-auto py-0">
-                    <a href="index.php" class="nav-item nav-link">Home</a>
-                    <a href="about.php" class="nav-item nav-link">About</a>
-                    <a href="class.php" class="nav-item nav-link active">Classes</a>
-                    <a href="team.php" class="nav-item nav-link">Teachers</a>
-                    <a href="gallery.php" class="nav-item nav-link">Gallery</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="blog.php" class="dropdown-item">Blog Grid</a>
-                            <a href="single.php" class="dropdown-item">Blog Detail</a>
-                        </div>
-                    </div>
-                    <a href="contact.php" class="nav-item nav-link">Contact</a>
-                </div>
-                <a href="" class="btn btn-primary px-4">Join Class</a>
-            </div>
-        </nav>
-    </div>
+    <?php
+    require_once('website_includes/navbar.php');
+    ?>
     <!-- Navbar End -->
 
 
@@ -203,7 +178,7 @@
     </div>
     <!-- Registration End -->
     <?php
-        require_once('includes/footer.php');
+        require_once('website_includes/footer.php');
     ?>  
 </body>
 

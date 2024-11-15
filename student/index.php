@@ -82,7 +82,7 @@ require_once('includes/login_check.php');
                 </div>
               </div>
             </div>
-            <div class="card card-stats card-round ms-3">
+            <!-- <div class="card card-stats card-round ms-3">
               <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col-icon">
@@ -99,7 +99,7 @@ require_once('includes/login_check.php');
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           
           <div class="page-header">
