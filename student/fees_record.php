@@ -59,32 +59,31 @@ $student_id = $_SESSION['student_id'];
                                                 </tr>
                                             </thead>
                                             <tbody class="text-center">
-                                                <?php
-                                                $allRows = $sth->fetchAll();
-                                                foreach ($allRows as $Row) {
-                                                    echo "<tr>";
-                                                    echo "<td>" . $Row['id'] . "</td>";
-                                                    echo "<td>" . $Row['student_id'] . "</td>";
-                                                    echo "<td>" . $Row['student_name'] . "</td>";
-                                                    echo "<td>" . $Row['class_name'] . " " . $Row['class_section'] . "</td>";
-                                                    echo "<td>" . $Row['class_fee'] . "</td>";
-                                                    echo "<td>" . $Row['start_date'] . "</td>";
-                                                    echo "<td>" . $Row['end_date'] . "</td>";
-                                                    echo "<td>
-                                                            <button class='btn btn-secondary pdf-btn'
-                                                                    data-id='" . $Row['id'] . "'
-                                                                    data-student-id='" . $Row['student_id'] . "'
-                                                                    data-student-name='" . $Row['student_name'] . "'
-                                                                    data-class-name='" . $Row['class_name'] . "'
-                                                                    data-class-section='" . $Row['class_section'] . "'
-                                                                    data-class-fee='" . $Row['class_fee'] . "'
-                                                                    data-start-date='" . $Row['start_date'] . "'
-                                                                    data-end-date='" . $Row['end_date'] . "'> PDF </button>
-                                                          </td>";
-                                                    echo "</tr>";
-                                                    
-                                                }
-                                                ?>
+                                                <?php foreach ($allRows as $Row): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($Row['id']); ?></td>
+                                                        <td><?php echo htmlspecialchars($Row['student_id']); ?></td>
+                                                        <td><?php echo htmlspecialchars($Row['student_name']); ?></td>
+                                                        <td><?php echo htmlspecialchars($Row['class_name'] . " " . $Row['class_section']); ?></td>
+                                                        <td><?php echo htmlspecialchars($Row['class_fee']); ?></td>
+                                                        <td><?php echo htmlspecialchars($Row['start_date']); ?></td>
+                                                        <td><?php echo htmlspecialchars($Row['end_date']); ?></td>
+                                                        <td>
+                                                            <button class="btn btn-secondary pdf-btn"
+                                                                data-id="<?php echo $Row['id']; ?>"
+                                                                data-student-id="<?php echo $Row['student_id']; ?>"
+                                                                data-student-name="<?php echo $Row['student_name']; ?>"
+                                                                data-class-name="<?php echo $Row['class_name']; ?>"
+                                                                data-class-section="<?php echo $Row['class_section']; ?>"
+                                                                data-class-fee="<?php echo $Row['class_fee']; ?>"
+                                                                data-start-date="<?php echo $Row['start_date']; ?>"
+                                                                data-end-date="<?php echo $Row['end_date']; ?>">
+                                                                PDF
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -100,33 +99,32 @@ $student_id = $_SESSION['student_id'];
     <?php
     require_once('../includes/dashboard_footer.php')
     ?>
-<script>
-    $(document).ready(function() {
-        $(document).on('click', '.pdf-btn', function() {
-    var feeData = {
-        id: $(this).data('id'),
-        student_id: $(this).data('student-id'),
-        student_name: $(this).data('student-name'),
-        class_name: $(this).data('class-name'),
-        class_section: $(this).data('class-section'),
-        class_fee: $(this).data('class-fee'),
-        start_date: $(this).data('start-date'),
-        end_date: $(this).data('end-date')
-    };
-    console.log(feeData);
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.pdf-btn', function() {
+                var feeData = {
+                    id: $(this).data('id'),
+                    student_id: $(this).data('student-id'),
+                    student_name: $(this).data('student-name'),
+                    class_name: $(this).data('class-name'),
+                    class_section: $(this).data('class-section'),
+                    class_fee: $(this).data('class-fee'),
+                    start_date: $(this).data('start-date'),
+                    end_date: $(this).data('end-date')
+                };
+                console.log(feeData);
 
-    var form = $('<form action="fee_pdf.php" target="_blank"  method="post"></form>');
-    $.each(feeData, function(key, value) {
-        form.append('<input type="hidden" name="' + key + '" value="' + value + '">');
-    });
-    $('body').append(form);
-    form.submit();
-});
+                var form = $('<form action="fee_pdf.php" target="_blank"  method="post"></form>');
+                $.each(feeData, function(key, value) {
+                    form.append('<input type="hidden" name="' + key + '" value="' + value + '">');
+                });
+                $('body').append(form);
+                form.submit();
+            });
 
 
-});
-
-</script>
+        });
+    </script>
 </body>
 
 </html>
