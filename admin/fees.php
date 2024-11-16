@@ -8,7 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['class_id'])) {
   $classId = $_GET['class_id'];
 
   try {
-    $fetchSql = "SELECT student.id as student_id, student.name as student_name, class.fees as class_fees, class.name as class_name, fees.id , fees.status, fees.start_date, fees.end_date
+    $fetchSql = "SELECT student.id as student_id, student.name as student_name , class.name as class_name, class.section as class_section,
+     fees.id , fees.status, fees.class_fee, fees.start_date, fees.end_date
                      FROM fees
                      JOIN student ON fees.student_id = student.id
                      JOIN class ON fees.class_id = class.id
@@ -97,8 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['class_id'])) {
                     <td><?php echo htmlspecialchars($record['id']); ?></td>
                     <td><?php echo htmlspecialchars($record['student_id']); ?></td>
                     <td><?php echo htmlspecialchars($record['student_name']); ?></td>
-                    <td><?php echo htmlspecialchars($record['class_name']); ?></td>
-                    <td><?php echo htmlspecialchars($record['class_fees']); ?></td>
+                    <td><?php echo htmlspecialchars($record['class_name'] . ' ' . $record['class_section']); ?></td>
+                    <td><?php echo htmlspecialchars($record['class_fee']); ?></td>
                     <td> <span class="badge badge-info p-3 h4"><?php echo htmlspecialchars($record['status']); ?></span></td>
                     <td><?php echo htmlspecialchars($record['start_date']); ?></td>
                     <td><?php echo htmlspecialchars($record['end_date']); ?></td>
@@ -107,8 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['class_id'])) {
                       data-id="<?php echo $record['id']; ?>" 
                       data-student-id="<?php echo $record['student_id']; ?>"
                        data-student-name="<?php echo $record['student_name']; ?>" 
-                       data-class-name="<?php echo $record['class_name']; ?>"
-                         data-class-fee="<?php echo $record['class_fees']; ?>" 
+                       data-class-name="<?php echo htmlspecialchars($record['class_name'] . ' ' . $record['class_section']); ?>"
+                         data-class-fee="<?php echo $record['class_fee']; ?>" 
                          data-start-date="<?php echo $record['start_date']; ?>"
                           data-end-date="<?php echo $record['end_date']; ?>">
                            PDF </button>
@@ -159,8 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['class_id'])) {
                     student_id: $(this).data('student-id'),
                     student_name: $(this).data('student-name'),
                     class_name: $(this).data('class-name'),
-                    class_section: $(this).data('class-section'),
-                    class_fee: $(this).data('class_fees'),
+                    class_fee: $(this).data('class-fee'),
                     start_date: $(this).data('start-date'),
                     end_date: $(this).data('end-date')
                 };

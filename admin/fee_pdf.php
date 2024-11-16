@@ -9,8 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $student_id = $_POST['student_id'];
     $student_name = $_POST['student_name'];
     $class_name = $_POST['class_name'];
-    $class_section = $_POST['class_section'];
-    $class_fee = $_POST['class_fees'];
+    $class_fee = $_POST['class_fee'];
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
     $school_name = 'IMS Education System';
@@ -83,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tr><td class='bold'>Last Date:</td><td><b>$end_date</b></td></tr>
                 <tr><td class='bold'>Student Reg No:</td><td><b>$student_id</b></td></tr>
                 <tr><td class='bold'>Student Name:</td><td><b>$student_name</b></td></tr>
-                <tr><td class='bold'>Class:</td><td><b>$class_name $class_section</b></td></tr>
+                <tr><td class='bold'>Class:</td><td><b>$class_name</b></td></tr>
             </table>
             <table>
                 <tr><td>Monthly fee</td><td class='center'><b>$class_fee</b></td></tr>
