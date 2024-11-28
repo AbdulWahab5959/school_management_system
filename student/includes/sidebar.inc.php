@@ -33,16 +33,16 @@ $page = end($path_parts);
                     </a>
                 </li>
                 </li>
-                <!-- <!-- <li class="nav-item <?php echo $page=='student.php'?'active':'';?>">
-                    <a href="student.php">
-                    <i class="fas fa-users"></i>
-                        <p>Student</p>  
-                    </a>
-                </li> -->
                 <li class="nav-item <?php echo $page=='fees_record.php'?'active':'';?>">
                     <a href="fees_record.php">
-                    <i class="fas fa-file-invoice-dollar"></i>
+                        <i class="fas fa-file-invoice-dollar"></i>
                         <p>Fee</p>  
+                    </a>
+                </li> 
+                 <li class="nav-item <?php echo $page=='payment.php'?'active':'';?>">
+                    <a href="stripe\index.php">
+                    <i class=" fas fa-solid fa-dollar-sign"></i>
+                    <p>Payment</p>  
                     </a>
                 </li> 
             </ul>

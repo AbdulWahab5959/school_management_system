@@ -35,7 +35,6 @@ $student_id = $_SESSION['student_id'];
                             <div class="card">
                                 <div class="card-body">
                                     <?php
-                                    $student_id = $_SESSION['student_id'];
                                     $s = "SELECT fees.*, class.name AS class_name, class.section AS class_section, student.name AS student_name, student.id AS student_id
                                             FROM fees
                                             INNER JOIN student ON fees.student_id = student.id
@@ -43,6 +42,8 @@ $student_id = $_SESSION['student_id'];
                                             WHERE student.id = :student_id";
                                     $sth = $pdo->prepare($s);
                                     $sth->execute(['student_id' => $student_id]);
+                                    $records = $sth->fetchAll(PDO::FETCH_ASSOC);
+
                                     ?>
                                     <div class="table-responsive">
                                         <table id="add-row" class="display table table-striped table-hover">
@@ -59,7 +60,7 @@ $student_id = $_SESSION['student_id'];
                                                 </tr>
                                             </thead>
                                             <tbody class="text-center">
-                                                <?php foreach ($allRows as $Row): ?>
+                                                <?php foreach ($records as $Row): ?>
                                                     <tr>
                                                         <td><?php echo htmlspecialchars($Row['id']); ?></td>
                                                         <td><?php echo htmlspecialchars($Row['student_id']); ?></td>
